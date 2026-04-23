@@ -26,7 +26,7 @@ async function main() {
       async () => {
         const value = await devtools.evaluate(`
 (() => {
-  const text = document.body.textContent ?? '';
+  const text = document.querySelector('.start-screen')?.textContent ?? '';
   const cards = Array.from(document.querySelectorAll('.scenario-grid button')).map((button) => {
     const image = button.querySelector('img');
     return {
