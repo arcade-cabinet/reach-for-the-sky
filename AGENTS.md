@@ -1,58 +1,66 @@
 # Reach for the Sky Agent Guide
 
-This repository was created on 2026-04-22 to preserve the Reach for the Sky
-implementation removed from `/Users/jbogaty/src/jbcom/arcade-cabinet`.
+This repository is the standalone home for Reach for the Sky.
 
-## Provenance
+## What The Game Is
 
-- Source: arcade cabinet single-app React/Vite/Capacitor migration.
-- Original arcade paths: `app/games/reach-for-the-sky`,
-  `src/games/reach-for-the-sky`, and `docs/games/reach-for-the-sky`.
-- No standalone pending HTML POC for Reach for the Sky was found in the arcade
-  cabinet git history. The available provenance is the arcade port and its docs.
+Reach for the Sky is a modern living-tower simulator where architecture, people, reputation, and city pressure collide. The product is simulation-first: readable 2D cutaway tower management with cinematic support, not a nostalgia clone and not a 3D-first building toy.
 
-## Architecture Intent
+## Repository Shape
 
-Keep the split between presentation and logic:
+- `app/`: Solid UI shell, HUD, drawers, and canvas host
+- `src/`: pure simulation, state, rendering, persistence, audio, diagnostics
+- `public/`: static assets, vectors, previews, icons, audio, SQL WASM
+- `docs/`: canonical product, technical, and production docs
+- `scripts/`: browser verifiers and build helpers
+- `tests/`: unit test coverage
 
-- `app/`: React components, R3F scenes, HUDs, responsive layout, styles, and
-  browser-focused tests.
-- `src/`: pure game logic, tower planning, scoring, world state, traits, math,
-  and unit-testable systems.
-- `public/`: future shared assets, wasm, generated previews, icons, and static
-  files if a standalone app shell is added.
-
-The imported files still use the arcade aliases:
+Path aliases:
 
 ```text
 @app/*   -> app/*
 @logic/* -> src/*
+@/*      -> src/* (legacy/internal compatibility; prefer @logic for src imports where practical)
 ```
 
-If a standalone Vite shell is added, configure these aliases rather than
-rewriting imports ad hoc.
+## Working Rules
 
-## Evaluation Priorities
+1. Preserve the simulation-first identity. Readability beats spectacle.
+2. Do not reintroduce React, R3F, Zustand, or Dexie.
+3. Prefer authored SVG/vector composition over placeholder geometry for player-facing visuals.
+4. Keep SQLite as durable truth and Preferences as lightweight KV only.
+5. Do not describe the game to players as a prototype, POC, or demo.
+6. When changing systems, update the relevant file in `docs/` in the same branch.
 
-1. Rebuild the standalone runtime deliberately instead of copying cabinet shell
-   code without review.
-2. Preserve pure tower-planning tests before changing visuals.
-3. Decide the core pillars: vertical construction, resource pressure, readable
-   tower silhouette, weather/height risk, and satisfying touch interaction.
-4. Design mobile and desktop controls around the game, not around the old
-   cabinet D-pad assumptions.
-5. Verify every visual claim with browser screenshots after a dev server render.
+## Canonical Docs
 
-## Required Checks After Build Tooling Exists
+- `docs/DESIGN.md`: identity and player journey
+- `docs/SYSTEMS.md`: gameplay/system domains
+- `docs/CONTENT.md`: room/cohort/act content accounting
+- `docs/ARCHITECTURE.md`: runtime and deployment architecture
+- `docs/UI_UX.md`: shell layout and explanation surfaces
+- `docs/VISUAL_REVIEW.md`: visual direction and art debt
+- `docs/TESTING.md`: verification lanes
+- `docs/PRODUCTION.md`: remaining work and readiness
+- `docs/RELEASE.md`: shipping flow
+- `docs/STATE.md`: current merged state
+- `STANDARDS.md`: non-negotiable implementation and production constraints
 
-Run the relevant equivalents before committing:
+## Minimum Checks
+
+Run the relevant subset before committing. For broad product changes, run all of them.
 
 ```bash
 pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
+pnpm verify:browser
+pnpm capture:screenshots
 ```
 
-If browser/e2e coverage is restored, capture desktop and mobile screenshots and
-keep the test harness committed.
+## Immediate Priorities
+
+1. Expand authored content breadth without compromising readability.
+2. Keep the docs surface accurate as the product evolves.
+3. Preserve the PR -> review -> squash merge -> main CD discipline.
