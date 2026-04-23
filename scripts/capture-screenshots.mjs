@@ -292,7 +292,7 @@ async function main() {
       devtools.evaluate(`
 (() => {
   const text = document.body.textContent ?? '';
-  const previewCount = Array.from(document.querySelectorAll('.scenario-grid img')).filter(
+  const previewCount = Array.from(document.querySelectorAll('.start-scenario-card img')).filter(
     (image) => image.complete && image.naturalWidth > 0,
   ).length;
   return text.includes('Break Ground') && previewCount >= 4 ? true : null;
@@ -311,7 +311,7 @@ async function main() {
       devtools.evaluate(`
 (() => {
   const text = document.body.textContent ?? '';
-  const previewCount = Array.from(document.querySelectorAll('.scenario-grid img')).filter(
+  const previewCount = Array.from(document.querySelectorAll('.start-scenario-card img')).filter(
     (image) => image.complete && image.naturalWidth > 0,
   ).length;
   return text.includes('Break Ground') && previewCount >= 4 ? true : null;

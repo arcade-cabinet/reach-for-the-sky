@@ -166,7 +166,7 @@ async function waitForAutosave(devtools) {
 }
 
 async function main() {
-  await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
+  await withDevPage('/reach-for-the-sky/?skip-intro=1', async ({ url, devtools }) => {
     await devtools.send('Emulation.setDeviceMetricsOverride', {
       width: 1280,
       height: 820,

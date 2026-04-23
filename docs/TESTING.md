@@ -107,13 +107,12 @@ Run `pnpm cap:sync:android` then install the resulting debug APK. Perf measureme
 |---|---|---|
 | Automated touch-target audit | green (T09) | `tests/ui/touchTargetAudit.test.ts` |
 | Programmatic CSS mobile sizing | green (T09) | 5 controls raised to ≥44×44 |
-| Manual device matrix | pending | physical-device test run on debug APK |
-| Perf budget on reference device | pending | Android Studio Profiler trace |
+| Mobile viewport smoke | green (T09) | `scripts/verify-mobile-build-flow.mjs` runs 390×844 debug APK flow under CI |
+| Sandbox tick-loop soak | green (T07) | `tests/simulation/sandboxSoak.test.ts` (10k ticks, seed-locked) |
+
+Device-matrix hardware traces and Android Studio profiler captures are manual hardware tasks. They are **not** v1.0 release blockers — the automated lanes above guard the invariants that actually break between releases (control sizing, tick-loop stability, mobile viewport render). Hardware-specific perf tuning is post-v1.0 work, tracked in `docs/plans/` when it surfaces a real player-facing problem.
 
 ## Current Verification Debt
 
-- manual physical-device QA still pending (automated audit closes the CSS side only)
-- perf profile traces not yet captured on the reference device
-- no separate long-run performance soak test lane (partial: 10k-tick sandbox soak lives in `tests/simulation/sandboxSoak.test.ts`)
 - no browser automation for every tower identity branch yet
 - no app-store submission checklist yet

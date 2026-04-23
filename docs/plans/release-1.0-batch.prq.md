@@ -17,6 +17,7 @@ Scope chosen: **Store-submission 1.0 minus store submission.** Web + Android deb
 2. **No obvious SimTower star path.** The five-act spine must survive as internal pacing structure only — never surface as a visible "Act N of 5" ladder or star-style progression UI.
 3. **Simulation-first; spectacle supports the cutaway.** (From `CLAUDE.md`.)
 4. **Solid / Pixi / Koota / Yuka / Capacitor only.** No React, R3F, Zustand, Dexie.
+5. **The agent is guardian and steward of the player journey — including visuals.** If the journey needs art, authored composites, animation, audio, or icons, those are in scope for the agent to produce directly. Not "tracked as pending", not "manual QA required", not "needs a designer." When the player can't fluently read what's happening in the tower, that is the work to do now — inside the current PR if at all possible. Tools are fungible; ownership of the experience is not.
 
 ## Config
 

@@ -92,7 +92,7 @@ async function clearPreferenceStorage(devtools) {
 }
 
 async function main() {
-  await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
+  await withDevPage('/reach-for-the-sky/?skip-intro=1', async ({ url, devtools }) => {
     await waitFor('start screen', async () => {
       const ready = await devtools.evaluate(
         `document.body.textContent?.includes('Break Ground') ?? false`,
