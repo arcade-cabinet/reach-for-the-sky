@@ -1,0 +1,98 @@
+{
+  "name": "Reach for the Sky",
+  "short_name": "Reach Sky",
+  "version": "1.0.0",
+  "description": "A modern living-tower simulator where architecture, people, reputation, and city pressure collide.",
+  "id": "/reach-for-the-sky/",
+  "start_url": "/reach-for-the-sky/",
+  "scope": "/reach-for-the-sky/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#061018",
+  "theme_color": "#061018",
+  "categories": ["games", "simulation", "strategy"],
+  "icons": [
+    {
+      "src": "assets/icons/reach-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/reach-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/reach-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/reach-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/previews/menu-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Scenario selection menu with preview-backed player journey shortcuts"
+    },
+    {
+      "src": "assets/previews/opening-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Act 1 opening tower construction with live operations HUD"
+    },
+    {
+      "src": "assets/previews/skyline-victory-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Skyline charter victory with city, contracts, and public memory systems"
+    },
+    {
+      "src": "assets/previews/daily-report-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "End-of-day report connecting revenue, trust, reputation, and diagnosis notes"
+    },
+    {
+      "src": "assets/previews/privacy-lens-desktop.png",
+      "sizes": "1280x820",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Noise and privacy diagnostic lens over the living tower cutaway"
+    },
+    {
+      "src": "assets/previews/weather-stress-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Weather and height-risk pressure over the authored cutaway tower"
+    },
+    {
+      "src": "assets/previews/recovery-contract-desktop.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Recovery contract flow after public operational failure"
+    },
+    {
+      "src": "assets/previews/opening-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile opening scenario with touch-ready tower viewport"
+    }
+  ]
+}
