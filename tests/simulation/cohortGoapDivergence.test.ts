@@ -50,6 +50,9 @@ const EXPECTED_ARCHETYPE_IDS: VisitorArchetypeId[] = [
   'trade-buyers',
   'city-inspectors',
   'press-swarm',
+  'film-festival-jury',
+  'tech-investors',
+  'civic-delegation',
 ];
 
 describe('cohort GOAP utility (T02)', () => {

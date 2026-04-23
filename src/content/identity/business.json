@@ -3,7 +3,8 @@
   "archetypeBias": {
     "trade-buyers": 0.5,
     "politician": 0.25,
-    "labor-delegation": 0.2
+    "labor-delegation": 0.2,
+    "tech-investors": 0.46
   },
   "traitDelta": {
     "patience": -0.05,

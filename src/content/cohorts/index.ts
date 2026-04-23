@@ -1,6 +1,8 @@
 import type { VisitorArchetype, VisitorArchetypeId } from '../../simulation/visitors';
 import buddhistMonks from './buddhist-monks.json';
 import cityInspectors from './city-inspectors.json';
+import civicDelegation from './civic-delegation.json';
+import filmFestivalJury from './film-festival-jury.json';
 import foreignPrince from './foreign-prince.json';
 import laborDelegation from './labor-delegation.json';
 import movieStar from './movie-star.json';
@@ -8,6 +10,7 @@ import politician from './politician.json';
 import pressSwarm from './press-swarm.json';
 import schoolTeachers from './school-teachers.json';
 import stampCollectors from './stamp-collectors.json';
+import techInvestors from './tech-investors.json';
 import tradeBuyers from './trade-buyers.json';
 
 type RawArchetype = Omit<VisitorArchetype, 'id' | 'goals'> & {
@@ -35,6 +38,9 @@ const AUTHORED_ARCHETYPES: readonly VisitorArchetype[] = [
   narrow(tradeBuyers, 'trade-buyers'),
   narrow(cityInspectors, 'city-inspectors'),
   narrow(pressSwarm, 'press-swarm'),
+  narrow(filmFestivalJury, 'film-festival-jury'),
+  narrow(techInvestors, 'tech-investors'),
+  narrow(civicDelegation, 'civic-delegation'),
 ];
 
 function buildAuthoredArchetypes(): Record<VisitorArchetypeId, VisitorArchetype> {

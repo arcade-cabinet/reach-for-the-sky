@@ -2,7 +2,8 @@
   "identity": "luxury",
   "archetypeBias": {
     "movie-star": 1.25,
-    "foreign-prince": 0.95
+    "foreign-prince": 0.95,
+    "film-festival-jury": 0.62
   },
   "traitDelta": {
     "statusSensitivity": 0.1,
