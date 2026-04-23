@@ -50,6 +50,21 @@ export function FirstRunExplainer() {
 
   onMount(() => {
     void (async () => {
+      // Skip in three bypass cases — the modal would block automation or
+      // misfire for players who jumped in via a deep-linked scenario:
+      //   1. `?scenario=...` deep-link — play starts via side-loaded state
+      //   2. `?skip-intro=1` explicit opt-out
+      //   3. `navigator.webdriver === true` — Chrome DevTools Protocol /
+      //      Playwright / Selenium all set this, so the browser-smoke
+      //      verifiers auto-bypass without needing their own URL handling.
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const automated = navigator.webdriver === true;
+        if (params.has('scenario') || params.get('skip-intro') === '1' || automated) {
+          void preferences.set(PREF_KEYS.tutorialStep, 'completed');
+          return;
+        }
+      }
       const current = await preferences.get(PREF_KEYS.tutorialStep);
       if (current !== 'completed') setVisible(true);
     })();

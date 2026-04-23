@@ -1057,7 +1057,9 @@ export function App() {
     >
       <GameCanvas onBuildCommitted={handleBuildCommitted} />
       <AgentDebugOverlay tower={towerState} />
-      <FirstRunExplainer />
+      <Show when={phaseState().phase === 'playing'}>
+        <FirstRunExplainer />
+      </Show>
       <section class="top-hud">
         <div class="top-clock">
           <button
