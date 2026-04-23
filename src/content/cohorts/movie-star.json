@@ -1,0 +1,19 @@
+{
+  "id": "movie-star",
+  "label": "Movie star entourage",
+  "minSize": 3,
+  "maxSize": 12,
+  "traits": {
+    "ego": 0.86,
+    "patience": 0.24,
+    "spendingPower": 0.92,
+    "cleanlinessDemand": 0.78,
+    "privacyDemand": 0.88,
+    "noiseTolerance": 0.42,
+    "groupCohesion": 0.64,
+    "statusSensitivity": 0.9,
+    "kindness": 0.38
+  },
+  "goals": ["publicity", "lodging", "food"],
+  "volatility": 0.72
+}

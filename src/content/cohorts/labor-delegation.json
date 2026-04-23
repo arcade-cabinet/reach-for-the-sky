@@ -1,0 +1,19 @@
+{
+  "id": "labor-delegation",
+  "label": "Labor delegation",
+  "minSize": 10,
+  "maxSize": 42,
+  "traits": {
+    "ego": 0.24,
+    "patience": 0.58,
+    "spendingPower": 0.34,
+    "cleanlinessDemand": 0.52,
+    "privacyDemand": 0.2,
+    "noiseTolerance": 0.78,
+    "groupCohesion": 0.9,
+    "statusSensitivity": 0.2,
+    "kindness": 0.68
+  },
+  "goals": ["meeting", "food"],
+  "volatility": 0.44
+}

@@ -1,0 +1,19 @@
+{
+  "id": "stamp-collectors",
+  "label": "Stamp collector convention",
+  "minSize": 12,
+  "maxSize": 48,
+  "traits": {
+    "ego": 0.22,
+    "patience": 0.7,
+    "spendingPower": 0.46,
+    "cleanlinessDemand": 0.78,
+    "privacyDemand": 0.42,
+    "noiseTolerance": 0.18,
+    "groupCohesion": 0.92,
+    "statusSensitivity": 0.24,
+    "kindness": 0.62
+  },
+  "goals": ["quiet", "meeting", "shopping"],
+  "volatility": 0.36
+}

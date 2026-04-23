@@ -1,0 +1,19 @@
+{
+  "id": "buddhist-monks",
+  "label": "Buddhist monks",
+  "minSize": 4,
+  "maxSize": 18,
+  "traits": {
+    "ego": 0.06,
+    "patience": 0.92,
+    "spendingPower": 0.18,
+    "cleanlinessDemand": 0.58,
+    "privacyDemand": 0.48,
+    "noiseTolerance": 0.28,
+    "groupCohesion": 0.88,
+    "statusSensitivity": 0.04,
+    "kindness": 0.96
+  },
+  "goals": ["quiet", "food"],
+  "volatility": 0.14
+}

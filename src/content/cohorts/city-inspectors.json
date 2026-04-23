@@ -1,0 +1,19 @@
+{
+  "id": "city-inspectors",
+  "label": "City inspector tour",
+  "minSize": 3,
+  "maxSize": 10,
+  "traits": {
+    "ego": 0.34,
+    "patience": 0.52,
+    "spendingPower": 0.2,
+    "cleanlinessDemand": 0.88,
+    "privacyDemand": 0.58,
+    "noiseTolerance": 0.52,
+    "groupCohesion": 0.7,
+    "statusSensitivity": 0.78,
+    "kindness": 0.46
+  },
+  "goals": ["meeting", "quiet"],
+  "volatility": 0.52
+}
