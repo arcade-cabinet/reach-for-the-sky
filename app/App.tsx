@@ -928,7 +928,7 @@ export function App() {
     const slotId = selectedSlotSummary()?.slotId ?? saveSlots()[0]?.slotId ?? DEFAULT_SAVE_SLOT;
     const snapshot = await loadSnapshot(slotId);
     if (!snapshot) {
-      setStartNotice('No saved tower was found. Break ground or load a scenario.');
+      setStartNotice('No saved tower was found. Break ground or open a city moment.');
       return;
     }
     setSelectedSaveSlot(slotId);
@@ -1892,17 +1892,26 @@ export function App() {
 
       {phaseState().phase === 'menu' && (
         <section class="start-screen">
+          <div class="start-atmosphere" aria-hidden="true">
+            <span class="atmosphere-orbit orbit-a" />
+            <span class="atmosphere-orbit orbit-b" />
+            <span class="atmosphere-scanline" />
+            <span class="atmosphere-tower tower-a" />
+            <span class="atmosphere-tower tower-b" />
+            <span class="atmosphere-tower tower-c" />
+          </div>
           <div class="start-card">
             <div class="start-hero-copy">
-              <p class="start-kicker">Living tower simulator</p>
+              <p class="start-kicker">Campaign-backed living tower simulator</p>
               <h1>
                 <span>Reach</span>
                 <span>For The</span>
                 <span>Sky</span>
               </h1>
               <p class="start-deck">
-                Build a tower people actually have to live with. Tenants, crowds, inspectors,
-                visitors, weather, money, and public memory all push back.
+                Build a tower people actually have to live with. Architecture, tenants, crowds,
+                inspectors, weather, money, and public memory collide until the building earns a
+                role in the city.
               </p>
               <ul class="start-pill-row" aria-label="Core simulation pillars">
                 <li>Architecture</li>
@@ -1910,6 +1919,11 @@ export function App() {
                 <li>Reputation</li>
                 <li>City Pressure</li>
               </ul>
+              <div class="start-promise-line">
+                <span>Macro: district pressure</span>
+                <span>Meso: tower operations</span>
+                <span>Micro: people with memory</span>
+              </div>
               <div class="start-actions">
                 <button type="button" class="primary" onClick={handleStart}>
                   Break Ground
@@ -1918,6 +1932,10 @@ export function App() {
                   Continue Tower
                 </button>
               </div>
+              <p class="start-footnote">
+                No rote VIP checklist. Public visits emerge from identity, pressure, venue mix, and
+                how people remember the place.
+              </p>
               {startNotice() && <p class="start-notice">{startNotice()}</p>}
             </div>
 
@@ -1928,6 +1946,10 @@ export function App() {
                   alt="A completed skyline tower with the contracts drawer open"
                 />
                 <div class="start-preview-glow" />
+                <div class="start-live-badge">
+                  <span>Now serving</span>
+                  <strong>Web + Android</strong>
+                </div>
               </div>
               <div class="start-stat-grid">
                 <article>
@@ -1943,10 +1965,35 @@ export function App() {
                   <strong>Sandbox</strong>
                 </article>
               </div>
+              <div class="start-journey-map">
+                <span>Empty Lot</span>
+                <span>Working Tower</span>
+                <span>District Player</span>
+                <span>Public Landmark</span>
+                <span>Skyline Institution</span>
+              </div>
             </aside>
 
+            <section class="start-manifesto" aria-label="What the game asks from the player">
+              <article>
+                <span>Build</span>
+                <strong>Author the tower's public role</strong>
+                <p>Choose tenant mix, service capacity, venues, prestige, and access.</p>
+              </article>
+              <article>
+                <span>Diagnose</span>
+                <strong>Read pressure before it becomes scandal</strong>
+                <p>Use reports, lenses, inspections, memories, and contract signals.</p>
+              </article>
+              <article>
+                <span>Respond</span>
+                <strong>Turn failures into civic leverage</strong>
+                <p>Recover from bad visits, weather fronts, queues, and reputation shocks.</p>
+              </article>
+            </section>
+
             <fieldset class="scenario-grid">
-              <legend>City moments</legend>
+              <legend>Playable city moments</legend>
               {SCENARIO_CARDS.map((scenario) => (
                 <button type="button" onClick={() => void handleScenario(scenario.id)}>
                   <img src={assetUrl(scenario.preview)} alt="" />
