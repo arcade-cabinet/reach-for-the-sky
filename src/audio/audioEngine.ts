@@ -31,6 +31,14 @@ export const DEFAULT_AUDIO_SPRITE: AudioSpriteMap = {
 
 export const DEFAULT_AUDIO_SAMPLE_PATHS = ['assets/audio/reach-ui-cues.ogg'] as const;
 
+// Minimum time between two plays of the same cue, in ms. Cues missing from
+// this map have no debounce. 200ms on drawer-open collapses a mash-and-close
+// into a single cue and keeps the Howler HTML5 pool from exhausting during
+// rapid-fire UI toggles.
+const CUE_DEBOUNCE_MS: Partial<Record<AudioCue, number>> = {
+  'drawer-open': 200,
+};
+
 export function resolveAudioAsset(path: string, baseUrl = import.meta.env.BASE_URL): string {
   const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   return `${base}${path}`;
@@ -52,9 +60,20 @@ export class SkyAudioEngine {
   private sampleSprite: Howl | null = null;
   private sampleSpriteCues = new Set<AudioCue>();
   private settings: GameSettings['audio'];
+  // Per-cue last-played timestamps (ms, performance.now()). Used to debounce
+  // rapid-fire cues like drawer-open that a hurried player (or a verifier
+  // toggling two drawers in the same turn) can queue faster than the sample
+  // duration, exhausting Howler's HTML5 audio pool.
+  private lastPlayedAt = new Map<AudioCue, number>();
 
   constructor(settings: GameSettings['audio']) {
     this.settings = settings;
+    // Default Howler HTML5 audio pool is 10 objects. That fills quickly with
+    // rapid-fire cues (drawer toggles, visit arrivals during a convention,
+    // chained rents) and surfaces "HTML5 Audio pool exhausted" warnings that
+    // the T13 console-clean gate catches. 32 is comfortable for real play
+    // without being extravagant.
+    Howler.html5PoolSize = 32;
     Howler.volume(settings.muted ? 0 : settings.sampleVolume);
     this.registerSampleSprite(
       DEFAULT_AUDIO_SAMPLE_PATHS.map((path) => resolveAudioAsset(path)),
@@ -144,6 +163,16 @@ export class SkyAudioEngine {
 
   play(cue: AudioCue): void {
     if (this.settings.muted) return;
+    // Cue-level debounce. Map holds per-cue minimum gap in ms; cues absent
+    // from the map play every time. Tuned so a deliberate user click still
+    // hits but mashing or rapid programmatic toggles collapse to one cue.
+    const debounceMs = CUE_DEBOUNCE_MS[cue];
+    if (debounceMs) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      const last = this.lastPlayedAt.get(cue) ?? -Infinity;
+      if (now - last < debounceMs) return;
+      this.lastPlayedAt.set(cue, now);
+    }
     const sample = this.samples.get(cue);
     if (sample?.state() === 'loaded') {
       sample.play();
