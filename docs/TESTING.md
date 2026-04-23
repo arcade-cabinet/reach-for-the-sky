@@ -120,6 +120,18 @@ Headless **campaign smoke** is already covered by `verify:campaign-flow.mjs` —
 
 **Lighthouse budget** is deferred (`docs/KNOWN_ISSUES.md`). The added dependency weight isn't justified by the marginal coverage over what the console-clean gate plus the existing `verify:render-stats` already catch.
 
+## Save-Compat Smoke (T14)
+
+`tests/persistence/saveCompat.test.ts` parses a frozen v1.0.1-shaped snapshot (`tests/persistence/fixtures/v1.0.1-snapshot.json`) through the current `parseSnapshot` + normalizer chain and asserts:
+
+- no throw (version tag + all substates accepted)
+- player-visible surface restores exactly (funds, day, rooms, identity, mode, victory)
+- `campaign`/`macro`/`operations` substates populated (undefined here would NPE future code paths)
+- `rngSeed` fallback applied when older saves omit the field
+- incompatible version tags still rejected (`Unsupported save version: 999`)
+
+The fixture is hand-authored against the v1.0.1 tag (`a4d598f`) schema — inspected via `git show v1.0.1:src/simulation/types.ts` so that any future renaming of a `SimulationSnapshot` field fails this test loudly. Regenerate by cross-checking `types.ts` against the fixture when touching persistence.
+
 ## Current Verification Debt
 
 - no browser automation for every tower identity branch yet
