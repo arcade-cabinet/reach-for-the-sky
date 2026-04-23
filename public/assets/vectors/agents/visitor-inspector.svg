@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" role="img" aria-label="inspector visitor">
+  <defs>
+    <linearGradient id="insp-coat" x1="4" x2="20" y1="14" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5c4b2a"/>
+      <stop offset="1" stop-color="#2c2010"/>
+    </linearGradient>
+    <linearGradient id="insp-face" x1="8" x2="16" y1="4" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2d0b4"/>
+      <stop offset="1" stop-color="#b99a78"/>
+    </linearGradient>
+  </defs>
+  <path fill="#050b12" fill-opacity=".34" d="M5 33c2.2 1.7 11.8 1.7 14 0v1.2c-2.1 1.8-11.9 1.8-14 0z"/>
+  <path fill="#1c1608" d="M7 14h10l2.3 18c-3.9 2.2-10.9 2.2-14.8 0z"/>
+  <path fill="url(#insp-coat)" d="M8 14.4h8l1.9 16.5c-3.4 1.6-8.6 1.6-12 0z"/>
+  <!-- Badge star — inspector/civic read -->
+  <path d="M10 18l0.6 1.5 1.6 0.1-1.2 1 0.4 1.5-1.4-0.9-1.4 0.9 0.4-1.5-1.2-1 1.6-0.1z" fill="#c48a2a" stroke="#3a2610" stroke-width="0.35"/>
+  <!-- Clipboard -->
+  <rect x="13" y="17.5" width="4.4" height="5.6" rx="0.3" fill="#f0e6c6" stroke="#3a2610" stroke-width="0.4"/>
+  <rect x="14" y="17.2" width="2.4" height="0.8" fill="#3a2610"/>
+  <path d="M13.6 19.2h3.2M13.6 20.4h3.2M13.6 21.6h2" stroke="#5c4628" stroke-width="0.3"/>
+  <ellipse cx="12" cy="8.5" fill="url(#insp-face)" rx="4.4" ry="5.2"/>
+  <!-- Peaked cap -->
+  <path fill="#1c1608" d="M6.4 7.2c.2-3.4 2.2-5 5.6-5 3.4 0 5.4 1.6 5.6 5H6.4z"/>
+  <path fill="#1c1608" d="M6.4 7.2h11.2v1.2H6.4z"/>
+  <path fill="#c48a2a" d="M10.6 6h2.8v0.7h-2.8z"/>
+  <path fill="#0d0b06" d="M5.6 19h2.5l-1 9.3H5zm10.5 0h2.5l.8 9.3h-2.3z"/>
+  <path fill="#1c1608" d="M8.4 31.1h2.4v3.2H8.4zm4.8 0h2.4v3.2h-2.4z"/>
+</svg>

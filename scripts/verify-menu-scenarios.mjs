@@ -26,7 +26,7 @@ async function main() {
 (() => {
   const startScreen = document.querySelector('.start-screen');
   const text = startScreen?.textContent ?? '';
-  const cards = Array.from(startScreen?.querySelectorAll('.scenario-grid button') ?? []).map((button) => {
+  const cards = Array.from(startScreen?.querySelectorAll('.start-scenario-card') ?? []).map((button) => {
     const image = button.querySelector('img');
     return {
       text: button.textContent ?? '',

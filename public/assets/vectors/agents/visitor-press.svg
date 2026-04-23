@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" role="img" aria-label="press visitor">
+  <defs>
+    <linearGradient id="press-coat" x1="4" x2="20" y1="14" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2e3a4a"/>
+      <stop offset="1" stop-color="#14202d"/>
+    </linearGradient>
+    <linearGradient id="press-face" x1="8" x2="16" y1="4" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2d0b4"/>
+      <stop offset="1" stop-color="#b99a78"/>
+    </linearGradient>
+  </defs>
+  <path fill="#050b12" fill-opacity=".34" d="M5 33c2.2 1.7 11.8 1.7 14 0v1.2c-2.1 1.8-11.9 1.8-14 0z"/>
+  <path fill="#101820" d="M7 14h10l2.2 18.2c-3.9 2.2-10.9 2.2-14.8 0z"/>
+  <path fill="url(#press-coat)" d="M8 14.4h8l1.8 16.5c-3.4 1.6-8.6 1.6-12 0z"/>
+  <ellipse cx="12" cy="8.5" fill="url(#press-face)" rx="4.4" ry="5.2"/>
+  <path fill="#1a2633" d="M7.6 8.4c.4-4.2 2-6.2 4.9-6.2 2.3 0 3.9 1.4 4.3 4.6-2.9-.8-5.8-.7-9.2 1.6z"/>
+  <!-- Camera body, strap, flash — the press read -->
+  <rect x="6.6" y="18" width="10.8" height="5.4" rx="0.8" fill="#0b1118" stroke="#5d7288" stroke-width="0.6"/>
+  <circle cx="12" cy="20.7" r="1.9" fill="#0b1118" stroke="#a9c2d8" stroke-width="0.7"/>
+  <circle cx="12" cy="20.7" r="0.7" fill="#7fb0d0"/>
+  <path d="M4.8 16.2L7 19M19.2 16.2L17 19" stroke="#3c4a5e" stroke-width="0.8" fill="none"/>
+  <rect x="14.5" y="16.6" width="1.6" height="1.2" fill="#f2e6b0"/>
+  <path fill="#090f16" d="M5.4 19.4h2.5l-0.9 9.3H4.7zm10.7 0h2.5l0.7 9.3h-2.4z"/>
+  <path fill="#14202d" d="M8.2 31.1h2.4v3.2H8.2zm4.8 0h2.4v3.2h-2.4z"/>
+</svg>
