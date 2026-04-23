@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.0.0...v1.0.1) (2026-04-23)
+
+
+### Documentation
+
+* align production documentation surface ([#3](https://github.com/arcade-cabinet/reach-for-the-sky/issues/3)) ([95b3c81](https://github.com/arcade-cabinet/reach-for-the-sky/commit/95b3c81da541524b4790c34630c29cff3f65e735))
+
 ## 1.0.0 (2026-04-23)
 
 ### Production Baseline
