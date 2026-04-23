@@ -38,6 +38,19 @@ async function clickScopedButton(devtools, selector, label) {
   if (!clicked) throw new Error(`Could not find ${label} button in ${selector}`);
 }
 
+async function activateLens(devtools, label, mode) {
+  return waitFor(
+    `active ${label.toLowerCase()} lens`,
+    async () => {
+      const lensMode = await readLensMode(devtools);
+      if (lensMode === mode) return lensMode;
+      await devtools.evaluate(scopedButtonExpression('.lens-panel button', label));
+      return null;
+    },
+    30_000,
+  );
+}
+
 async function readLensMode(devtools) {
   return devtools.evaluate(`
 (async () => {
@@ -104,10 +117,7 @@ async function main() {
     });
 
     await clickScopedButton(devtools, '.lens-panel button', 'Maintenance');
-    await waitFor('active maintenance lens', async () => {
-      const lensMode = await readLensMode(devtools);
-      return lensMode === 'maintenance' ? lensMode : null;
-    });
+    await activateLens(devtools, 'Maintenance', 'maintenance');
     await waitFor('stored maintenance lens preference', async () => {
       const lensMode = await readPreference(devtools, 'lensMode', 'normal');
       return lensMode === 'maintenance' ? lensMode : null;
