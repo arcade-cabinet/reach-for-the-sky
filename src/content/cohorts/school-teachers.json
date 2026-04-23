@@ -1,0 +1,19 @@
+{
+  "id": "school-teachers",
+  "label": "School teacher convention",
+  "minSize": 24,
+  "maxSize": 90,
+  "traits": {
+    "ego": 0.18,
+    "patience": 0.76,
+    "spendingPower": 0.42,
+    "cleanlinessDemand": 0.68,
+    "privacyDemand": 0.34,
+    "noiseTolerance": 0.66,
+    "groupCohesion": 0.84,
+    "statusSensitivity": 0.18,
+    "kindness": 0.86
+  },
+  "goals": ["meeting", "food", "shopping"],
+  "volatility": 0.28
+}

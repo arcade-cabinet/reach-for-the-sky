@@ -1,0 +1,19 @@
+{
+  "id": "politician",
+  "label": "Campaign delegation",
+  "minSize": 8,
+  "maxSize": 30,
+  "traits": {
+    "ego": 0.74,
+    "patience": 0.4,
+    "spendingPower": 0.62,
+    "cleanlinessDemand": 0.62,
+    "privacyDemand": 0.68,
+    "noiseTolerance": 0.72,
+    "groupCohesion": 0.82,
+    "statusSensitivity": 0.88,
+    "kindness": 0.44
+  },
+  "goals": ["publicity", "meeting", "food"],
+  "volatility": 0.66
+}

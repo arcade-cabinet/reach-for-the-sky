@@ -1,0 +1,19 @@
+{
+  "id": "trade-buyers",
+  "label": "Trade buyers",
+  "minSize": 16,
+  "maxSize": 64,
+  "traits": {
+    "ego": 0.42,
+    "patience": 0.48,
+    "spendingPower": 0.74,
+    "cleanlinessDemand": 0.54,
+    "privacyDemand": 0.3,
+    "noiseTolerance": 0.58,
+    "groupCohesion": 0.62,
+    "statusSensitivity": 0.54,
+    "kindness": 0.5
+  },
+  "goals": ["shopping", "meeting", "food"],
+  "volatility": 0.5
+}

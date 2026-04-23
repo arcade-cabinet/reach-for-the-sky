@@ -1,0 +1,19 @@
+{
+  "id": "press-swarm",
+  "label": "Press swarm",
+  "minSize": 6,
+  "maxSize": 26,
+  "traits": {
+    "ego": 0.62,
+    "patience": 0.32,
+    "spendingPower": 0.28,
+    "cleanlinessDemand": 0.48,
+    "privacyDemand": 0.22,
+    "noiseTolerance": 0.84,
+    "groupCohesion": 0.68,
+    "statusSensitivity": 0.72,
+    "kindness": 0.3
+  },
+  "goals": ["publicity", "meeting", "food"],
+  "volatility": 0.78
+}

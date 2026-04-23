@@ -37,6 +37,18 @@ This document owns the simulation domains: tower operations, economy, campaign, 
 
 Anti-pattern (rejected): a SimTower-style visible star ladder with an obvious path from one star to the next. If it ever reappears in a player-facing surface (`Act N of 5`, numbered stars, progression ladder), treat it as a regression.
 
+### Agent Goals (per-person GOAP utility)
+
+Every tenant and visitor is an independent algorithm, not a shared script. The decision loop is Yuka-backed (`yuka.GoalEvaluator`, `yuka.Think`):
+
+1. Each archetype declares its goal set + traits in an authored data file under `src/content/cohorts/*.json`. No more inline TS literals.
+2. At decision time, every candidate goal's utility is scored against current tower state (cleanliness, service pressure, transit pressure, noise/privacy comfort) **and** the agent's own traits (patience, cleanliness demand, status sensitivity, group cohesion, ego, privacy demand).
+3. The highest-scoring goal wins — so two `movie-star` cohorts in different towers almost never pick the same top priority, and three different archetypes in the same tower often pick three different top priorities.
+
+Worked example: drop a `movie-star` cohort into a clean, calm tower (cleanliness 95, service pressure 12, noise control 92) and the hosting plan's primary is `protect-privacy`. Drop the same cohort into a dirty, crowded tower (cleanliness 18, service pressure 82, noise control 25) and the primary flips to `clean-public-rooms` or `buffer-noise`. Same archetype, different decisions. See `tests/simulation/cohortGoapDivergence.test.ts`.
+
+This is the binding implementation of Pillar 1 in `docs/plans/release-1.0-batch.prq.md`: every person is a free-thinking algorithm, and the simulation's emergent feel must come from these utility-scored reactions rather than from scripted beats.
+
 ### Contracts
 
 - authored act contracts

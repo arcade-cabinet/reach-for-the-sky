@@ -1,0 +1,19 @@
+{
+  "id": "foreign-prince",
+  "label": "Foreign prince and retainers",
+  "minSize": 6,
+  "maxSize": 24,
+  "traits": {
+    "ego": 0.92,
+    "patience": 0.28,
+    "spendingPower": 1,
+    "cleanlinessDemand": 0.82,
+    "privacyDemand": 0.96,
+    "noiseTolerance": 0.36,
+    "groupCohesion": 0.76,
+    "statusSensitivity": 0.94,
+    "kindness": 0.32
+  },
+  "goals": ["lodging", "shopping", "food"],
+  "volatility": 0.82
+}
