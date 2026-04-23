@@ -166,6 +166,21 @@ interface CameraPreference {
   zoom: number;
 }
 
+interface StoredPreferences {
+  camera: unknown;
+  lensMode: unknown;
+  tutorialStep: unknown;
+  proceduralVolume: unknown;
+  sampleVolume: unknown;
+  muted: unknown;
+  highContrast: unknown;
+  reducedMotion: unknown;
+  displayScale: unknown;
+  inputHints: unknown;
+  diagnosticsVisible: unknown;
+  safeAreaMode: unknown;
+}
+
 const LENS_MODES = new Set<LensMode>([
   'normal',
   'maintenance',
@@ -637,7 +652,7 @@ export function App() {
     }
   };
 
-  const applyStoredPreferences = async () => {
+  const readStoredPreferences = async (): Promise<StoredPreferences> => {
     const [
       camera,
       lensMode,
@@ -677,6 +692,37 @@ export function App() {
       ),
       getPreferenceJson<unknown>(PREF_KEYS.safeAreaMode, settingsState().ui.safeAreaMode),
     ]);
+
+    return {
+      camera,
+      lensMode,
+      tutorialStep,
+      proceduralVolume,
+      sampleVolume,
+      muted,
+      highContrast,
+      reducedMotion,
+      displayScale,
+      inputHints,
+      diagnosticsVisible,
+      safeAreaMode,
+    };
+  };
+
+  const applyStoredPreferenceValues = ({
+    camera,
+    lensMode,
+    tutorialStep,
+    proceduralVolume,
+    sampleVolume,
+    muted,
+    highContrast,
+    reducedMotion,
+    displayScale,
+    inputHints,
+    diagnosticsVisible,
+    safeAreaMode,
+  }: StoredPreferences) => {
     if (isCameraPreference(camera)) setCamera(camera.panX, camera.panY, camera.zoom);
     if (isLensMode(lensMode)) setLensMode(lensMode);
     if (isTutorialStep(tutorialStep)) setTutorialStep(Math.floor(tutorialStep));
@@ -689,6 +735,10 @@ export function App() {
     if (isBoolean(inputHints)) setUiSettings({ inputHints });
     if (isBoolean(diagnosticsVisible)) setUiSettings({ diagnosticsVisible });
     if (isSafeAreaMode(safeAreaMode)) setUiSettings({ safeAreaMode });
+  };
+
+  const applyStoredPreferences = async () => {
+    applyStoredPreferenceValues(await readStoredPreferences());
   };
 
   const queuePersistence = (work: () => Promise<void>) => {
@@ -865,8 +915,9 @@ export function App() {
   const handleStart = async () => {
     setStartNotice(null);
     setSaveNotice(null);
+    const storedPreferences = preferencesReady() ? await readStoredPreferences() : null;
     startGame();
-    if (preferencesReady()) await applyStoredPreferences();
+    if (storedPreferences) applyStoredPreferenceValues(storedPreferences);
     await audio?.unlock();
     audio?.play('milestone');
   };
