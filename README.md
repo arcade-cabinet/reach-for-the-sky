@@ -59,6 +59,8 @@ pnpm verify:release
 
 Android hardware Back is treated as part of the game shell: it closes the right Settings drawer first, then the left Contracts drawer, pauses an active run into Settings, and only falls through to web history or app minimize when no in-game panel needs handling.
 
+GitHub automation follows the arcade release lane: PRs run `ci.yml`, main runs `release.yml` through release-please and `cd.yml` through the static Pages + Android debug artifact path, and `automerge.yml` only handles Dependabot and release-please PRs.
+
 ## Game Direction
 
 The player experience should stay simulation-first: a clear vertical cutaway tower where construction decisions visibly affect daily flow. Cinematic skyline, sky depth, weather, and atmosphere should support readability instead of replacing it.

@@ -14,6 +14,12 @@ export function findChrome() {
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     '/Applications/Chromium.app/Contents/MacOS/Chromium',
     '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+    '/usr/bin/google-chrome',
+    '/usr/bin/google-chrome-stable',
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/snap/bin/chromium',
+    '/opt/google/chrome/chrome',
   ].filter(Boolean);
   const chrome = candidates.find((candidate) => existsSync(candidate));
   if (!chrome) {
@@ -171,6 +177,7 @@ export async function withDevPage(pathname, callback) {
     chrome = spawnLogged(findChrome(), [
       '--headless=new',
       '--disable-gpu',
+      ...(process.env.CI ? ['--no-sandbox'] : []),
       '--no-first-run',
       '--no-default-browser-check',
       '--hide-scrollbars',

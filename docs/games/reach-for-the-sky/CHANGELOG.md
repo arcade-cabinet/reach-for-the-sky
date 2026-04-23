@@ -10,6 +10,7 @@
 - Added SQLite corrupt-save quarantine, Settings recovery visibility, and a browser verifier for invalid save rows.
 - Added Android hardware Back handling for drawers, active-run pause, browser history, and app minimize fallback.
 - Added release-gate scripts for the full browser verifier sequence and production release checks.
+- Added GitHub PR CI, release-please, Pages/Android CD, and controlled automerge workflows aligned with the arcade release lane.
 
 ## [0.2.0](https://github.com/jbcom/arcade-cabinet/compare/reach-for-the-sky-v0.1.0...reach-for-the-sky-v0.2.0) (2026-04-22)
 
