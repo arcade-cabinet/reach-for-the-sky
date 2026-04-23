@@ -25,6 +25,7 @@
       "package-name": "reach-for-the-sky",
       "extra-files": [
         "index.html",
+        "src/simulation/content.ts",
         {
           "type": "json",
           "path": "public/manifest.webmanifest",
