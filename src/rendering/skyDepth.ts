@@ -74,6 +74,19 @@ export class ThreeSkyDepth {
   }
 
   destroy(): void {
+    this.scene?.traverse((object) => {
+      if ('geometry' in object && object.geometry instanceof THREE.BufferGeometry) {
+        object.geometry.dispose();
+      }
+      if ('material' in object) {
+        const material = object.material;
+        if (Array.isArray(material)) {
+          for (const entry of material) entry.dispose();
+        } else if (material instanceof THREE.Material) {
+          material.dispose();
+        }
+      }
+    });
     this.renderer?.dispose();
     this.scene?.clear();
     this.renderer = null;

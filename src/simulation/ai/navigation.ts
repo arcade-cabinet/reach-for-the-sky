@@ -30,6 +30,7 @@ interface BuildGraphResult {
   graph: Graph;
   nodes: Map<string, TowerNode>;
   byIndex: Map<number, TowerNode>;
+  byFloor: Map<number, TowerNode[]>;
 }
 
 const NAVIGATION_GRAPH_CACHE_LIMIT = 8;
@@ -37,19 +38,6 @@ const navigationGraphCache = new Map<string, BuildGraphResult>();
 
 function cellKey(x: number, floor: number): string {
   return `${x}:${floor}`;
-}
-
-function roomCovers(room: TowerRoom, x: number, floor: number): boolean {
-  return x >= room.x && x < room.x + room.width && floor >= room.y && floor < room.y + room.height;
-}
-
-function hasRoomAt(
-  rooms: TowerRoom[],
-  x: number,
-  floor: number,
-  predicate: (room: TowerRoom) => boolean,
-): boolean {
-  return rooms.some((room) => predicate(room) && roomCovers(room, x, floor));
 }
 
 function addCell(graphData: BuildGraphResult, x: number, floor: number, kind: NodeKind): TowerNode {
@@ -60,6 +48,9 @@ function addCell(graphData: BuildGraphResult, x: number, floor: number, kind: No
   const node = new TowerNode(graphData.byIndex.size, x, floor, kind);
   graphData.nodes.set(key, node);
   graphData.byIndex.set(node.index, node);
+  const floorNodes = graphData.byFloor.get(floor) ?? [];
+  floorNodes.push(node);
+  graphData.byFloor.set(floor, floorNodes);
   graphData.graph.addNode(node);
   return node;
 }
@@ -79,10 +70,10 @@ function nearestNodeOnFloor(
   x: number,
   floor: number,
 ): TowerNode | undefined {
+  const nodesOnFloor = graphData.byFloor.get(floor) ?? [];
   let best: TowerNode | undefined;
   let bestDistance = Number.POSITIVE_INFINITY;
-  for (const node of graphData.nodes.values()) {
-    if (node.floor !== floor) continue;
+  for (const node of nodesOnFloor) {
     const distance = Math.abs(node.x - x) + (node.kind === 'shaft' ? 0.15 : 0);
     if (distance < bestDistance) {
       best = node;
@@ -97,21 +88,35 @@ function addEdgeIfMissing(graph: Graph, from: TowerNode, to: TowerNode): void {
     graph.addEdge(new Edge(from.index, to.index, edgeCost(from, to)));
 }
 
+function createTransitCellSet(rooms: TowerRoom[]): Set<string> {
+  const transitCells = new Set<string>();
+  for (const room of rooms) {
+    if (BUILDINGS[room.type].cat !== 'trans') continue;
+    for (let x = room.x; x < room.x + room.width; x += 1) {
+      for (let floor = room.y; floor < room.y + room.height; floor += 1) {
+        transitCells.add(cellKey(x, floor));
+      }
+    }
+  }
+  return transitCells;
+}
+
 export function buildTowerNavigationGraph(tower: TowerState): BuildGraphResult {
-  const graphData: BuildGraphResult = { graph: new Graph(), nodes: new Map(), byIndex: new Map() };
+  const graphData: BuildGraphResult = {
+    graph: new Graph(),
+    nodes: new Map(),
+    byIndex: new Map(),
+    byFloor: new Map(),
+  };
   const rooms = tower.rooms;
+  const transitCells = createTransitCellSet(rooms);
 
   for (const room of rooms) {
     const def = BUILDINGS[room.type];
     if (def.cat !== 'infra' && def.cat !== 'trans') continue;
     for (let x = room.x; x < room.x + room.width; x += 1) {
       for (let floor = room.y; floor < room.y + room.height; floor += 1) {
-        const hasTransit = hasRoomAt(
-          rooms,
-          x,
-          floor,
-          (candidate) => BUILDINGS[candidate.type].cat === 'trans',
-        );
+        const hasTransit = transitCells.has(cellKey(x, floor));
         const kind: NodeKind = hasTransit ? 'shaft' : room.type === 'lobby' ? 'lobby' : 'corridor';
         addCell(graphData, x, floor, kind);
       }
@@ -121,7 +126,7 @@ export function buildTowerNavigationGraph(tower: TowerState): BuildGraphResult {
   const floors = new Set<number>();
   for (const node of graphData.nodes.values()) floors.add(node.floor);
   for (const floor of floors) {
-    const nodesOnFloor = [...graphData.nodes.values()].filter((node) => node.floor === floor);
+    const nodesOnFloor = graphData.byFloor.get(floor) ?? [];
     for (const node of nodesOnFloor) {
       const left = getNode(graphData, node.x - 1, floor);
       const right = getNode(graphData, node.x + 1, floor);

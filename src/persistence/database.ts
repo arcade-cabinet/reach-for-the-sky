@@ -14,20 +14,24 @@ const sqlite = new SQLiteConnection(CapacitorSQLite);
 let connectionPromise: Promise<SQLiteDBConnection> | null = null;
 let webReadyPromise: Promise<void> | null = null;
 
-const SCHEMA = `
+const SAVE_SCHEMA = `
 CREATE TABLE IF NOT EXISTS saves (
   slot_id  TEXT PRIMARY KEY,
   data     TEXT NOT NULL,
   saved_at TEXT NOT NULL
 );
+`;
 
+const SIMULATION_EVENT_SCHEMA = `
 CREATE TABLE IF NOT EXISTS simulation_events (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   event_type TEXT NOT NULL,
   data       TEXT NOT NULL,
   created_at TEXT NOT NULL
 );
+`;
 
+const CORRUPT_SAVE_SCHEMA = `
 CREATE TABLE IF NOT EXISTS corrupt_saves (
   slot_id     TEXT PRIMARY KEY,
   data        TEXT NOT NULL,
@@ -36,6 +40,17 @@ CREATE TABLE IF NOT EXISTS corrupt_saves (
   detected_at TEXT NOT NULL
 );
 `;
+
+const MIGRATIONS = [
+  {
+    version: 1,
+    sql: `${SAVE_SCHEMA}\n${SIMULATION_EVENT_SCHEMA}`,
+  },
+  {
+    version: 2,
+    sql: CORRUPT_SAVE_SCHEMA,
+  },
+] as const;
 
 export async function getDatabase(): Promise<SQLiteDBConnection> {
   if (!connectionPromise) {
@@ -55,7 +70,6 @@ async function initDatabase(): Promise<SQLiteDBConnection> {
     ? await sqlite.retrieveConnection(DB_NAME, false)
     : await sqlite.createConnection(DB_NAME, false, 'no-encryption', DB_VERSION, false);
   await db.open();
-  await db.execute(SCHEMA);
   await migrateSchema(db);
   return db;
 }
@@ -64,7 +78,11 @@ async function migrateSchema(db: SQLiteDBConnection): Promise<void> {
   const versionResult = await db.query('PRAGMA user_version');
   const oldVersion = Number(versionResult.values?.[0]?.user_version ?? 0);
   if (oldVersion >= DB_VERSION) return;
-  await db.execute(`PRAGMA user_version = ${DB_VERSION}`);
+  for (const migration of MIGRATIONS) {
+    if (oldVersion >= migration.version) continue;
+    await db.execute(migration.sql);
+    await db.execute(`PRAGMA user_version = ${migration.version}`);
+  }
 }
 
 async function prepareWebStore(): Promise<void> {

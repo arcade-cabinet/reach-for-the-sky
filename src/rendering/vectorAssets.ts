@@ -168,7 +168,12 @@ export class VectorAssetLibrary {
         const texture = await Assets.load<Texture>(withBase(source));
         return [key as VectorKey, texture] as const;
       }),
-    ).then((entries) => new Map(entries));
+    )
+      .then((entries) => new Map(entries))
+      .catch((error) => {
+        sharedLoad = null;
+        throw error;
+      });
     this.textures = await sharedLoad;
   }
 
