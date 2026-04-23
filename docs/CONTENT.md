@@ -7,7 +7,9 @@ domain: content
 
 # Reach for the Sky — Content Domains
 
-This document owns the content inventory: room families, lenses, cohorts, scenarios, and campaign acts.
+This document owns the content inventory: room families, lenses, cohorts, scenarios, and internal phase anchors.
+
+> **Progression framing.** The five internal phases (`Empty Lot`, `Working Tower`, `District Player`, `Public Landmark`, `Reach for the Sky`) are authoring scaffolding, not a player-facing ladder. Player-facing surfaces never label them `Act N`, never number them, and never render them as a progression ladder. Phase transitions must unlock from a **state predicate** over cohort mix, identity drift, public-memory weight, and pressure signatures — not from a clock or checklist. See `DESIGN.md` → *Progression Philosophy — Emergent, Not Laddered*.
 
 ## Room Families
 
@@ -106,12 +108,16 @@ High-priority remaining content:
 - more cultural/convention cohorts
 - clearer tower-identity-specific group pools
 
-## Act Content Status
+## Internal Phase Content Status
 
-- Act 1: playable
-- Act 2: playable
-- Act 3: playable
-- Act 4: playable through public memory/repair flow
-- Act 5: playable with skyline charter and sandbox mandate
+Phases are internal pacing anchors (see DESIGN.md). Unlock predicates are state-driven, not clock-driven. Content status refers to authored breadth available when a phase is reached:
 
-Remaining content work is mostly about breadth, authored variety, and stronger differentiation inside each act rather than missing the basic spine.
+| Phase | Unlock predicate (target) | Content status |
+|---|---|---|
+| Empty Lot | cold start | playable |
+| Working Tower | sustained occupancy + first pressure events observed | playable |
+| District Player | identity signal crossing threshold from cohort mix | playable |
+| Public Landmark | public-memory accumulation + visit diversity | playable through public-memory/repair flow |
+| Reach for the Sky | sustained legitimacy + late-game stressors | playable with skyline charter and sandbox mandate |
+
+Remaining content work is mostly about breadth, authored variety, and stronger differentiation inside each phase rather than missing the basic spine. Writing or surfacing any `Act N of 5` label or star-ladder progression UI is explicitly out of bounds.

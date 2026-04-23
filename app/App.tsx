@@ -311,8 +311,8 @@ function formatMoney(value: number): string {
 function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
   if (!summary) return 'Empty';
   const identity = summary.declaredIdentity ?? summary.identity;
-  const victory = summary.victory === 'won' ? 'Sandbox' : `Act ${summary.act}`;
-  return `${victory} · Day ${summary.day} · ${identity}`;
+  const phase = summary.victory === 'won' ? 'City cycle' : 'Building';
+  return `${phase} · Day ${summary.day} · ${identity}`;
 }
 
 function formatEventType(eventType: string): string {
@@ -1120,19 +1120,15 @@ export function App() {
             <strong>{towerState().visits.length}</strong>
           </article>
           <article>
-            <span>Act</span>
+            <span>Tower</span>
             <strong>
-              {campaignState().victory === 'won' ? 'Sandbox' : `Act ${campaignState().act}`}
+              {campaignState().victory === 'won'
+                ? 'City cycle'
+                : (campaignState().actTitle ?? 'Unfolding')}
             </strong>
           </article>
         </div>
         <div class="top-actions">
-          <div class="stars" role="img" aria-label={`Act ${campaignState().act}`}>
-            Act {campaignState().act}
-            <small>
-              {campaignState().victory === 'won' ? 'Sandbox City Cycle' : campaignState().actTitle}
-            </small>
-          </div>
           <button
             type="button"
             class="side-button settings-button"
@@ -1367,7 +1363,7 @@ export function App() {
               </div>
             </section>
             <section class="drawer-section">
-              <div class="eyebrow">Act {campaignState().act}</div>
+              <div class="eyebrow">Current phase</div>
               <h3>{campaignState().actTitle}</h3>
               {primaryContract() ? (
                 <article class="contract-card campaign-contract">

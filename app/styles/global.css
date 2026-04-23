@@ -271,25 +271,6 @@ button:disabled {
   gap: 12px;
 }
 
-.stars {
-  color: #d7c287;
-  font-size: 0.98rem;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.stars small {
-  display: block;
-  max-width: 120px;
-  overflow: hidden;
-  color: #9fb6c7;
-  font-size: 0.56rem;
-  letter-spacing: 0.12em;
-  text-align: right;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-}
-
 .side-button {
   display: block;
   min-width: 116px;
@@ -2699,10 +2680,6 @@ button:disabled {
 
   .top-metrics strong {
     font-size: 0.72rem;
-  }
-
-  .stars {
-    display: none;
   }
 
   .side-button {
