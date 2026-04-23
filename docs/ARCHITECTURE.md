@@ -112,7 +112,7 @@ Lightweight state belongs in Preferences:
 
 ## CI/CD Contract
 
-The repo follows the same arcade lane shape as `mean-streets`:
+The repo follows a standard arcade release lane:
 
 - `.github/workflows/ci.yml`: PR validation
 - `.github/workflows/release.yml`: release-please/tag lane

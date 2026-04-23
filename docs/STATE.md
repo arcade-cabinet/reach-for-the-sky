@@ -9,9 +9,7 @@ domain: context
 
 ## Where We Are
 
-Latest merged production polish commit on `main`:
-
-- `d79e7ed [codex] polish production landing experience (#2)`
+`main` currently contains the standalone production runtime, upgraded landing/start surfaces, GitHub Pages deployment, Android debug CI packaging, and the five-act campaign-backed sandbox spine.
 
 Current public web surface:
 

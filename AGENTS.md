@@ -44,6 +44,7 @@ Path aliases:
 - `docs/PRODUCTION.md`: remaining work and readiness
 - `docs/RELEASE.md`: shipping flow
 - `docs/STATE.md`: current merged state
+- `STANDARDS.md`: non-negotiable implementation and production constraints
 
 ## Minimum Checks
 

@@ -25,6 +25,7 @@ Canonical docs live in [`docs/`](./docs):
 - [`docs/PRODUCTION.md`](./docs/PRODUCTION.md)
 - [`docs/RELEASE.md`](./docs/RELEASE.md)
 - [`docs/STATE.md`](./docs/STATE.md)
+- [`STANDARDS.md`](./STANDARDS.md)
 
 If a code change alters product behavior, architecture, or the remaining-work picture, update the matching docs file in the same branch.
 
