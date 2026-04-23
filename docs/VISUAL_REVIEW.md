@@ -43,13 +43,24 @@ Primary previews committed for player-facing surfaces:
 public/assets/previews/
 ```
 
+## Room Family Coverage (T08, 2026-04-23)
+
+Every `BuildingId` that represents an authorable room family now maps to a registered SVG composite. Before T08, 12 room families (`utilities`, `restroom`, `security`, `mechanical`, `eventHall`, `retail`, `skyGarden`, `observation`, `conference`, `clinic`, `gallery`, `luxurySuite`, `weatherCore`) fell through the `roomKey()` default to `null`, rendering as flat rects with element-only decoration. They now all route to authored layered composites.
+
+Coverage is guarded by `tests/rendering/roomCoverage.test.ts`:
+
+- every required family maps to ≥1 registered composite key
+- every composite key resolves to an on-disk SVG file of non-trivial size
+- every newly-authored T08 composite contains ≥4 painted elements (rect/path/circle/ellipse) — blocks future placeholder slop from sneaking through the file-exists check
+
+If a new room family is added, the test will fail until the map is updated.
+
 ## Highest-Priority Remaining Art Debt
 
-- broader SVG variation for late-game room families
+- broader night/day variants for new T08 composites (currently single-state)
 - richer agent silhouette variety
 - better event/visit-specific visual markers
 - stronger environmental differentiation between tower identities
-- continued removal of any remaining placeholder-feeling room surfaces
 
 ## Review Standard
 

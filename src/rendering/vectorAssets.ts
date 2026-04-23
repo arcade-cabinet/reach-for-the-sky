@@ -11,7 +11,19 @@ export type RoomVectorKey =
   | 'cafe'
   | 'hotel-day'
   | 'hotel-night'
-  | 'maintenance';
+  | 'maintenance'
+  | 'utilities'
+  | 'restroom'
+  | 'security'
+  | 'conference'
+  | 'event-hall'
+  | 'retail'
+  | 'sky-garden'
+  | 'observation'
+  | 'clinic'
+  | 'gallery'
+  | 'luxury-suite'
+  | 'weather-core';
 
 export type CoreVectorKey = 'shaft' | 'elevator-car';
 export type AgentVectorKey =
@@ -81,6 +93,18 @@ export const VECTOR_SOURCES: Record<VectorKey, string> = {
   'hotel-day': 'assets/vectors/rooms/hotel-day.svg',
   'hotel-night': 'assets/vectors/rooms/hotel-night.svg',
   maintenance: 'assets/vectors/rooms/maintenance.svg',
+  utilities: 'assets/vectors/rooms/utilities.svg',
+  restroom: 'assets/vectors/rooms/restroom.svg',
+  security: 'assets/vectors/rooms/security.svg',
+  conference: 'assets/vectors/rooms/conference.svg',
+  'event-hall': 'assets/vectors/rooms/event-hall.svg',
+  retail: 'assets/vectors/rooms/retail.svg',
+  'sky-garden': 'assets/vectors/rooms/sky-garden.svg',
+  observation: 'assets/vectors/rooms/observation.svg',
+  clinic: 'assets/vectors/rooms/clinic.svg',
+  gallery: 'assets/vectors/rooms/gallery.svg',
+  'luxury-suite': 'assets/vectors/rooms/luxury-suite.svg',
+  'weather-core': 'assets/vectors/rooms/weather-core.svg',
   shaft: 'assets/vectors/cores/shaft.svg',
   'elevator-car': 'assets/vectors/cores/elevator-car.svg',
   'agent-worker': 'assets/vectors/agents/worker.svg',
@@ -154,6 +178,34 @@ function roomKey(type: BuildingId, lit: boolean, night: boolean): RoomVectorKey 
       return night ? 'hotel-night' : 'hotel-day';
     case 'maint':
       return 'maintenance';
+    case 'utilities':
+      return 'utilities';
+    case 'mechanical':
+      // Mechanical shares the utilities composite — pipes, panels, and
+      // indicator lights read the same way without authoring a second SVG.
+      return 'utilities';
+    case 'restroom':
+      return 'restroom';
+    case 'security':
+      return 'security';
+    case 'conference':
+      return 'conference';
+    case 'eventHall':
+      return 'event-hall';
+    case 'retail':
+      return 'retail';
+    case 'skyGarden':
+      return 'sky-garden';
+    case 'observation':
+      return 'observation';
+    case 'clinic':
+      return 'clinic';
+    case 'gallery':
+      return 'gallery';
+    case 'luxurySuite':
+      return 'luxury-suite';
+    case 'weatherCore':
+      return 'weather-core';
     default:
       return null;
   }
