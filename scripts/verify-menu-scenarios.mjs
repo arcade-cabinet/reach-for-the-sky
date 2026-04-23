@@ -12,7 +12,7 @@ const expectedLandingCopy = [
 const forbiddenPlayerFacingCopy = /\b(POC|prototype|demo|implementation detail)\b/i;
 
 async function main() {
-  await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
+  await withDevPage('/reach-for-the-sky/?skip-intro=1', async ({ url, devtools }) => {
     await devtools.send('Emulation.setDeviceMetricsOverride', {
       width: 1440,
       height: 900,
