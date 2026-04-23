@@ -29,7 +29,7 @@ export function StartScreen(props: StartScreenProps) {
       </div>
       <div class="start-card">
         <div class="start-hero-copy">
-          <p class="start-kicker">Campaign-backed living tower simulator</p>
+          <p class="start-kicker">Emergent living-tower simulator</p>
           <h1>
             <span>Reach</span>
             <span>For The</span>
