@@ -1,7 +1,7 @@
 {
   "name": "Reach for the Sky",
   "short_name": "Reach Sky",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A modern living-tower simulator where architecture, people, reputation, and city pressure collide.",
   "id": "/reach-for-the-sky/",
   "start_url": "/reach-for-the-sky/",
@@ -10,7 +10,11 @@
   "orientation": "any",
   "background_color": "#061018",
   "theme_color": "#061018",
-  "categories": ["games", "simulation", "strategy"],
+  "categories": [
+    "games",
+    "simulation",
+    "strategy"
+  ],
   "icons": [
     {
       "src": "assets/icons/reach-icon.svg",
