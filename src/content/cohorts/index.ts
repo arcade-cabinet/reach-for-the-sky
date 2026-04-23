@@ -10,24 +10,44 @@ import schoolTeachers from './school-teachers.json';
 import stampCollectors from './stamp-collectors.json';
 import tradeBuyers from './trade-buyers.json';
 
-const AUTHORED_ARCHETYPES: VisitorArchetype[] = [
-  movieStar,
-  politician,
-  foreignPrince,
-  buddhistMonks,
-  schoolTeachers,
-  stampCollectors,
-  laborDelegation,
-  tradeBuyers,
-  cityInspectors,
-  pressSwarm,
-] as VisitorArchetype[];
+type RawArchetype = Omit<VisitorArchetype, 'id' | 'goals'> & {
+  id: string;
+  goals: string[];
+};
 
-export const AUTHORED_VISITOR_ARCHETYPES: Record<VisitorArchetypeId, VisitorArchetype> =
-  AUTHORED_ARCHETYPES.reduce(
-    (acc, archetype) => {
-      acc[archetype.id] = archetype;
-      return acc;
-    },
-    {} as Record<VisitorArchetypeId, VisitorArchetype>,
-  );
+function narrow(data: RawArchetype, expectedId: VisitorArchetypeId): VisitorArchetype {
+  if (data.id !== expectedId) {
+    throw new Error(
+      `authored archetype id mismatch: file declares "${data.id}" but was registered as "${expectedId}"`,
+    );
+  }
+  return data as VisitorArchetype;
+}
+
+const AUTHORED_ARCHETYPES: readonly VisitorArchetype[] = [
+  narrow(movieStar, 'movie-star'),
+  narrow(politician, 'politician'),
+  narrow(foreignPrince, 'foreign-prince'),
+  narrow(buddhistMonks, 'buddhist-monks'),
+  narrow(schoolTeachers, 'school-teachers'),
+  narrow(stampCollectors, 'stamp-collectors'),
+  narrow(laborDelegation, 'labor-delegation'),
+  narrow(tradeBuyers, 'trade-buyers'),
+  narrow(cityInspectors, 'city-inspectors'),
+  narrow(pressSwarm, 'press-swarm'),
+];
+
+function buildAuthoredArchetypes(): Record<VisitorArchetypeId, VisitorArchetype> {
+  const table = {} as Record<VisitorArchetypeId, VisitorArchetype>;
+  for (const archetype of AUTHORED_ARCHETYPES) {
+    if (table[archetype.id]) {
+      throw new Error(
+        `duplicate visitor archetype id "${archetype.id}" in src/content/cohorts/*.json`,
+      );
+    }
+    table[archetype.id] = archetype;
+  }
+  return table;
+}
+
+export const AUTHORED_VISITOR_ARCHETYPES = buildAuthoredArchetypes();

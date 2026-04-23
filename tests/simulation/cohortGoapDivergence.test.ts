@@ -2,7 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { AUTHORED_VISITOR_ARCHETYPES } from '@/content/cohorts';
 import { createInitialEconomy } from '@/simulation/initialState';
 import { planVisitorHosting } from '@/simulation/visitorPlanning';
-import { VISITOR_ARCHETYPES, type VisitCohort } from '@/simulation/visitors';
+import {
+  VISITOR_ARCHETYPES,
+  type VisitCohort,
+  type VisitorArchetypeId,
+} from '@/simulation/visitors';
 
 function cohortOf(archetypeId: keyof typeof VISITOR_ARCHETYPES): VisitCohort {
   const archetype = VISITOR_ARCHETYPES[archetypeId];
@@ -35,14 +39,39 @@ function cohortOf(archetypeId: keyof typeof VISITOR_ARCHETYPES): VisitCohort {
   };
 }
 
+const EXPECTED_ARCHETYPE_IDS: VisitorArchetypeId[] = [
+  'movie-star',
+  'politician',
+  'foreign-prince',
+  'buddhist-monks',
+  'school-teachers',
+  'stamp-collectors',
+  'labor-delegation',
+  'trade-buyers',
+  'city-inspectors',
+  'press-swarm',
+];
+
 describe('cohort GOAP utility (T02)', () => {
-  it('ships the authored archetype set from data files, not TS literals', () => {
-    expect(Object.keys(VISITOR_ARCHETYPES).sort()).toEqual(
-      Object.keys(AUTHORED_VISITOR_ARCHETYPES).sort(),
+  it('ships the exact authored archetype set from data files', () => {
+    expect(Object.keys(AUTHORED_VISITOR_ARCHETYPES).sort()).toEqual(
+      [...EXPECTED_ARCHETYPE_IDS].sort(),
     );
-    expect(Object.keys(VISITOR_ARCHETYPES).length).toBeGreaterThanOrEqual(10);
-    for (const id of Object.keys(VISITOR_ARCHETYPES) as Array<keyof typeof VISITOR_ARCHETYPES>) {
-      expect(VISITOR_ARCHETYPES[id]).toBe(AUTHORED_VISITOR_ARCHETYPES[id]);
+    expect(Object.keys(VISITOR_ARCHETYPES).sort()).toEqual([...EXPECTED_ARCHETYPE_IDS].sort());
+  });
+
+  it('each authored archetype declares a non-empty goal set and a valid trait vector', () => {
+    for (const id of EXPECTED_ARCHETYPE_IDS) {
+      const archetype = AUTHORED_VISITOR_ARCHETYPES[id];
+      expect(archetype, `missing archetype ${id}`).toBeDefined();
+      expect(archetype.id).toBe(id);
+      expect(archetype.goals.length).toBeGreaterThan(0);
+      expect(archetype.minSize).toBeGreaterThan(0);
+      expect(archetype.maxSize).toBeGreaterThanOrEqual(archetype.minSize);
+      for (const [key, value] of Object.entries(archetype.traits)) {
+        expect(value, `${id}.traits.${key} out of [0,1]`).toBeGreaterThanOrEqual(0);
+        expect(value, `${id}.traits.${key} out of [0,1]`).toBeLessThanOrEqual(1);
+      }
     }
   });
 
