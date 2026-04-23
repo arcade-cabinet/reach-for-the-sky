@@ -1,3 +1,4 @@
+import { AgentDebugOverlay } from '@app/components/AgentDebugOverlay';
 import { GameCanvas } from '@app/components/GameCanvas';
 import { StartScreen } from '@app/components/StartScreen';
 import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
@@ -1054,6 +1055,7 @@ export function App() {
       }}
     >
       <GameCanvas onBuildCommitted={handleBuildCommitted} />
+      <AgentDebugOverlay tower={towerState} />
       <section class="top-hud">
         <div class="top-clock">
           <button
