@@ -1,0 +1,13 @@
+{
+  "identity": "hospitality",
+  "archetypeBias": {
+    "movie-star": 1.15,
+    "foreign-prince": 0.76,
+    "trade-buyers": 0.36
+  },
+  "traitDelta": {
+    "spendingPower": 0.07,
+    "cleanlinessDemand": 0.06,
+    "privacyDemand": 0.08
+  }
+}

@@ -87,6 +87,22 @@ Purpose:
 - capture key slices of the five-act journey
 - support marketing previews and browser verification
 
+## Identity Consequences (authored, T04)
+
+Tower identity is not a cosmetic label — each declared identity **reactively shifts** both the cohort pool the city sends and the trait vector those cohorts arrive with. The authored table lives in `src/content/identity/*.json` and is consumed at cohort-generation time in `src/simulation/visitors.ts`.
+
+| Identity | Archetype pool bias (added weight) | Trait delta on every arriving cohort |
+|---|---|---|
+| `unformed` | (none) | (none) |
+| `business` | trade-buyers +0.5, politician +0.25, labor-delegation +0.2 | patience −0.05, noiseTolerance +0.08, statusSensitivity +0.05 |
+| `residential` | school-teachers +0.28, stamp-collectors +0.2, buddhist-monks +0.16 | groupCohesion +0.05, patience +0.06, noiseTolerance −0.06 |
+| `hospitality` | movie-star +1.15, foreign-prince +0.76, trade-buyers +0.36 | spendingPower +0.07, cleanlinessDemand +0.06, privacyDemand +0.08 |
+| `civic` | school-teachers +0.36, buddhist-monks +0.24, city-inspectors +0.28 | kindness +0.06, patience +0.05, statusSensitivity −0.06 |
+| `luxury` | movie-star +1.25, foreign-prince +0.95 | statusSensitivity +0.1, privacyDemand +0.09, spendingPower +0.08, cleanlinessDemand +0.06 |
+| `mixed-use` | school-teachers +0.12, trade-buyers +0.14, movie-star +0.1, politician +0.08 | noiseTolerance +0.04, groupCohesion −0.04 |
+
+Trait deltas are clamped to `[0, 1]`, applied on top of the cohort's archetype trait vector (plus per-visit RNG variation). Flipping identity mid-run visibly shifts both the cohort distribution and what individual agents prioritize — verified by `tests/simulation/identityShifts.test.ts`.
+
 ## Cohort/Visit Surface
 
 Shipping examples visible in current systems:

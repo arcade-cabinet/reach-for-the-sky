@@ -1,0 +1,13 @@
+{
+  "identity": "residential",
+  "archetypeBias": {
+    "school-teachers": 0.28,
+    "stamp-collectors": 0.2,
+    "buddhist-monks": 0.16
+  },
+  "traitDelta": {
+    "groupCohesion": 0.05,
+    "patience": 0.06,
+    "noiseTolerance": -0.06
+  }
+}
