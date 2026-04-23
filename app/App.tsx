@@ -208,6 +208,13 @@ const SAVE_SLOT_OPTIONS = [
   { id: 'sandbox', label: 'Sandbox', description: 'Post-victory city cycle' },
 ] as const;
 
+function formatPlatformLabel(target: string): string {
+  if (target === 'ios') return 'iOS';
+  return target.charAt(0).toUpperCase() + target.slice(1);
+}
+
+const PRODUCTION_PLATFORM_LABEL = PRODUCTION_RELEASE.targets.map(formatPlatformLabel).join(' + ');
+
 const AUTOSAVE_EVENTS = new Set([
   'build',
   'identity-declared',
@@ -1919,11 +1926,11 @@ export function App() {
                 <li>Reputation</li>
                 <li>City Pressure</li>
               </ul>
-              <div class="start-promise-line">
-                <span>Macro: district pressure</span>
-                <span>Meso: tower operations</span>
-                <span>Micro: people with memory</span>
-              </div>
+              <ul class="start-promise-line" aria-label="Simulation scale promises">
+                <li>Macro: district pressure</li>
+                <li>Meso: tower operations</li>
+                <li>Micro: people with memory</li>
+              </ul>
               <div class="start-actions">
                 <button type="button" class="primary" onClick={handleStart}>
                   Break Ground
@@ -1948,7 +1955,7 @@ export function App() {
                 <div class="start-preview-glow" />
                 <div class="start-live-badge">
                   <span>Now serving</span>
-                  <strong>Web + Android</strong>
+                  <strong>{PRODUCTION_PLATFORM_LABEL}</strong>
                 </div>
               </div>
               <div class="start-stat-grid">
@@ -1965,13 +1972,13 @@ export function App() {
                   <strong>Sandbox</strong>
                 </article>
               </div>
-              <div class="start-journey-map">
-                <span>Empty Lot</span>
-                <span>Working Tower</span>
-                <span>District Player</span>
-                <span>Public Landmark</span>
-                <span>Skyline Institution</span>
-              </div>
+              <ol class="start-journey-map" aria-label="Player journey">
+                <li>Empty Lot</li>
+                <li>Working Tower</li>
+                <li>District Player</li>
+                <li>Public Landmark</li>
+                <li>Skyline Institution</li>
+              </ol>
             </aside>
 
             <section class="start-manifesto" aria-label="What the game asks from the player">

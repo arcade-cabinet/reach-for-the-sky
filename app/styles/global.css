@@ -1568,9 +1568,12 @@ button:disabled {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   max-width: 680px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.start-promise-line span {
+.start-promise-line li {
   min-width: 0;
   padding: 8px 10px;
   border: 1px solid rgba(181, 221, 255, 0.12);
@@ -1757,13 +1760,15 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
+  margin: 0;
   padding: 10px;
   border: 1px solid rgba(244, 201, 109, 0.11);
   border-radius: 18px;
   background: rgba(2, 6, 23, 0.26);
+  list-style: none;
 }
 
-.start-journey-map span {
+.start-journey-map li {
   position: relative;
   min-height: 40px;
   padding: 10px 8px 8px;
@@ -1778,7 +1783,7 @@ button:disabled {
   text-transform: uppercase;
 }
 
-.start-journey-map span::before {
+.start-journey-map li::before {
   position: absolute;
   top: 6px;
   left: 8px;
@@ -2756,7 +2761,7 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-  .start-journey-map span {
+  .start-journey-map li {
     min-height: 0;
     padding-top: 12px;
   }
