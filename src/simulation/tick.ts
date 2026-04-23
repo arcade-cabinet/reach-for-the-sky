@@ -1,3 +1,4 @@
+import { applyFlockBehavior } from './ai/flock';
 import { planAgentRoute } from './ai/navigation';
 import {
   personalityFromSeed,
@@ -824,6 +825,7 @@ export function stepSimulation(
       ),
     )
     .filter((agent) => agent.targetId !== 'despawn');
+  nextTower.agents = applyFlockBehavior(nextTower.agents, nextTower.visits);
   updateElevators(nextTower, { ...clock, tick: nextTick });
 
   const nextClock: ClockState = {
