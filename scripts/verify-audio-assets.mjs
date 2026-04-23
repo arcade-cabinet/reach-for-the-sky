@@ -15,7 +15,11 @@ async function main() {
   await context.close();
   const sprite = audio.DEFAULT_AUDIO_SPRITE;
   const durationMs = Math.round(decoded.duration * 1000);
-  const windowsFit = Object.entries(sprite).every(([, [offset, duration]]) => offset + duration <= durationMs + 40);
+  // Only check sampled cues (duration > 0). Procedural-only placeholders
+  // carry duration 0 so the TS union stays exhaustive — play() skips them
+  // and falls through to Tone.js. See src/audio/audioEngine.ts + docs/AUDIO.md.
+  const sampledEntries = Object.entries(sprite).filter(([, [, duration]]) => duration > 0);
+  const windowsFit = sampledEntries.every(([, [offset, duration]]) => offset + duration <= durationMs + 40);
   return {
     assetUrl,
     byteLength: bytes.byteLength,
