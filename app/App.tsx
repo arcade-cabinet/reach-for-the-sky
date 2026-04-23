@@ -1,3 +1,5 @@
+import { GameCanvas } from '@app/components/GameCanvas';
+import { StartScreen } from '@app/components/StartScreen';
 import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { createEffect, createMemo, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { SkyAudioEngine } from '@/audio';
@@ -101,7 +103,6 @@ import {
   ViewTrait,
 } from '@/state/traits';
 import { gameWorld } from '@/state/world';
-import { GameCanvas } from './components/GameCanvas';
 
 const TOOL_ORDER: BuildingId[] = [
   'floor',
@@ -207,6 +208,13 @@ const SAVE_SLOT_OPTIONS = [
   { id: 'campaign-b', label: 'Campaign B', description: 'Alternate build' },
   { id: 'sandbox', label: 'Sandbox', description: 'Post-victory city cycle' },
 ] as const;
+
+function formatPlatformLabel(target: string): string {
+  if (target === 'ios') return 'iOS';
+  return target.charAt(0).toUpperCase() + target.slice(1);
+}
+
+const PRODUCTION_PLATFORM_LABEL = PRODUCTION_RELEASE.targets.map(formatPlatformLabel).join(' + ');
 
 const AUTOSAVE_EVENTS = new Set([
   'build',
@@ -928,7 +936,7 @@ export function App() {
     const slotId = selectedSlotSummary()?.slotId ?? saveSlots()[0]?.slotId ?? DEFAULT_SAVE_SLOT;
     const snapshot = await loadSnapshot(slotId);
     if (!snapshot) {
-      setStartNotice('No saved tower was found. Break ground or load a scenario.');
+      setStartNotice('No saved tower was found. Break ground or open a city moment.');
       return;
     }
     setSelectedSaveSlot(slotId);
@@ -1891,92 +1899,20 @@ export function App() {
       </aside>
 
       {phaseState().phase === 'menu' && (
-        <section class="start-screen">
-          <div class="start-card">
-            <div class="start-hero-copy">
-              <p class="start-kicker">Living tower simulator</p>
-              <h1>
-                <span>Reach</span>
-                <span>For The</span>
-                <span>Sky</span>
-              </h1>
-              <p class="start-deck">
-                Build a tower people actually have to live with. Tenants, crowds, inspectors,
-                visitors, weather, money, and public memory all push back.
-              </p>
-              <ul class="start-pill-row" aria-label="Core simulation pillars">
-                <li>Architecture</li>
-                <li>People</li>
-                <li>Reputation</li>
-                <li>City Pressure</li>
-              </ul>
-              <div class="start-actions">
-                <button type="button" class="primary" onClick={handleStart}>
-                  Break Ground
-                </button>
-                <button type="button" onClick={handleContinue}>
-                  Continue Tower
-                </button>
-              </div>
-              {startNotice() && <p class="start-notice">{startNotice()}</p>}
-            </div>
-
-            <aside class="start-showcase" aria-label="Campaign promise">
-              <div class="start-preview-frame">
-                <img
-                  src={assetUrl('assets/previews/skyline-victory-desktop.png')}
-                  alt="A completed skyline tower with the contracts drawer open"
-                />
-                <div class="start-preview-glow" />
-              </div>
-              <div class="start-stat-grid">
-                <article>
-                  <span>Campaign</span>
-                  <strong>5 Acts</strong>
-                </article>
-                <article>
-                  <span>First Loop</span>
-                  <strong>10 Min</strong>
-                </article>
-                <article>
-                  <span>Endgame</span>
-                  <strong>Sandbox</strong>
-                </article>
-              </div>
-            </aside>
-
-            <fieldset class="scenario-grid">
-              <legend>City moments</legend>
-              {SCENARIO_CARDS.map((scenario) => (
-                <button type="button" onClick={() => void handleScenario(scenario.id)}>
-                  <img src={assetUrl(scenario.preview)} alt="" />
-                  <span>
-                    <em>Act {scenario.actFocus}</em>
-                    <strong>{scenario.title}</strong>
-                    <small>{scenario.description}</small>
-                  </span>
-                </button>
-              ))}
-            </fieldset>
-            {saveSlots().length > 0 && (
-              <div class="start-save-list">
-                <div class="eyebrow">Saved Towers</div>
-                {saveSlots()
-                  .slice(0, 4)
-                  .map((slot) => (
-                    <button
-                      type="button"
-                      classList={{ active: selectedSaveSlot() === slot.slotId }}
-                      onClick={() => setSelectedSaveSlot(slot.slotId)}
-                    >
-                      <strong>{slotLabel(slot.slotId)}</strong>
-                      <span>{formatSlotSummary(slot)}</span>
-                    </button>
-                  ))}
-              </div>
-            )}
-          </div>
-        </section>
+        <StartScreen
+          assetUrl={assetUrl}
+          formatSlotSummary={formatSlotSummary}
+          onContinue={handleContinue}
+          onScenario={handleScenario}
+          onSelectSaveSlot={setSelectedSaveSlot}
+          onStart={handleStart}
+          platformLabel={PRODUCTION_PLATFORM_LABEL}
+          saveSlots={saveSlots()}
+          scenarios={SCENARIO_CARDS}
+          selectedSaveSlot={selectedSaveSlot()}
+          slotLabel={slotLabel}
+          startNotice={startNotice()}
+        />
       )}
 
       {phaseState().phase === 'playing' && (

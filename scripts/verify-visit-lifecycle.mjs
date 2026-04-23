@@ -18,7 +18,7 @@ async function clickButton(devtools, label) {
 }
 
 async function advanceVisitLifecycle(devtools) {
-  return devtools.evaluate(`
+  return devtools.evaluateAwaited(`
 (async () => {
   try {
   const actions = await import('/reach-for-the-sky/src/state/actions.ts');
@@ -145,7 +145,7 @@ async function main() {
       const text = await devtools.evaluate(`document.body.textContent ?? ''`);
       return text.includes('Recovery drill loaded') ? true : null;
     });
-    await devtools.evaluate(`
+    await devtools.evaluateAwaited(`
 (async () => {
   const actions = await import('/reach-for-the-sky/src/state/actions.ts');
   actions.setSpeed(0);

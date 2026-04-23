@@ -74,6 +74,7 @@ export default defineConfig({
     alias: {
       '@': resolve(import.meta.dirname, 'src'),
       '@app': resolve(import.meta.dirname, 'app'),
+      '@logic': resolve(import.meta.dirname, 'src'),
       crypto: resolve(import.meta.dirname, 'src/compat-node-crypto.ts'),
       'node:crypto': resolve(import.meta.dirname, 'src/compat-node-crypto.ts'),
     },

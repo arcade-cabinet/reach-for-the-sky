@@ -1,6 +1,15 @@
 import { waitFor, withDevPage } from './browser-smoke-harness.mjs';
 
 const expectedScenarios = ['Working Tower', 'Skyline Charter', 'Weather Front', 'Public Recovery'];
+const expectedLandingCopy = [
+  'Campaign-backed living tower simulator',
+  'Macro: district pressure',
+  'Meso: tower operations',
+  'Micro: people with memory',
+  'No rote VIP checklist',
+  'Playable city moments',
+];
+const forbiddenPlayerFacingCopy = /\b(POC|prototype|demo|implementation detail)\b/i;
 
 async function main() {
   await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
@@ -17,8 +26,9 @@ async function main() {
       async () => {
         const value = await devtools.evaluate(`
 (() => {
-  const text = document.body.textContent ?? '';
-  const cards = Array.from(document.querySelectorAll('.scenario-grid button')).map((button) => {
+  const startScreen = document.querySelector('.start-screen');
+  const text = startScreen?.textContent ?? '';
+  const cards = Array.from(startScreen?.querySelectorAll('.scenario-grid button') ?? []).map((button) => {
     const image = button.querySelector('img');
     return {
       text: button.textContent ?? '',
@@ -27,7 +37,7 @@ async function main() {
     };
   });
   return text.includes('Break Ground') && cards.length >= 4 && cards.every((card) => card.loaded)
-    ? { cards }
+    ? { cards, text }
     : null;
 })()
 `);
@@ -43,6 +53,14 @@ async function main() {
     }
     if (!menu.cards.every((card) => card.image.includes('/assets/previews/'))) {
       throw new Error('Scenario cards must use committed preview imagery');
+    }
+    for (const copy of expectedLandingCopy) {
+      if (!menu.text.includes(copy)) {
+        throw new Error(`Missing production landing copy: ${copy}`);
+      }
+    }
+    if (forbiddenPlayerFacingCopy.test(menu.text)) {
+      throw new Error('Start screen contains prototype/demo language in player-facing copy');
     }
 
     process.stdout.write(`${JSON.stringify({ url, menu }, null, 2)}\n`);
