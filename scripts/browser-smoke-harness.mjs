@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 export const DEFAULT_TIMEOUT_MS = 15_000;
+const PROCESS_START_TIMEOUT_MS = 30_000;
 export const HOST = '127.0.0.1';
 
 export function findChrome() {
@@ -188,10 +189,14 @@ export async function withDevPage(pathname, callback) {
   let devtools;
 
   try {
-    await waitFor('Vite dev server', async () => {
-      const response = await fetch(url);
-      return response.ok;
-    });
+    await waitFor(
+      'Vite dev server',
+      async () => {
+        const response = await fetch(url);
+        return response.ok;
+      },
+      PROCESS_START_TIMEOUT_MS,
+    );
 
     chrome = spawnLogged(findChrome(), [
       '--headless=new',
@@ -206,13 +211,19 @@ export async function withDevPage(pathname, callback) {
       'about:blank',
     ]);
 
-    const version = await waitFor('Chrome DevTools endpoint', () =>
-      waitForHttpJson(`http://${HOST}:${chromePort}/json/version`),
+    const version = await waitFor(
+      'Chrome DevTools endpoint',
+      () => waitForHttpJson(`http://${HOST}:${chromePort}/json/version`),
+      PROCESS_START_TIMEOUT_MS,
     );
-    const target = await waitFor('Chrome page target', async () => {
-      const targets = await waitForHttpJson(`http://${HOST}:${chromePort}/json/list`);
-      return targets?.find((candidate) => candidate.type === 'page');
-    });
+    const target = await waitFor(
+      'Chrome page target',
+      async () => {
+        const targets = await waitForHttpJson(`http://${HOST}:${chromePort}/json/list`);
+        return targets?.find((candidate) => candidate.type === 'page');
+      },
+      PROCESS_START_TIMEOUT_MS,
+    );
 
     devtools = new DevToolsSession(target.webSocketDebuggerUrl ?? version.webSocketDebuggerUrl);
     await devtools.open();

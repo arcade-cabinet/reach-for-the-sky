@@ -17,9 +17,34 @@ const buttonExpression = (label) => `
 })()
 `;
 
+const scopedButtonExpression = (selector, label) => `
+(() => {
+  const button = Array.from(document.querySelectorAll(${JSON.stringify(selector)})).find(
+    (candidate) => candidate.textContent?.trim() === ${JSON.stringify(label)},
+  );
+  if (!button) return false;
+  button.click();
+  return true;
+})()
+`;
+
 async function clickButton(devtools, label) {
   const clicked = await devtools.evaluate(buttonExpression(label));
   if (!clicked) throw new Error(`Could not find ${label} button`);
+}
+
+async function clickScopedButton(devtools, selector, label) {
+  const clicked = await devtools.evaluate(scopedButtonExpression(selector, label));
+  if (!clicked) throw new Error(`Could not find ${label} button in ${selector}`);
+}
+
+async function readLensMode(devtools) {
+  return devtools.evaluate(`
+(async () => {
+  const actions = await import('/reach-for-the-sky/src/state/actions.ts');
+  return actions.createSnapshot().view.lensMode;
+})()
+`);
 }
 
 async function readPreference(devtools, key, fallback) {
@@ -78,17 +103,10 @@ async function main() {
       return ready ? true : null;
     });
 
-    await clickButton(devtools, 'Maintenance');
+    await clickScopedButton(devtools, '.lens-panel button', 'Maintenance');
     await waitFor('active maintenance lens', async () => {
-      const lensMode = await devtools.evaluate(`
-(() => {
-  const button = Array.from(document.querySelectorAll('.lens-panel button')).find(
-    (candidate) => candidate.textContent?.trim() === 'Maintenance',
-  );
-  return button?.classList.contains('active') ? 'maintenance' : null;
-})()
-`);
-      return lensMode;
+      const lensMode = await readLensMode(devtools);
+      return lensMode === 'maintenance' ? lensMode : null;
     });
     await waitFor('stored maintenance lens preference', async () => {
       const lensMode = await readPreference(devtools, 'lensMode', 'normal');
@@ -122,15 +140,8 @@ async function main() {
 
     await clickButton(devtools, 'Break Ground');
     const activeLens = await waitFor('restored maintenance lens', async () => {
-      const lensMode = await devtools.evaluate(`
-(() => {
-  const button = Array.from(document.querySelectorAll('.lens-panel button')).find(
-    (candidate) => candidate.textContent?.trim() === 'Maintenance',
-  );
-  return button?.classList.contains('active') ? 'maintenance' : null;
-})()
-`);
-      return lensMode;
+      const lensMode = await readLensMode(devtools);
+      return lensMode === 'maintenance' ? lensMode : null;
     });
     await clickButton(devtools, 'Settings');
     const muted = await waitFor('restored mute setting', async () => {
