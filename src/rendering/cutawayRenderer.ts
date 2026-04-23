@@ -65,8 +65,17 @@ function agentVectorKey(type: AgentType, archetypeId?: string): AgentVectorKey {
       archetypeId === 'film-festival-jury'
     )
       return 'agent-visitor-luxury';
-    if (archetypeId === 'city-inspectors' || archetypeId === 'civic-delegation')
+    if (
+      archetypeId === 'city-inspectors' ||
+      archetypeId === 'civic-delegation' ||
+      archetypeId === 'politician'
+    )
       return 'agent-visitor-inspector';
+    if (archetypeId === 'buddhist-monks') return 'agent-visitor-monastic';
+    if (archetypeId === 'school-teachers' || archetypeId === 'stamp-collectors')
+      return 'agent-visitor-scholar';
+    if (archetypeId === 'labor-delegation' || archetypeId === 'trade-buyers')
+      return 'agent-visitor-labor';
     return 'agent-visitor';
   }
   return 'agent-worker';

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" role="img" aria-label="monastic visitor">
+  <defs>
+    <linearGradient id="monk-robe" x1="4" x2="20" y1="14" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c98a3f"/>
+      <stop offset="1" stop-color="#8a4e1e"/>
+    </linearGradient>
+    <linearGradient id="monk-face" x1="8" x2="16" y1="4" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2d0b4"/>
+      <stop offset="1" stop-color="#b99a78"/>
+    </linearGradient>
+  </defs>
+  <path fill="#050b12" fill-opacity=".34" d="M5 33c2.2 1.7 11.8 1.7 14 0v1.2c-2.1 1.8-11.9 1.8-14 0z"/>
+  <!-- Long robe, wider bottom than the default silhouette for a cloaked read -->
+  <path fill="#3b2410" d="M6.4 14h11.2l2.4 18.4c-4.2 2.2-11.8 2.2-16 0z"/>
+  <path fill="url(#monk-robe)" d="M7.4 14.4h9.2l2 16.8c-3.4 1.6-9.8 1.6-13.2 0z"/>
+  <!-- Sash across the chest — cohort read -->
+  <path fill="#fdd47a" d="M7.4 16.6h9.2l-.3 2.4H7.8z" opacity=".88"/>
+  <!-- Shaved head with hood -->
+  <path fill="#3b2410" d="M6.8 8.2c.4-4 2.2-6 5.2-6 3 0 4.8 2 5.2 6l-1.4 1.2c-1.2-2-5-2.6-7.6 0z"/>
+  <ellipse cx="12" cy="8.6" fill="url(#monk-face)" rx="3.9" ry="4.6"/>
+  <!-- Folded hands (prayer read) -->
+  <path fill="#d4bb98" d="M10.6 20.4h2.8l-.4 3.2h-2z"/>
+  <!-- Plain sandals -->
+  <path fill="#3b2410" d="M8.2 31.4h2.4v2.6H8.2zm5.2 0h2.4v2.6h-2.4z"/>
+</svg>

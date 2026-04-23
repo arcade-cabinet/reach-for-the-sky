@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" role="img" aria-label="labor delegation visitor">
+  <defs>
+    <linearGradient id="lab-coat" x1="4" x2="20" y1="14" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3f5b3e"/>
+      <stop offset="1" stop-color="#243323"/>
+    </linearGradient>
+    <linearGradient id="lab-face" x1="8" x2="16" y1="4" y2="13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2d0b4"/>
+      <stop offset="1" stop-color="#b99a78"/>
+    </linearGradient>
+  </defs>
+  <path fill="#050b12" fill-opacity=".34" d="M5 33c2.2 1.7 11.8 1.7 14 0v1.2c-2.1 1.8-11.9 1.8-14 0z"/>
+  <!-- Heavy work coat — slightly wider shoulders than visitor baseline -->
+  <path fill="#1a2317" d="M6.6 14h10.8l2.4 18c-4 2.2-11.6 2.2-15.6 0z"/>
+  <path fill="url(#lab-coat)" d="M7.6 14.4h8.8l2 16.5c-3.4 1.6-9.4 1.6-12.8 0z"/>
+  <!-- Rolled-up sleeves — labor read -->
+  <rect x="6.4" y="20.5" width="2.4" height="1.6" fill="#7a8774" opacity=".7"/>
+  <rect x="15.2" y="20.5" width="2.4" height="1.6" fill="#7a8774" opacity=".7"/>
+  <!-- Utility pouch / tool loop -->
+  <rect x="9.5" y="21" width="5" height="2.4" rx="0.3" fill="#6c4f2a" stroke="#2a1c0c" stroke-width="0.35"/>
+  <circle cx="11.2" cy="22.2" r="0.4" fill="#c8a065"/>
+  <circle cx="12.8" cy="22.2" r="0.4" fill="#c8a065"/>
+  <ellipse cx="12" cy="8.5" fill="url(#lab-face)" rx="4.4" ry="5.2"/>
+  <!-- Hard hat — strongest read for labor -->
+  <path fill="#d5a42a" d="M6 7.2c.4-3.6 2.4-5.4 6-5.4s5.6 1.8 6 5.4z"/>
+  <path fill="#b58818" d="M6 7.2h12v1.4H6z"/>
+  <!-- Hat brim shadow -->
+  <path fill="#8a6b18" d="M6 7.6h12v.6H6z"/>
+  <!-- Boots — chunkier than the default silhouette -->
+  <path fill="#0a0804" d="M5.4 18.7h3l-1.2 10.4H4.8zm10.2 0h3l1 10.4h-2.5z"/>
+  <path fill="#1a1610" d="M8 31.1h3v3.4H8zm5 0h3v3.4h-3z"/>
+</svg>

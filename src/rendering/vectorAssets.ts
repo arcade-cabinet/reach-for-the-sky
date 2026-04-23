@@ -33,6 +33,9 @@ export type AgentVectorKey =
   | 'agent-visitor-press'
   | 'agent-visitor-luxury'
   | 'agent-visitor-inspector'
+  | 'agent-visitor-monastic'
+  | 'agent-visitor-scholar'
+  | 'agent-visitor-labor'
   | 'agent-janitor'
   | 'agent-waiting-ring';
 export type UiVectorKey =
@@ -116,6 +119,9 @@ export const VECTOR_SOURCES: Record<VectorKey, string> = {
   'agent-visitor-press': 'assets/vectors/agents/visitor-press.svg',
   'agent-visitor-luxury': 'assets/vectors/agents/visitor-luxury.svg',
   'agent-visitor-inspector': 'assets/vectors/agents/visitor-inspector.svg',
+  'agent-visitor-monastic': 'assets/vectors/agents/visitor-monastic.svg',
+  'agent-visitor-scholar': 'assets/vectors/agents/visitor-scholar.svg',
+  'agent-visitor-labor': 'assets/vectors/agents/visitor-labor.svg',
   'agent-janitor': 'assets/vectors/agents/janitor.svg',
   'agent-waiting-ring': 'assets/vectors/agents/waiting-ring.svg',
   'ghost-valid': 'assets/vectors/ui/ghost-valid.svg',
