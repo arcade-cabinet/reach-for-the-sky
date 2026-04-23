@@ -1,20 +1,30 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-const REPO_ROOT = join(__dirname, '..');
+const __filename = fileURLToPath(import.meta.url);
+const REPO_ROOT = join(dirname(__filename), '..');
 
 const PLAYER_FACING_SOURCES = [
   'app/App.tsx',
   'app/components/StartScreen.tsx',
   'app/components/GameCanvas.tsx',
   'app/styles/global.css',
+  'src/simulation/campaign.ts',
+  'src/simulation/publicStory.ts',
+  'src/simulation/scenario.ts',
 ];
 
 const LADDER_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /Act \d/, label: 'literal "Act N" ladder label' },
-  { pattern: /\bstars\b/i, label: 'star-ladder token (kept internal only)' },
-  { pattern: /actFocus/, label: 'actFocus player-facing surface' },
+  {
+    pattern: /Act\s*\$\{[^}]+\}/,
+    label: 'template-literal Act-interpolation ladder label emitted at runtime',
+  },
+  { pattern: /\d\s+Acts\b/, label: '"N Acts" ladder summary' },
+  { pattern: /class="stars"|class='stars'|\.stars\b/, label: 'star-ladder CSS/class token' },
+  { pattern: /\bactFocus\b/, label: 'actFocus player-facing surface' },
 ];
 
 describe('campaign progression framing (T01 guard)', () => {

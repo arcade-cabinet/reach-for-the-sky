@@ -1120,7 +1120,7 @@ export function App() {
             <strong>{towerState().visits.length}</strong>
           </article>
           <article>
-            <span>Tower</span>
+            <span>Phase</span>
             <strong>
               {campaignState().victory === 'won'
                 ? 'City cycle'

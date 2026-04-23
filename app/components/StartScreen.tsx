@@ -80,8 +80,8 @@ export function StartScreen(props: StartScreenProps) {
           </div>
           <div class="start-stat-grid">
             <article>
-              <span>Campaign</span>
-              <strong>5 Acts</strong>
+              <span>Progression</span>
+              <strong>Emergent</strong>
             </article>
             <article>
               <span>First Loop</span>

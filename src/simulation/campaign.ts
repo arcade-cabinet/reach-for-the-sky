@@ -1936,7 +1936,7 @@ export function advanceGameSpine(input: GameSpineInput): GameSpineResult {
       if (contract.act === campaign.act && campaign.act < 5) {
         const nextAct = advanceAct(campaign.act);
         campaign = { ...campaign, act: nextAct, actTitle: ACT_TITLES[nextAct] };
-        pushNotice(tower, `Act ${nextAct}: ${ACT_TITLES[nextAct]} unlocked.`, 'info');
+        pushNotice(tower, `${ACT_TITLES[nextAct]} unlocked.`, 'info');
       } else if (contract.act === 5) {
         campaign = { ...campaign, victory: 'won', mode: 'sandbox' };
         pushNotice(tower, 'Skyline charter secured. Sandbox city cycle unlocked.', 'success');
