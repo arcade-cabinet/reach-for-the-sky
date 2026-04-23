@@ -10,6 +10,7 @@ export const PREF_KEYS = {
   lensMode: 'reach.sky.ui.lens_mode',
   camera: 'reach.sky.ui.camera',
   tutorialStep: 'reach.sky.ui.tutorial_step',
+  firstRunSeen: 'reach.sky.ui.first_run_seen',
   proceduralVolume: 'reach.sky.audio.procedural_volume',
   sampleVolume: 'reach.sky.audio.sample_volume',
   muted: 'reach.sky.audio.muted',

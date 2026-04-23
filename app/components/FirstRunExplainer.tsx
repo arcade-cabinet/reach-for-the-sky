@@ -21,6 +21,9 @@ const STEPS = [
 export function FirstRunExplainer() {
   const [visible, setVisible] = createSignal(false);
   const [step, setStep] = createSignal(0);
+  let cardRef: HTMLDivElement | undefined;
+  let primaryRef: HTMLButtonElement | undefined;
+  let previouslyFocused: HTMLElement | null = null;
 
   const advance = () => {
     if (step() < TOTAL_STEPS - 1) {
@@ -32,15 +35,48 @@ export function FirstRunExplainer() {
 
   const finish = () => {
     setVisible(false);
-    void preferences.set(PREF_KEYS.tutorialStep, 'completed');
+    void preferences.set(PREF_KEYS.firstRunSeen, '1');
+  };
+
+  const focusables = (): HTMLElement[] => {
+    if (!cardRef) return [];
+    return Array.from(
+      cardRef.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((el) => !el.hasAttribute('disabled'));
   };
 
   const handleKey = (event: KeyboardEvent) => {
     if (!visible()) return;
-    if (event.key === 'Escape') finish();
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      finish();
+      return;
+    }
+    if (event.key === 'Tab') {
+      // Trap focus inside the modal so keyboard users can't tab into the
+      // HUD controls behind the overlay.
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (event.shiftKey) {
+        if (active === first || !cardRef?.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !cardRef?.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
     if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowRight') {
       event.preventDefault();
       advance();
+      return;
     }
     if (event.key === 'ArrowLeft' && step() > 0) {
       event.preventDefault();
@@ -61,18 +97,28 @@ export function FirstRunExplainer() {
         const params = new URLSearchParams(window.location.search);
         const automated = navigator.webdriver === true;
         if (params.has('scenario') || params.get('skip-intro') === '1' || automated) {
-          void preferences.set(PREF_KEYS.tutorialStep, 'completed');
+          void preferences.set(PREF_KEYS.firstRunSeen, '1');
           return;
         }
       }
-      const current = await preferences.get(PREF_KEYS.tutorialStep);
-      if (current !== 'completed') setVisible(true);
+      const current = await preferences.get(PREF_KEYS.firstRunSeen);
+      if (current !== '1') setVisible(true);
     })();
   });
 
   createEffect(() => {
-    if (!visible()) return;
+    if (!visible()) {
+      // Restore focus to whatever had it when the modal opened.
+      if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+        previouslyFocused.focus();
+        previouslyFocused = null;
+      }
+      return;
+    }
+    previouslyFocused = document.activeElement as HTMLElement | null;
     window.addEventListener('keydown', handleKey);
+    // Focus the primary action so Enter lands somewhere useful immediately.
+    queueMicrotask(() => primaryRef?.focus());
     onCleanup(() => window.removeEventListener('keydown', handleKey));
   });
 
@@ -84,7 +130,7 @@ export function FirstRunExplainer() {
         aria-modal="true"
         aria-labelledby="first-run-title"
       >
-        <div class="first-run-card">
+        <div class="first-run-card" ref={cardRef}>
           <div class="first-run-progress" aria-hidden="true">
             {Array.from({ length: TOTAL_STEPS }, (_, index) => (
               <span classList={{ active: index === step(), done: index < step() }} />
@@ -101,7 +147,7 @@ export function FirstRunExplainer() {
             >
               Skip
             </button>
-            <button type="button" class="primary" onClick={advance}>
+            <button type="button" class="primary" onClick={advance} ref={primaryRef}>
               {step() === TOTAL_STEPS - 1 ? 'Start building' : 'Next'}
             </button>
           </div>

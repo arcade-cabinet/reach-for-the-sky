@@ -86,10 +86,14 @@ function roomCausalLine(
   if (macro.publicTrust < 50) {
     return `Because public trust is ${macro.publicTrust}%, good rooms still can't outrun the tower's current reputation.`;
   }
-  if (campaign.towerIdentity !== 'unformed' && BUILDINGS[room.type].cat !== 'infra') {
-    return `Because the tower identity is ${campaign.towerIdentity}, cohorts arrive with goals and traits biased toward this space's fit.`;
+  const isInfra = BUILDINGS[room.type].cat === 'infra';
+  if (campaign.towerIdentity === 'unformed') {
+    return 'Because the tower is still forming its identity, every placement is a vote for what cohorts show up next.';
   }
-  return 'Because the tower is still forming its identity, every placement is a vote for what cohorts show up next.';
+  if (isInfra) {
+    return `Because the tower identity is ${campaign.towerIdentity}, infra like this room sets the circulation baseline every cohort is measured against.`;
+  }
+  return `Because the tower identity is ${campaign.towerIdentity}, cohorts arrive with goals and traits biased toward this space's fit.`;
 }
 
 function agentCausalLine(
