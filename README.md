@@ -48,9 +48,11 @@ pnpm verify:menu-scenarios
 pnpm verify:audio-assets
 pnpm verify:app-metadata
 pnpm verify:visit-lifecycle
+pnpm verify:browser
 pnpm capture:screenshots
 pnpm build
 pnpm exec cap sync android
+pnpm verify:release
 ```
 
 `pnpm build` copies `node_modules/sql.js/dist/sql-wasm.wasm` to `public/assets/sql-wasm.wasm` before typechecking and bundling. Keep `sql.js` pinned to `1.11.0`; `jeep-sqlite@2.8.0` expects that WASM ABI and newer `sql.js` binaries fail in the browser web store.
@@ -132,5 +134,7 @@ The audio layer uses Tone.js for procedural fallback cues and Howler.js for the 
 `pnpm verify:audio-assets` decodes the generated OGG cue sprite in headless Chrome and fails if Howler's cue windows no longer fit the shipped asset.
 
 `pnpm verify:app-metadata` validates the PWA/install metadata, manifest icons, committed preview screenshots, OpenGraph/Twitter preview image, and Android launcher resource theme. Keep `public/assets/icons` and `public/assets/previews` current when screenshots or app identity shift.
+
+`pnpm verify:browser` runs the full browser/app verifier set in release order. `pnpm verify:release` adds lint, typecheck, unit tests, production build, screenshots, and Android Capacitor sync on top of that browser suite.
 
 `pnpm capture:screenshots` captures the start menu, desktop/mobile opening PNGs, named left/right drawer PNGs, the daily-report UI, construction ghost, maintenance/transit/value/sentiment/privacy/safety/event lenses, inspection, skyline-victory, public-memory, weather-stress, recovery-contract, invited-visit, resolved visit-lifecycle, and public-story inspection PNGs into `test-screenshots/` for visual regression review after HUD or renderer changes.

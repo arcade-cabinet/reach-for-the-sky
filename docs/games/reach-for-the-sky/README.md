@@ -107,6 +107,8 @@ Use `pnpm verify:audio-assets` as the browser smoke check for sourced cue playba
 
 Use `pnpm verify:app-metadata` as the install-surface smoke check. It validates the manifest, app icons, committed preview screenshots, social preview image metadata, and Android launcher resources.
 
+Use `pnpm verify:browser` for the full browser/app verifier sequence and `pnpm verify:release` for the production gate: lint, typecheck, unit tests, build, all browser verifiers, screenshots, and Android Capacitor sync.
+
 Settings are part of the simulation shell, not a separate store. Tone.js procedural volume, Howler sample volume, mute, high-contrast mode, and reduced-motion mode live in Koota `SettingsTrait` and persist through Capacitor Preferences. Howler loads `public/assets/audio/reach-ui-cues.ogg` as a cue sprite for construction, rent, warnings, elevator accents, and milestones; Tone remains the deterministic fallback.
 
 Simulation randomness must remain stateful and persisted. The clock snapshot carries RNG state, and room visual seeds are derived from stable placement geometry; do not use raw `Math.random()` for gameplay, actors, or authored visual variation.

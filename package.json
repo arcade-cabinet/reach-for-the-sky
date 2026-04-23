@@ -17,6 +17,8 @@
     "verify:render-stats": "node scripts/verify-render-stats.mjs",
     "verify:build-flow": "node scripts/verify-build-flow.mjs",
     "verify:campaign-flow": "node scripts/verify-campaign-flow.mjs",
+    "verify:browser": "pnpm verify:render-stats && pnpm verify:build-flow && pnpm verify:campaign-flow && pnpm verify:mobile-build-flow && pnpm verify:save-load && pnpm verify:corrupt-save && pnpm verify:preferences && pnpm verify:report-loop && pnpm verify:public-memory && pnpm verify:memory-repair && pnpm verify:invite-visit && pnpm verify:visit-lifecycle && pnpm verify:menu-scenarios && pnpm verify:audio-assets && pnpm verify:app-metadata",
+    "verify:release": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm verify:browser && pnpm capture:screenshots && pnpm cap:sync:android",
     "verify:save-load": "node scripts/verify-save-load.mjs",
     "verify:corrupt-save": "node scripts/verify-corrupt-save.mjs",
     "verify:preferences": "node scripts/verify-preferences.mjs",
