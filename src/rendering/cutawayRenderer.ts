@@ -18,6 +18,7 @@ import {
   type TowerState,
   type ViewState,
 } from '@/simulation/types';
+import type { VisitorArchetypeId } from '@/simulation/visitors';
 import { NormalTowerBaseTracker } from './renderSignatures';
 import { createRoomComposition, type VectorPlacement } from './roomCompositions';
 import { type AgentVectorKey, type UiVectorKey, VectorAssetLibrary } from './vectorAssets';
@@ -167,6 +168,12 @@ export class CutawayRenderer {
   private parent: HTMLElement | null = null;
   private normalTowerBase = new NormalTowerBaseTracker();
   private renderStats = createRenderStats();
+  // Remember which archetype each cohort mapped to so an agent whose visit
+  // has already been removed from tower.visits (the agent is leaving the
+  // tower but the cohort row is gone) keeps its silhouette until it walks
+  // off-screen. Without this the sprite flickers to the generic 'agent-
+  // visitor' for the remaining frames of the exit walk.
+  private cohortArchetypeCache = new Map<string, VisitorArchetypeId>();
 
   async init(parent: HTMLElement): Promise<void> {
     this.parent = parent;
@@ -260,6 +267,19 @@ export class CutawayRenderer {
     for (const agent of tower.agents) this.drawAgent(agent, tower, view);
     for (const particle of tower.particles)
       this.drawParticle(particle.x, particle.y, particle.text, particle.color);
+
+    // Prune the cohort→archetype cache: a cohort only needs an entry while at
+    // least one agent still references it. Once all agents have exited, the
+    // cohort id will never render again in this session.
+    if (this.cohortArchetypeCache.size > 0) {
+      const liveCohortIds = new Set<string>();
+      for (const agent of tower.agents) {
+        if (agent.cohortId) liveCohortIds.add(agent.cohortId);
+      }
+      for (const cohortId of this.cohortArchetypeCache.keys()) {
+        if (!liveCohortIds.has(cohortId)) this.cohortArchetypeCache.delete(cohortId);
+      }
+    }
 
     const preview = createBuildPreview(tower, economy, view.selectedTool, drag);
     for (const item of preview.items)
@@ -916,9 +936,18 @@ export class CutawayRenderer {
     const cohort = agent.cohortId
       ? tower.visits.find((visit) => visit.id === agent.cohortId)
       : undefined;
-    const agentTexture = this.vectorAssets.agentTexture(
-      agentVectorKey(agent.type, cohort?.archetypeId),
-    );
+    // Persist the cohort→archetype mapping so an agent whose visit was just
+    // cleared from tower.visits (but the agent still has exit frames) reads
+    // with the same silhouette rather than flipping to the generic visitor.
+    let archetypeId = cohort?.archetypeId;
+    if (agent.cohortId) {
+      if (archetypeId) {
+        this.cohortArchetypeCache.set(agent.cohortId, archetypeId);
+      } else {
+        archetypeId = this.cohortArchetypeCache.get(agent.cohortId);
+      }
+    }
+    const agentTexture = this.vectorAssets.agentTexture(agentVectorKey(agent.type, archetypeId));
 
     if (agentTexture) {
       const sprite = new Sprite(agentTexture);
