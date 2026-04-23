@@ -94,7 +94,7 @@ Those traits currently inform:
 
 - deeper floor-band specialization
 - more room synergies and adjacency consequences
-- better staff/service staffing interplay
+- better staffing/service interplay
 - richer failure/recovery loops for late-game towers
 
 ### Cohort Breadth

@@ -45,7 +45,7 @@ pnpm build
 pnpm verify:browser
 pnpm verify:release
 pnpm capture:screenshots
-pnpm exec cap sync android
+pnpm cap:sync:android
 ```
 
 ## Immediate Priorities

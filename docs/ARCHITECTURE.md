@@ -43,6 +43,7 @@ This document owns the runtime stack, directory structure, data flow, and deploy
 - Yuka for routing and personality-driven simulation planning
 - Capacitor 8 app shell
 - `@capacitor-community/sqlite` + `jeep-sqlite` + `sql.js` for durable saves
+  - Web fallback constraint: `pnpm build` must copy `sql.js/dist/sql-wasm.wasm` to `public/assets/sql-wasm.wasm`. The browser/`jeep-sqlite` path expects that asset at runtime, so removing the copy step breaks web SQLite even if native builds still work. `sql.js` is intentionally pinned to `1.11.0`; do not relax that pin without re-validating the wasm loading path end to end.
 - `@capacitor/preferences` for UI/settings KV state
 - Tone.js for procedural audio cues
 - Howler.js for sourced OGG sprite playback

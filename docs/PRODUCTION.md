@@ -36,7 +36,7 @@ This document owns release readiness and the explicit remaining work. It is the 
 
 ### Product / Design
 
-- deepen act-to-act authored pacing so the journey feels less like a proof scenario and more like a fully authored campaign
+- deepen act-to-act authored pacing so the journey feels less like early campaign scaffolding and more like a fully authored campaign
 - expand identity consequences so each declaration meaningfully changes later obligations and opportunities
 - improve late-game sandbox contract variety
 

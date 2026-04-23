@@ -73,5 +73,6 @@ pnpm typecheck
 pnpm test
 pnpm build
 pnpm verify:browser
+pnpm verify:release
 pnpm capture:screenshots
 ```

@@ -11,11 +11,11 @@ domain: context
 
 `main` currently contains the standalone production runtime, upgraded landing/start surfaces, GitHub Pages deployment, Android debug CI packaging, and the five-act campaign-backed sandbox spine.
 
-Current public web surface:
+Current public web surface as of 2026-04-23:
 
 - GitHub Pages live
 - production landing page deployed
-- release and CD lanes green on latest merged commit
+- release and CD lanes green on the latest merged commit at that date
 
 ## Repository Reality
 

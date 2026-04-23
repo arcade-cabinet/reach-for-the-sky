@@ -38,7 +38,7 @@ Shipping elements:
 Remaining work:
 
 - stronger polish on marketing copy rhythm and CTA hierarchy
-- potentially richer store/demo funnel segmentation
+- potentially richer store/trial funnel segmentation
 - continued review of how much surface area the start screen consumes on smaller laptops
 
 ## Inspection Layer
@@ -63,6 +63,7 @@ Shipping:
 - touch drag build flow verifier
 - drawer/button access on small screens
 - top HUD compression
+- Android native back button closes Settings/Contracts drawers first, then pauses to Settings, then falls back to history/minimize behavior
 
 Remaining work:
 
