@@ -300,6 +300,25 @@ async function main() {
 `),
     );
     captures.push(await capture(devtools, outDir, 'reach-sky-menu-desktop.png'));
+    await devtools.send('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await devtools.send('Page.navigate', { url: menuUrl });
+    await waitFor('rendered mobile start menu', async () =>
+      devtools.evaluate(`
+(() => {
+  const text = document.body.textContent ?? '';
+  const previewCount = Array.from(document.querySelectorAll('.scenario-grid img')).filter(
+    (image) => image.complete && image.naturalWidth > 0,
+  ).length;
+  return text.includes('Break Ground') && previewCount >= 4 ? true : null;
+})()
+`),
+    );
+    captures.push(await capture(devtools, outDir, 'reach-sky-menu-mobile.png'));
 
     for (const shot of shots) {
       await devtools.send('Emulation.setDeviceMetricsOverride', {

@@ -1,6 +1,6 @@
 # Reach for the Sky
 
-Reach for the Sky is now a standalone Solid + PixiJS vertical cutaway skyscraper simulator. The gameplay model follows the 2D POC: readable tower construction, tenant movement, elevator pressure, dirt/service loops, daily rent, campaign contracts, macro city pressure, and act-based progression. Three.js is kept as an optional depth/sky composition layer, not the main interaction surface.
+Reach for the Sky is a modern living-tower simulator where architecture, people, reputation, and city pressure collide. Build from an empty lot into a public institution, then keep the tower credible as tenants, visitors, inspectors, weather, markets, and memory push back.
 
 ## Architecture
 
@@ -139,4 +139,4 @@ The audio layer uses Tone.js for procedural fallback cues and Howler.js for the 
 
 `pnpm verify:browser` runs the full browser/app verifier set in release order. `pnpm verify:release` adds lint, typecheck, unit tests, production build, screenshots, and Android Capacitor sync on top of that browser suite.
 
-`pnpm capture:screenshots` captures the start menu, desktop/mobile opening PNGs, named left/right drawer PNGs, the daily-report UI, construction ghost, maintenance/transit/value/sentiment/privacy/safety/event lenses, inspection, skyline-victory, public-memory, weather-stress, recovery-contract, invited-visit, resolved visit-lifecycle, and public-story inspection PNGs into `test-screenshots/` for visual regression review after HUD or renderer changes.
+`pnpm capture:screenshots` captures the desktop/mobile start menu, desktop/mobile opening PNGs, named left/right drawer PNGs, the daily-report UI, construction ghost, maintenance/transit/value/sentiment/privacy/safety/event lenses, inspection, skyline-victory, public-memory, weather-stress, recovery-contract, invited-visit, resolved visit-lifecycle, and public-story inspection PNGs into `test-screenshots/` for visual regression review after HUD or renderer changes.

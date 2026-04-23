@@ -1,11 +1,6 @@
 import { waitFor, withDevPage } from './browser-smoke-harness.mjs';
 
-const expectedScenarios = [
-  'Working Tower Scenario',
-  'Skyline Charter Scenario',
-  'Weather Stress Scenario',
-  'Recovery Drill Scenario',
-];
+const expectedScenarios = ['Working Tower', 'Skyline Charter', 'Weather Front', 'Public Recovery'];
 
 async function main() {
   await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {

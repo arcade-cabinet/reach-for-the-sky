@@ -11,6 +11,7 @@
 - Added Android hardware Back handling for drawers, active-run pause, browser history, and app minimize fallback.
 - Added release-gate scripts for the full browser verifier sequence and production release checks.
 - Added GitHub PR CI, release-please, Pages/Android CD, and controlled automerge workflows aligned with the arcade release lane.
+- Reworked the start menu into a player-facing campaign landing page with local brand fonts, design tokens, skyline atmosphere, and desktop/mobile screenshot coverage.
 
 ## [0.2.0](https://github.com/jbcom/arcade-cabinet/compare/reach-for-the-sky-v0.1.0...reach-for-the-sky-v0.2.0) (2026-04-22)
 

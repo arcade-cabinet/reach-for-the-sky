@@ -1842,26 +1842,65 @@ export function App() {
       {phaseState().phase === 'menu' && (
         <section class="start-screen">
           <div class="start-card">
-            <p class="eyebrow">Vertical cutaway simulator</p>
-            <h1>Reach for the Sky</h1>
-            <p>
-              Shape a living tower into a public institution. Architecture, people, reputation, and
-              city pressure all push back.
-            </p>
-            <button type="button" class="primary" onClick={handleStart}>
-              Break Ground
-            </button>
-            <div class="start-actions">
-              <button type="button" onClick={handleContinue}>
-                Continue Tower
-              </button>
+            <div class="start-hero-copy">
+              <p class="start-kicker">Living tower simulator</p>
+              <h1>
+                <span>Reach</span>
+                <span>For The</span>
+                <span>Sky</span>
+              </h1>
+              <p class="start-deck">
+                Build a tower people actually have to live with. Tenants, crowds, inspectors,
+                visitors, weather, money, and public memory all push back.
+              </p>
+              <ul class="start-pill-row" aria-label="Core simulation pillars">
+                <li>Architecture</li>
+                <li>People</li>
+                <li>Reputation</li>
+                <li>City Pressure</li>
+              </ul>
+              <div class="start-actions">
+                <button type="button" class="primary" onClick={handleStart}>
+                  Break Ground
+                </button>
+                <button type="button" onClick={handleContinue}>
+                  Continue Tower
+                </button>
+              </div>
+              {startNotice() && <p class="start-notice">{startNotice()}</p>}
             </div>
+
+            <aside class="start-showcase" aria-label="Campaign promise">
+              <div class="start-preview-frame">
+                <img
+                  src={assetUrl('assets/previews/skyline-victory-desktop.png')}
+                  alt="A completed skyline tower with the contracts drawer open"
+                />
+                <div class="start-preview-glow" />
+              </div>
+              <div class="start-stat-grid">
+                <article>
+                  <span>Campaign</span>
+                  <strong>5 Acts</strong>
+                </article>
+                <article>
+                  <span>First Loop</span>
+                  <strong>10 Min</strong>
+                </article>
+                <article>
+                  <span>Endgame</span>
+                  <strong>Sandbox</strong>
+                </article>
+              </div>
+            </aside>
+
             <fieldset class="scenario-grid">
-              <legend>Scenario shortcuts</legend>
+              <legend>City moments</legend>
               {SCENARIO_CARDS.map((scenario) => (
                 <button type="button" onClick={() => void handleScenario(scenario.id)}>
                   <img src={assetUrl(scenario.preview)} alt="" />
                   <span>
+                    <em>Act {scenario.actFocus}</em>
                     <strong>{scenario.title}</strong>
                     <small>{scenario.description}</small>
                   </span>
@@ -1885,7 +1924,6 @@ export function App() {
                   ))}
               </div>
             )}
-            {startNotice() && <p class="start-notice">{startNotice()}</p>}
           </div>
         </section>
       )}

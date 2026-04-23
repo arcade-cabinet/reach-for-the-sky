@@ -43,7 +43,14 @@
       "sizes": "1440x900",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Scenario selection menu with preview-backed player journey shortcuts"
+      "label": "Campaign landing page with curated city moments and tower previews"
+    },
+    {
+      "src": "assets/previews/menu-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile campaign landing page with production start flow"
     },
     {
       "src": "assets/previews/opening-desktop.png",
@@ -92,7 +99,7 @@
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Mobile opening scenario with touch-ready tower viewport"
+      "label": "Mobile opening tower with touch-ready construction and operations"
     }
   ]
 }
