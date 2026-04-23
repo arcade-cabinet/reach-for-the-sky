@@ -18,7 +18,7 @@ async function clickButton(devtools, label) {
 }
 
 async function readInviteState(devtools) {
-  return devtools.evaluate(`
+  return devtools.evaluateAwaited(`
 (async () => {
   const actions = await import('/reach-for-the-sky/src/state/actions.ts');
   const repository = await import('/reach-for-the-sky/src/persistence/saveRepository.ts');

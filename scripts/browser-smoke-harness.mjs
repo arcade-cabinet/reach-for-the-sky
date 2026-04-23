@@ -158,17 +158,53 @@ export class DevToolsSession {
   }
 
   async evaluate(expression) {
-    const result = await this.send('Runtime.evaluate', {
+    const evaluation = await this.send('Runtime.evaluate', {
       expression,
-      returnByValue: true,
-      awaitPromise: true,
+      returnByValue: false,
+      awaitPromise: false,
     });
-    return result.result?.value;
+    return this.resolveRuntimeResult(evaluation);
+  }
+
+  async evaluateAwaited(expression) {
+    return this.evaluate(expression);
+  }
+
+  async resolveRuntimeResult(evaluation) {
+    if (evaluation.exceptionDetails) throw new Error(formatRuntimeException(evaluation));
+    const result = evaluation.result;
+    const isPromise = result?.subtype === 'promise' || result?.className === 'Promise';
+    if (!result?.objectId) return result?.value ?? result?.unserializableValue;
+
+    try {
+      const resolved = isPromise
+        ? await this.send('Runtime.awaitPromise', {
+            promiseObjectId: result.objectId,
+            returnByValue: true,
+          })
+        : await this.send('Runtime.callFunctionOn', {
+            objectId: result.objectId,
+            functionDeclaration: 'function () { return this; }',
+            returnByValue: true,
+          });
+      if (resolved.exceptionDetails) throw new Error(formatRuntimeException(resolved));
+      return resolved.result?.value ?? resolved.result?.unserializableValue;
+    } finally {
+      await this.send('Runtime.releaseObject', { objectId: result.objectId }).catch(() => {});
+    }
   }
 
   close() {
     this.socket?.close();
   }
+}
+
+function formatRuntimeException(result) {
+  return (
+    result.exceptionDetails?.exception?.description ??
+    result.exceptionDetails?.text ??
+    'Browser runtime evaluation failed'
+  );
 }
 
 export async function withDevPage(pathname, callback) {
