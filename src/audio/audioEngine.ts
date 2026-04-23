@@ -139,7 +139,9 @@ export class SkyAudioEngine {
       cue,
       new Howl({
         src: urls,
-        html5: true,
+        // WebAudio (default): no HTML5 Audio pool, no exhaustion warning,
+        // lower latency for rapid cues. Our sample files are small OGGs —
+        // the "stream the file" argument for html5:true doesn't apply.
         preload: true,
         volume: this.settings.sampleVolume,
       }),
@@ -150,7 +152,10 @@ export class SkyAudioEngine {
     this.sampleSpriteCues = new Set(Object.keys(sprite) as AudioCue[]);
     this.sampleSprite = new Howl({
       src: urls,
-      html5: true,
+      // WebAudio: see comment above. The 7KB sprite is well under any
+      // reasonable preload threshold, and WebAudio scales cleanly across
+      // rapid cues (drawer toggles, convention arrivals) without the
+      // HTML5 pool warning that surfaces under the T13 console-clean gate.
       preload: true,
       sprite,
       volume: this.settings.sampleVolume,
