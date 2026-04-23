@@ -1,0 +1,19 @@
+{
+  "id": "film-festival-jury",
+  "label": "Film festival jury",
+  "minSize": 4,
+  "maxSize": 14,
+  "traits": {
+    "ego": 0.68,
+    "patience": 0.34,
+    "spendingPower": 0.68,
+    "cleanlinessDemand": 0.74,
+    "privacyDemand": 0.86,
+    "noiseTolerance": 0.32,
+    "groupCohesion": 0.58,
+    "statusSensitivity": 0.86,
+    "kindness": 0.42
+  },
+  "goals": ["publicity", "quiet", "food"],
+  "volatility": 0.64
+}

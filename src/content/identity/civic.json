@@ -3,7 +3,8 @@
   "archetypeBias": {
     "school-teachers": 0.36,
     "buddhist-monks": 0.24,
-    "city-inspectors": 0.28
+    "city-inspectors": 0.28,
+    "civic-delegation": 0.42
   },
   "traitDelta": {
     "kindness": 0.06,

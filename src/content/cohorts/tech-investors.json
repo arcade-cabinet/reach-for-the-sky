@@ -1,0 +1,19 @@
+{
+  "id": "tech-investors",
+  "label": "Tech investor summit",
+  "minSize": 8,
+  "maxSize": 36,
+  "traits": {
+    "ego": 0.58,
+    "patience": 0.32,
+    "spendingPower": 0.88,
+    "cleanlinessDemand": 0.62,
+    "privacyDemand": 0.78,
+    "noiseTolerance": 0.4,
+    "groupCohesion": 0.6,
+    "statusSensitivity": 0.72,
+    "kindness": 0.4
+  },
+  "goals": ["meeting", "food", "shopping"],
+  "volatility": 0.48
+}

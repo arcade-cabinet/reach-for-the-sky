@@ -13,7 +13,10 @@ export type VisitorArchetypeId =
   | 'labor-delegation'
   | 'trade-buyers'
   | 'city-inspectors'
-  | 'press-swarm';
+  | 'press-swarm'
+  | 'film-festival-jury'
+  | 'tech-investors'
+  | 'civic-delegation';
 
 export type VisitorGoal = 'publicity' | 'shopping' | 'lodging' | 'quiet' | 'meeting' | 'food';
 export type VisitStatus = 'inquiry' | 'arriving' | 'inside';
@@ -264,6 +267,9 @@ function chooseArchetype(
     ['foreign-prince', hasHotel ? 0.2 : 0.04],
     ['city-inspectors', 0.12],
     ['press-swarm', 0.1],
+    ['film-festival-jury', hasEventVenue ? 0.34 : 0.08],
+    ['tech-investors', hasEventVenue || highCommerce ? 0.38 : 0.12],
+    ['civic-delegation', 0.3],
   ];
   const addWeight = (id: VisitorArchetypeId, amount: number) => {
     const entry = weighted.find(([candidate]) => candidate === id);

@@ -3,7 +3,8 @@
   "archetypeBias": {
     "movie-star": 1.15,
     "foreign-prince": 0.76,
-    "trade-buyers": 0.36
+    "trade-buyers": 0.36,
+    "film-festival-jury": 0.48
   },
   "traitDelta": {
     "spendingPower": 0.07,

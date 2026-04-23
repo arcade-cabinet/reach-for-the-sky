@@ -1,0 +1,19 @@
+{
+  "id": "civic-delegation",
+  "label": "Civic delegation",
+  "minSize": 6,
+  "maxSize": 24,
+  "traits": {
+    "ego": 0.28,
+    "patience": 0.68,
+    "spendingPower": 0.36,
+    "cleanlinessDemand": 0.64,
+    "privacyDemand": 0.4,
+    "noiseTolerance": 0.5,
+    "groupCohesion": 0.82,
+    "statusSensitivity": 0.44,
+    "kindness": 0.78
+  },
+  "goals": ["meeting", "publicity"],
+  "volatility": 0.32
+}

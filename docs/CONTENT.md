@@ -105,24 +105,25 @@ Trait deltas are clamped to `[0, 1]`, applied on top of the cohort's archetype t
 
 ## Cohort/Visit Surface
 
-Shipping examples visible in current systems:
+Authored archetype roster (13 total — authored in `src/content/cohorts/*.json`, loaded by `src/content/cohorts/index.ts`, snapshot-tested in `tests/simulation/cohortRoster.snap.test.ts`):
 
-- foreign prince and retainers
-- campaign delegation
-- press swarm
-- city inspector tour
-- school teacher convention
-- stamp collector convention
-- movie star entourage
-- trade buyers
+| Archetype | Label | Size | Goals | Notes |
+|---|---|---|---|---|
+| `movie-star` | Movie star entourage | 3–12 | publicity, lodging, food | hospitality/luxury pool |
+| `foreign-prince` | Foreign prince and retainers | 6–24 | lodging, shopping, food | hospitality/luxury pool |
+| `politician` | Campaign delegation | 8–30 | publicity, meeting, food | business pool |
+| `press-swarm` | Press swarm | 6–26 | publicity, meeting, food | scandal-driven |
+| `buddhist-monks` | Buddhist monks | 4–18 | quiet, food | civic/residential pool |
+| `school-teachers` | School teacher convention | 24–90 | meeting, food, shopping | civic/residential pool |
+| `stamp-collectors` | Stamp collector convention | 12–48 | quiet, meeting, shopping | residential pool |
+| `labor-delegation` | Labor delegation | 10–42 | meeting, food | business/trust-driven |
+| `trade-buyers` | Trade buyers | 16–64 | shopping, meeting, food | business/commerce |
+| `city-inspectors` | City inspector tour | 3–10 | meeting, quiet | regulation/weather-driven |
+| `film-festival-jury` | Film festival jury | 4–14 | publicity, quiet, food | hospitality/luxury pool |
+| `tech-investors` | Tech investor summit | 8–36 | meeting, food, shopping | business pool |
+| `civic-delegation` | Civic delegation | 6–24 | meeting, publicity | civic pool |
 
-High-priority remaining content:
-
-- civic delegations
-- religious retreats
-- labor and tenant groups
-- more cultural/convention cohorts
-- clearer tower-identity-specific group pools
+Each archetype has ≥2 goals and every visit resolves to one of three outcome paths (`praised | mixed | complained`) driven by `evaluateCohortFriction` over current tower state — so "≥3 distinct visit outcome paths per archetype" is guaranteed by the system, not authored per-cohort.
 
 ## Internal Phase Content Status
 
