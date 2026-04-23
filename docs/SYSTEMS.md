@@ -49,6 +49,18 @@ Worked example: drop a `movie-star` cohort into a clean, calm tower (cleanliness
 
 This is the binding implementation of Pillar 1 in `docs/plans/release-1.0-batch.prq.md`: every person is a free-thinking algorithm, and the simulation's emergent feel must come from these utility-scored reactions rather than from scripted beats.
 
+### Flock / Group Behavior
+
+After every tick's per-agent `updateAgent` pass, the simulation runs a **flock-modulation pass** (`src/simulation/ai/flock.ts`). For every cohort with ≥ 3 agents currently `walking` on the same floor:
+
+- a cohesion force pulls each member toward the cohort's per-floor centroid, weighted by `traits.groupCohesion`
+- a separation force pushes members off neighbors within a personal-space radius, inversely weighted by `traits.noiseTolerance` (low-noise-tolerance cohorts self-order into tighter, more polite clusters)
+- cross-cohort and cross-floor members never exchange forces — visits never commingle, floors never leak
+
+Cohesion is clamped so it never overrides routing. No agent is forcibly moved onto a waypoint; the flock pass just nudges `x` each tick. This is what surfaces emergent lobby gathering, elevator-queue politeness, and convention-floor clustering without hard-coded formations.
+
+500-tick / 3-cohort / 45-agent soak runs deterministic and stable (no NaN, no runaway drift, no floor-bucket migration). See `tests/simulation/flockBehavior.test.ts`.
+
 ### Contracts
 
 - authored act contracts
