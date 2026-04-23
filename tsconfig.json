@@ -21,7 +21,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@app/*": ["app/*"]
+      "@app/*": ["app/*"],
+      "@logic/*": ["src/*"]
     }
   },
   "include": ["app", "src", "tests", "vite.config.ts", "vitest.setup.ts"],

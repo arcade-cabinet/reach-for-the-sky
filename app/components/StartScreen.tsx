@@ -1,5 +1,5 @@
-import type { SaveSlotSummary } from '@/persistence/saveRepository';
-import type { ScenarioCardContent, ScenarioId } from '@/simulation/content';
+import type { SaveSlotSummary } from '@logic/persistence/saveRepository';
+import type { ScenarioCardContent, ScenarioId } from '@logic/simulation/content';
 
 interface StartScreenProps {
   assetUrl: (path: string) => string;

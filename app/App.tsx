@@ -1,3 +1,5 @@
+import { GameCanvas } from '@app/components/GameCanvas';
+import { StartScreen } from '@app/components/StartScreen';
 import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { createEffect, createMemo, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { SkyAudioEngine } from '@/audio';
@@ -101,8 +103,6 @@ import {
   ViewTrait,
 } from '@/state/traits';
 import { gameWorld } from '@/state/world';
-import { GameCanvas } from './components/GameCanvas';
-import { StartScreen } from './components/StartScreen';
 
 const TOOL_ORDER: BuildingId[] = [
   'floor',
