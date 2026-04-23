@@ -17,6 +17,15 @@ async function clickButton(devtools, label) {
   if (!clicked) throw new Error(`Could not find ${label} button`);
 }
 
+async function readPreference(devtools, key, fallback) {
+  return devtools.evaluate(`
+(async () => {
+  const { getPreferenceJson, PREF_KEYS } = await import('/reach-for-the-sky/src/persistence/preferences.ts');
+  return getPreferenceJson(PREF_KEYS[${JSON.stringify(key)}], ${JSON.stringify(fallback)});
+})()
+`);
+}
+
 async function main() {
   await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
     await waitFor('start screen', async () => {
@@ -46,6 +55,10 @@ async function main() {
 `);
       return lensMode;
     });
+    await waitFor('stored maintenance lens preference', async () => {
+      const lensMode = await readPreference(devtools, 'lensMode', 'normal');
+      return lensMode === 'maintenance' ? lensMode : null;
+    });
     await clickButton(devtools, 'Settings');
     await clickButton(devtools, 'Mute');
     await waitFor('active mute setting', async () => {
@@ -58,6 +71,10 @@ async function main() {
 })()
 `);
       return isMuted;
+    });
+    await waitFor('stored mute preference', async () => {
+      const muted = await readPreference(devtools, 'muted', false);
+      return muted === true ? true : null;
     });
 
     await devtools.send('Page.navigate', { url });
