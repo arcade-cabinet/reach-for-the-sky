@@ -1,0 +1,37 @@
+{
+  "institution": "convention-hall",
+  "label": "Convention Hall",
+  "trigger": {
+    "failedVisits": 2,
+    "direction": "at-or-above"
+  },
+  "arc": [
+    {
+      "phase": "soft-failure",
+      "headline": "Conventions complain in public",
+      "brief": "Two cohorts have left with a story. Bookings haven't dried up, but they will if the next visit goes the same way.",
+      "successCondition": "one praised visit within 3 days",
+      "failureEscalation": "booking-freeze",
+      "rewardTrust": 4,
+      "penaltyTrust": 4
+    },
+    {
+      "phase": "recovery-contract",
+      "headline": "Host Credibility Restoration",
+      "brief": "Invite a patient cohort, manage the hosting plan actively, and let them leave praising the operations grade.",
+      "successCondition": "one praised civic/academic cohort visit",
+      "failureEscalation": "booking-freeze",
+      "rewardTrust": 10,
+      "rewardFunds": 60000,
+      "penaltyTrust": 10
+    },
+    {
+      "phase": "booking-freeze",
+      "headline": "Convention bookings paused",
+      "brief": "Bureaus are steering conventions elsewhere. Prove the hall is ready before the calendar reopens.",
+      "successCondition": "reach 72 operations grade AND 65 tenant satisfaction",
+      "rewardTrust": 14,
+      "rewardFunds": 90000
+    }
+  ]
+}

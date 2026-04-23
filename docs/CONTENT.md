@@ -125,6 +125,18 @@ Authored archetype roster (13 total — authored in `src/content/cohorts/*.json`
 
 Each archetype has ≥2 goals and every visit resolves to one of three outcome paths (`praised | mixed | complained`) driven by `evaluateCohortFriction` over current tower state — so "≥3 distinct visit outcome paths per archetype" is guaranteed by the system, not authored per-cohort.
 
+## Recovery Arcs (T07)
+
+Late-game institutions no longer just break — they degrade through authored phases. Three institutions currently have arcs in `src/content/recovery/*.json`, each declaring a trigger predicate, a `soft-failure → recovery-contract → escalation` chain, and per-phase rewards and penalties:
+
+| Institution | Trigger | Arc phases |
+|---|---|---|
+| `skyline-landmark` | public trust < 45 | soft-failure → recovery-contract → charter-revocation |
+| `convention-hall` | failed visits ≥ 2 | soft-failure → recovery-contract → booking-freeze |
+| `hospitality-wing` | tenant satisfaction < 55 | soft-failure → recovery-contract → luxury-exodus |
+
+Each escalation step has its own headline, brief, success condition, and reward/penalty values. A 10k-tick deterministic sandbox soak (`tests/simulation/sandboxSoak.test.ts`) verifies the simulation advances monotonically without NaN, stalls, or negative counters under late-game conditions, seed-locked to `0x5eed_4104` for regression stability.
+
 ## Internal Phase Content Status
 
 Phases are internal pacing anchors (see DESIGN.md). Unlock predicates are state-driven, not clock-driven. Content status refers to authored breadth available when a phase is reached:
