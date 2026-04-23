@@ -332,3 +332,17 @@ T18 (final — after everything)
 - Play Store listing, store assets, age rating, privacy disclosure
 - Release-signed Android AAB (debug APK only, per Mean Streets precedent)
 - Any reintroduction of React, R3F, Zustand, or Dexie
+
+## After T18
+
+Tagging `v1.0.0` is not "done." It is a checkpoint. The game is only finished when a player who has never seen it before can land on the page and fluently understand the entire journey — clearly communicated goals, legible objectives, and a satisfying end-of-game — without chat archaeology or a tutorial read.
+
+After T18 merges, continue autonomously:
+
+1. Observe the live web deploy from a cold-start player perspective.
+2. Identify the biggest comprehension, pacing, polish, or visual gap in that journey.
+3. Open a follow-up batch plan under `docs/plans/` describing that gap and the fix. Use `mcp__magic__*` (component inspiration, refiner) as the free path for visual/UX ideation since store credits are unavailable.
+4. Execute the follow-up batch the same way — PR per task, address review feedback, resolve threads, merge, move on.
+5. Repeat until the first-time-player test passes.
+
+Deliverables are discovery checkpoints, not stop points.
