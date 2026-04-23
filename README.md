@@ -21,9 +21,13 @@ Canonical docs live in [`docs/`](./docs):
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 - [`docs/UI_UX.md`](./docs/UI_UX.md)
 - [`docs/VISUAL_REVIEW.md`](./docs/VISUAL_REVIEW.md)
+- [`docs/AUDIO.md`](./docs/AUDIO.md)
 - [`docs/TESTING.md`](./docs/TESTING.md)
 - [`docs/PRODUCTION.md`](./docs/PRODUCTION.md)
 - [`docs/RELEASE.md`](./docs/RELEASE.md)
+- [`docs/LAUNCH.md`](./docs/LAUNCH.md)
+- [`docs/KNOWN_ISSUES.md`](./docs/KNOWN_ISSUES.md)
+- [`docs/PRESS.md`](./docs/PRESS.md)
 - [`docs/STATE.md`](./docs/STATE.md)
 - [`STANDARDS.md`](./STANDARDS.md)
 
