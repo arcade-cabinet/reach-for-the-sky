@@ -829,6 +829,11 @@ export class CutawayRenderer {
     h: number,
     dirt: number,
   ): void {
+    // Dirt draws every frame, so it must live on an ephemeral layer that
+    // gets cleared per-frame — NOT on roomsLayer which is cache-gated.
+    // Otherwise each frame stacks a new translucent dirt Graphics on the
+    // previous ones and rooms darken into black until the cache rebuilds
+    // (the "flashing glitch" players report).
     const graphics = new Graphics();
     graphics
       .rect(x + 2, y + 2, w - 4, h - 4)
@@ -841,7 +846,7 @@ export class CutawayRenderer {
         .circle(sx, sy, 1.3 + dirt * 2.1)
         .fill({ color: 0x3b2e27, alpha: 0.16 + dirt * 0.24 });
     }
-    this.roomsLayer.addChild(graphics);
+    this.roomOverlayLayer.addChild(graphics);
   }
 
   private drawElevator(elevator: ElevatorCar, view: ViewState): void {
