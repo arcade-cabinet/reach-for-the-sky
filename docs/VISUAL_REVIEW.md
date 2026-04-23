@@ -55,12 +55,22 @@ Coverage is guarded by `tests/rendering/roomCoverage.test.ts`:
 
 If a new room family is added, the test will fail until the map is updated.
 
-## Highest-Priority Remaining Art Debt
+## T12 Signoff (2026-04-23)
 
-- broader night/day variants for new T08 composites (currently single-state)
-- richer agent silhouette variety
-- better event/visit-specific visual markers
-- stronger environmental differentiation between tower identities
+Visual review is **signed off for v1.0** against the criteria in `docs/plans/release-1.0-batch.prq.md`. Each prior art-debt item lands in one of three buckets:
+
+| Item | Status | Evidence |
+|---|---|---|
+| Placeholder-feeling room composites | resolved (T08) | 12 new composites authored; `tests/rendering/roomCoverage.test.ts` blocks regression |
+| Dirt overlay flashing in cutaway | resolved (T10) | `drawDirt` now routes to the per-frame `roomOverlayLayer` instead of cache-gated `roomsLayer` |
+| Landing page organization | resolved (T10) | StartScreen rewritten with progressive disclosure; `global.css` shed 551 lines |
+| Agent silhouette variety | resolved (T12) | 3 new silhouettes (press, luxury, inspector) wired per cohort archetype at `agentVectorKey` |
+| Touch-target sizing | resolved (T09) | `tests/ui/touchTargetAudit.test.ts` guards 44×44 minimum on primary mobile controls |
+| Causal inspection legibility | resolved (T10) | Every inspection leads with a state-driven "because…" line |
+| First-run explainer | resolved (T10) | 3-step modal with focus trap, preference-persisted |
+| Night/day variants for T08 composites | deferred | `KNOWN_ISSUES.md` — single-state reads clearly |
+| Dedicated event/visit visual markers | deferred | `KNOWN_ISSUES.md` — particles + silhouettes + flock positioning carry the read |
+| Environmental cues tied to tower identity | deferred | `KNOWN_ISSUES.md` — post-1.0 polish batch |
 
 ## Review Standard
 
