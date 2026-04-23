@@ -102,6 +102,7 @@ import {
 } from '@/state/traits';
 import { gameWorld } from '@/state/world';
 import { GameCanvas } from './components/GameCanvas';
+import { StartScreen } from './components/StartScreen';
 
 const TOOL_ORDER: BuildingId[] = [
   'floor',
@@ -1898,139 +1899,20 @@ export function App() {
       </aside>
 
       {phaseState().phase === 'menu' && (
-        <section class="start-screen">
-          <div class="start-atmosphere" aria-hidden="true">
-            <span class="atmosphere-orbit orbit-a" />
-            <span class="atmosphere-orbit orbit-b" />
-            <span class="atmosphere-scanline" />
-            <span class="atmosphere-tower tower-a" />
-            <span class="atmosphere-tower tower-b" />
-            <span class="atmosphere-tower tower-c" />
-          </div>
-          <div class="start-card">
-            <div class="start-hero-copy">
-              <p class="start-kicker">Campaign-backed living tower simulator</p>
-              <h1>
-                <span>Reach</span>
-                <span>For The</span>
-                <span>Sky</span>
-              </h1>
-              <p class="start-deck">
-                Build a tower people actually have to live with. Architecture, tenants, crowds,
-                inspectors, weather, money, and public memory collide until the building earns a
-                role in the city.
-              </p>
-              <ul class="start-pill-row" aria-label="Core simulation pillars">
-                <li>Architecture</li>
-                <li>People</li>
-                <li>Reputation</li>
-                <li>City Pressure</li>
-              </ul>
-              <ul class="start-promise-line" aria-label="Simulation scale promises">
-                <li>Macro: district pressure</li>
-                <li>Meso: tower operations</li>
-                <li>Micro: people with memory</li>
-              </ul>
-              <div class="start-actions">
-                <button type="button" class="primary" onClick={handleStart}>
-                  Break Ground
-                </button>
-                <button type="button" onClick={handleContinue}>
-                  Continue Tower
-                </button>
-              </div>
-              <p class="start-footnote">
-                No rote VIP checklist. Public visits emerge from identity, pressure, venue mix, and
-                how people remember the place.
-              </p>
-              {startNotice() && <p class="start-notice">{startNotice()}</p>}
-            </div>
-
-            <aside class="start-showcase" aria-label="Campaign promise">
-              <div class="start-preview-frame">
-                <img
-                  src={assetUrl('assets/previews/skyline-victory-desktop.png')}
-                  alt="A completed skyline tower with the contracts drawer open"
-                />
-                <div class="start-preview-glow" />
-                <div class="start-live-badge">
-                  <span>Now serving</span>
-                  <strong>{PRODUCTION_PLATFORM_LABEL}</strong>
-                </div>
-              </div>
-              <div class="start-stat-grid">
-                <article>
-                  <span>Campaign</span>
-                  <strong>5 Acts</strong>
-                </article>
-                <article>
-                  <span>First Loop</span>
-                  <strong>10 Min</strong>
-                </article>
-                <article>
-                  <span>Endgame</span>
-                  <strong>Sandbox</strong>
-                </article>
-              </div>
-              <ol class="start-journey-map" aria-label="Player journey">
-                <li>Empty Lot</li>
-                <li>Working Tower</li>
-                <li>District Player</li>
-                <li>Public Landmark</li>
-                <li>Skyline Institution</li>
-              </ol>
-            </aside>
-
-            <section class="start-manifesto" aria-label="What the game asks from the player">
-              <article>
-                <span>Build</span>
-                <strong>Author the tower's public role</strong>
-                <p>Choose tenant mix, service capacity, venues, prestige, and access.</p>
-              </article>
-              <article>
-                <span>Diagnose</span>
-                <strong>Read pressure before it becomes scandal</strong>
-                <p>Use reports, lenses, inspections, memories, and contract signals.</p>
-              </article>
-              <article>
-                <span>Respond</span>
-                <strong>Turn failures into civic leverage</strong>
-                <p>Recover from bad visits, weather fronts, queues, and reputation shocks.</p>
-              </article>
-            </section>
-
-            <fieldset class="scenario-grid">
-              <legend>Playable city moments</legend>
-              {SCENARIO_CARDS.map((scenario) => (
-                <button type="button" onClick={() => void handleScenario(scenario.id)}>
-                  <img src={assetUrl(scenario.preview)} alt="" />
-                  <span>
-                    <em>Act {scenario.actFocus}</em>
-                    <strong>{scenario.title}</strong>
-                    <small>{scenario.description}</small>
-                  </span>
-                </button>
-              ))}
-            </fieldset>
-            {saveSlots().length > 0 && (
-              <div class="start-save-list">
-                <div class="eyebrow">Saved Towers</div>
-                {saveSlots()
-                  .slice(0, 4)
-                  .map((slot) => (
-                    <button
-                      type="button"
-                      classList={{ active: selectedSaveSlot() === slot.slotId }}
-                      onClick={() => setSelectedSaveSlot(slot.slotId)}
-                    >
-                      <strong>{slotLabel(slot.slotId)}</strong>
-                      <span>{formatSlotSummary(slot)}</span>
-                    </button>
-                  ))}
-              </div>
-            )}
-          </div>
-        </section>
+        <StartScreen
+          assetUrl={assetUrl}
+          formatSlotSummary={formatSlotSummary}
+          onContinue={handleContinue}
+          onScenario={handleScenario}
+          onSelectSaveSlot={setSelectedSaveSlot}
+          onStart={handleStart}
+          platformLabel={PRODUCTION_PLATFORM_LABEL}
+          saveSlots={saveSlots()}
+          scenarios={SCENARIO_CARDS}
+          selectedSaveSlot={selectedSaveSlot()}
+          slotLabel={slotLabel}
+          startNotice={startNotice()}
+        />
       )}
 
       {phaseState().phase === 'playing' && (

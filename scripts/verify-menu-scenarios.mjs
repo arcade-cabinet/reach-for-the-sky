@@ -26,8 +26,9 @@ async function main() {
       async () => {
         const value = await devtools.evaluate(`
 (() => {
-  const text = document.querySelector('.start-screen')?.textContent ?? '';
-  const cards = Array.from(document.querySelectorAll('.scenario-grid button')).map((button) => {
+  const startScreen = document.querySelector('.start-screen');
+  const text = startScreen?.textContent ?? '';
+  const cards = Array.from(startScreen?.querySelectorAll('.scenario-grid button') ?? []).map((button) => {
     const image = button.querySelector('img');
     return {
       text: button.textContent ?? '',
