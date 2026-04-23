@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createDiagnosticsBundle, diagnosticsFilename } from '@/diagnostics/diagnosticsBundle';
+import { PRODUCTION_RELEASE } from '@/simulation/content';
 import {
   createInitialCampaign,
   createInitialClock,
@@ -56,11 +57,13 @@ describe('diagnostics bundle', () => {
       userAgent: 'vitest',
     });
 
-    expect(bundle.release.version).toBe('1.0.0');
+    expect(bundle.release.version).toBe(PRODUCTION_RELEASE.version);
     expect(bundle.summary).toMatchObject({ day: 9, act: 3, funds: 123_456 });
     expect(bundle.corruptSaves[0]?.slotId).toBe('campaign-a');
     expect(bundle.rendererStats?.normalBaseHits).toBe(11);
     expect(bundle.runtime).toMatchObject({ preferencesReady: true, userAgent: 'vitest' });
-    expect(diagnosticsFilename(bundle)).toContain('reach-for-the-sky-diagnostics-1.0.0-');
+    expect(diagnosticsFilename(bundle)).toContain(
+      `reach-for-the-sky-diagnostics-${PRODUCTION_RELEASE.version}-`,
+    );
   });
 });

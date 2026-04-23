@@ -1,3 +1,4 @@
+import { PRODUCTION_RELEASE } from '../src/simulation/content.ts';
 import { waitFor, withDevPage } from './browser-smoke-harness.mjs';
 
 const buttonExpression = (label) => `
@@ -164,7 +165,7 @@ async function main() {
   if (!panel) return null;
   const text = panel.textContent ?? '';
   return text.includes('Diagnostics') &&
-    text.includes('v1.0.0') &&
+    text.includes('v${PRODUCTION_RELEASE.version}') &&
     text.includes('Export Debug Bundle') &&
     text.includes('Daily Report') &&
     text.includes('Rent')
