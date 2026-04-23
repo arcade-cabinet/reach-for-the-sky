@@ -129,12 +129,32 @@ export class DevToolsSession {
     this.webSocketUrl = webSocketUrl;
     this.nextId = 1;
     this.pending = new Map();
+    // T13: collect every runtime exception + console.{error,warning} event
+    // so verifiers can assert a clean console per run.
+    this.consoleProblems = [];
   }
 
   async open() {
     this.socket = new WebSocket(this.webSocketUrl);
     this.socket.addEventListener('message', (event) => {
       const message = JSON.parse(event.data);
+      if (message.method === 'Runtime.exceptionThrown') {
+        const detail = message.params?.exceptionDetails;
+        const text = detail?.exception?.description ?? detail?.text ?? 'Unknown runtime exception';
+        this.consoleProblems.push({ level: 'exception', text });
+        return;
+      }
+      if (message.method === 'Runtime.consoleAPICalled') {
+        const { type, args } = message.params ?? {};
+        if (type === 'error' || type === 'warning') {
+          const text = (args ?? [])
+            .map((arg) => arg.value ?? arg.description ?? arg.unserializableValue ?? '')
+            .filter(Boolean)
+            .join(' ');
+          this.consoleProblems.push({ level: type, text: text || `(empty ${type})` });
+        }
+        return;
+      }
       if (!message.id) return;
       const pending = this.pending.get(message.id);
       if (!pending) return;
@@ -146,6 +166,13 @@ export class DevToolsSession {
       this.socket.addEventListener('open', resolve, { once: true });
       this.socket.addEventListener('error', reject, { once: true });
     });
+  }
+
+  /** Return and clear the accumulated runtime exceptions + console errors/warnings. */
+  drainConsoleProblems() {
+    const problems = this.consoleProblems;
+    this.consoleProblems = [];
+    return problems;
   }
 
   send(method, params = {}) {
