@@ -25,6 +25,7 @@ import {
   saveSnapshot,
   selectDurableSimulationEvents,
 } from '@/persistence/saveRepository';
+import { resolveNativeBackAction } from '@/platform/nativeBack';
 import {
   isScenarioId,
   PRODUCTION_BUDGETS,
@@ -746,25 +747,32 @@ export function App() {
     try {
       const { App: CapacitorApp } = await import('@capacitor/app');
       const handle = await CapacitorApp.addListener('backButton', (event) => {
-        if (settingsOpen()) {
-          setSettingsOpen(false);
-          return;
+        switch (
+          resolveNativeBackAction({
+            settingsOpen: settingsOpen(),
+            contractsOpen: contractsOpen(),
+            playing: phaseState().phase === 'playing',
+            canGoBack: event.canGoBack,
+          })
+        ) {
+          case 'close-settings':
+            setSettingsOpen(false);
+            return;
+          case 'close-contracts':
+            setContractsOpen(false);
+            return;
+          case 'pause-to-settings':
+            setSpeed(0);
+            setSettingsOpen(true);
+            setSaveNotice('Paused from Android back. Save, load, or close Settings to continue.');
+            return;
+          case 'browser-back':
+            window.history.back();
+            return;
+          case 'minimize-app':
+            void CapacitorApp.minimizeApp();
+            return;
         }
-        if (contractsOpen()) {
-          setContractsOpen(false);
-          return;
-        }
-        if (phaseState().phase === 'playing') {
-          setSpeed(0);
-          setSettingsOpen(true);
-          setSaveNotice('Paused from Android back. Save, load, or close Settings to continue.');
-          return;
-        }
-        if (event.canGoBack) {
-          window.history.back();
-          return;
-        }
-        void CapacitorApp.minimizeApp();
       });
       if (nativeBackButtonDisposed) {
         void handle.remove();
