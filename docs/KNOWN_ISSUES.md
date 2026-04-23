@@ -1,6 +1,6 @@
 ---
 title: Known Issues
-updated: 2026-04-23
+updated: 2026-04-24
 status: current
 domain: release
 ---
@@ -22,6 +22,12 @@ This is the release-time parking lot. Items here are **explicitly** waived for v
 | Gate | Decision | Target |
 |---|---|---|
 | Lighthouse perf ≥90 / a11y ≥95 enforcement in verify:release | `@lhci/cli` adds ~40 MB of deps for marginal coverage over the existing `verify:render-stats` + new T13 console-clean gate. Real perf regressions show up in render stats or console errors first. If a real Lighthouse-caught regression lands post-1.0, add it then. | post-1.0 if justified |
+
+## Audio — deferred from T11
+
+| Surface | Severity | Decision | Target |
+|---|---|---|---|
+| Sampled OGG coverage for `visit-arrival`, `visit-departure`, `contract-complete`, `drawer-open` cues | low | These four cues ship with procedural-synthesis fallback only; the sprite has zero-duration placeholders so the play path resolves to Tone.js. Procedural fallback is audibly distinct per cue, so no cue is silent. Sourcing a second-take OGG with real samples is a polish pass, not a v1.0 blocker. | post-1.0 audio pass |
 
 ## Platform / Release — out of scope for v1.0
 
