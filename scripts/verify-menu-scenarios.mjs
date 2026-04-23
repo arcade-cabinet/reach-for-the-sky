@@ -2,7 +2,7 @@ import { waitFor, withDevPage } from './browser-smoke-harness.mjs';
 
 const expectedScenarios = ['Working Tower', 'Skyline Charter', 'Weather Front', 'Public Recovery'];
 const expectedLandingCopy = [
-  'Campaign-backed living tower simulator',
+  'Emergent living-tower simulator',
   'Macro: district pressure',
   'Meso: tower operations',
   'Micro: people with memory',
