@@ -875,12 +875,21 @@ export function App() {
       if (events.includes('cafe-sale')) audio?.play('elevator');
       if (events.includes('hotel-checkout')) audio?.play('build');
       if (events.includes('milestone')) audio?.play('milestone');
-      if (events.includes('visit-arrival')) audio?.play('elevator');
+      if (events.includes('visit-arrival')) audio?.play('visit-arrival');
+      if (events.includes('visit-departure')) audio?.play('visit-departure');
       if (events.includes('visit-spend')) audio?.play('rent');
       if (events.includes('visit-canceled')) audio?.play('warning');
-      if (events.includes('contract-complete')) audio?.play('milestone');
+      if (events.includes('contract-complete')) audio?.play('contract-complete');
       if (events.includes('contract-failed')) audio?.play('warning');
       if (events.includes('victory')) audio?.play('milestone');
+
+      // Contextual ambient score tracks tower state every tick. Cheap — the
+      // engine smooths the gain/detune ramps internally and no-ops pre-unlock.
+      audio?.updateAmbient({
+        transitPressure: economyState().transitPressure,
+        agentCount: towerState().agents.length,
+        publicTrust: macroState().publicTrust,
+      });
     }, TICK_RATE);
     onCleanup(() => {
       nativeBackButtonDisposed = true;
@@ -1067,7 +1076,11 @@ export function App() {
             class="side-button"
             classList={{ active: contractsOpen() }}
             aria-expanded={contractsOpen()}
-            onClick={() => setContractsOpen((open) => !open)}
+            onClick={() => {
+              const nextOpen = !contractsOpen();
+              setContractsOpen(nextOpen);
+              if (nextOpen) audio?.play('drawer-open');
+            }}
             title="Contracts: active goals, visits, and identity declaration"
           >
             <span>Contracts</span>
@@ -1144,7 +1157,11 @@ export function App() {
             class="side-button settings-button"
             aria-label="Open settings"
             aria-expanded={settingsOpen()}
-            onClick={() => setSettingsOpen((open) => !open)}
+            onClick={() => {
+              const nextOpen = !settingsOpen();
+              setSettingsOpen(nextOpen);
+              if (nextOpen) audio?.play('drawer-open');
+            }}
             title="Settings: audio, display, accessibility, and saves"
           >
             <span>Settings</span>
