@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "savedAt": "2026-04-10T12:00:00.000Z",
+  "tower": {
+    "rooms": [
+      {
+        "id": "room-lobby-1",
+        "type": "lobby",
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 2,
+        "dirt": 0,
+        "seed": 101
+      },
+      {
+        "id": "room-office-1",
+        "type": "office",
+        "x": 0,
+        "y": 2,
+        "width": 6,
+        "height": 2,
+        "dirt": 15,
+        "seed": 207
+      },
+      {
+        "id": "room-hotel-1",
+        "type": "hotel",
+        "x": 6,
+        "y": 2,
+        "width": 4,
+        "height": 2,
+        "dirt": 3,
+        "seed": 312
+      }
+    ],
+    "shafts": [],
+    "elevators": [],
+    "agents": [],
+    "particles": [],
+    "notifications": [
+      {
+        "id": "notice-v101-seed",
+        "text": "Captured from a v1.0.1 session.",
+        "type": "info",
+        "time": 240
+      }
+    ],
+    "clouds": [],
+    "visits": [],
+    "visitMemories": []
+  },
+  "clock": {
+    "tick": 12000,
+    "day": 12,
+    "speed": 0,
+    "rngSeed": 1591394564
+  },
+  "economy": {
+    "funds": 48500,
+    "population": 6,
+    "activeAgents": 2,
+    "stars": 1,
+    "cleanliness": 92,
+    "lifetimeRent": 9200,
+    "dailyRevenue": 420,
+    "dailyCosts": 180,
+    "netRevenue": 240,
+    "towerValue": 75000,
+    "transitPressure": 12,
+    "servicePressure": 8,
+    "tenantSatisfaction": 88,
+    "rentEfficiency": 96
+  },
+  "view": {
+    "selectedTool": null,
+    "lensMode": "normal",
+    "panX": 0,
+    "panY": 150,
+    "zoom": 1,
+    "tutorialStep": 0
+  },
+  "settings": {
+    "audio": {
+      "proceduralVolume": 0.55,
+      "sampleVolume": 0.75,
+      "muted": false
+    },
+    "accessibility": {
+      "highContrast": false,
+      "reducedMotion": false
+    },
+    "ui": {
+      "displayScale": 1,
+      "inputHints": true,
+      "diagnosticsVisible": true,
+      "safeAreaMode": "auto"
+    }
+  },
+  "inspection": {
+    "selection": null
+  },
+  "campaign": {
+    "mode": "campaign",
+    "act": 2,
+    "actTitle": "First Operating Diagnosis",
+    "permits": ["foundation", "occupancy-basic"],
+    "reputation": 42,
+    "towerIdentity": "business",
+    "declaredIdentity": null,
+    "identityScores": {
+      "business": 18,
+      "residential": 4,
+      "hospitality": 6,
+      "civic": 2,
+      "luxury": 0,
+      "mixedUse": 2
+    },
+    "unlockedSystems": ["construction", "transit-basics", "daily-reports"],
+    "activeContracts": [],
+    "completedContracts": [],
+    "failedContracts": [],
+    "reports": [],
+    "victory": "none",
+    "lastReportDay": 11,
+    "successfulVisits": 2,
+    "failedVisits": 0
+  },
+  "macro": {
+    "districtIdentity": "unformed",
+    "marketCycle": "steady",
+    "publicTrust": 62,
+    "businessDemand": 38,
+    "residentialDemand": 28,
+    "tourismDemand": 18,
+    "regulationPressure": 8,
+    "weatherRisk": 6,
+    "fame": 4,
+    "civicPressure": 12,
+    "scandalRisk": 4,
+    "cityInfluence": 0,
+    "skylineStatus": 0,
+    "lastUpdatedDay": 11
+  },
+  "operations": {
+    "floorCount": 2,
+    "heightRisk": 0,
+    "transitTopology": 0,
+    "serviceCoverage": 12,
+    "venueCredibility": 0,
+    "safetyReadiness": 10,
+    "privacyComfort": 45,
+    "noiseControl": 72,
+    "eventReadiness": 0,
+    "revenueHealth": 24,
+    "operationalGrade": 18,
+    "floorBands": []
+  }
+}
