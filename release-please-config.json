@@ -22,7 +22,15 @@
   ],
   "packages": {
     ".": {
-      "package-name": "reach-for-the-sky"
+      "package-name": "reach-for-the-sky",
+      "extra-files": [
+        "index.html",
+        {
+          "type": "json",
+          "path": "public/manifest.webmanifest",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }
