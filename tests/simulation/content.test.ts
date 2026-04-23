@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   CAMPAIGN_ACT_REGISTRY,
@@ -9,10 +12,17 @@ import {
 } from '@/simulation/content';
 import { BUILDINGS, type BuildingId } from '@/simulation/types';
 
+// Read package.json dynamically so release-please's version bump stays the
+// source of truth. Pinning the expected version to a string here would make
+// every release PR red until a maintainer edited this test by hand.
+const packageJson = JSON.parse(
+  readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json'), 'utf8'),
+) as { version: string };
+
 describe('production content registry', () => {
   it('declares the production release and pacing budgets', () => {
     expect(PRODUCTION_RELEASE).toMatchObject({
-      version: '1.0.1',
+      version: packageJson.version,
       releaseChannel: 'production',
       saveSchemaVersion: 1,
     });
