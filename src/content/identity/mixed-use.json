@@ -1,0 +1,13 @@
+{
+  "identity": "mixed-use",
+  "archetypeBias": {
+    "school-teachers": 0.12,
+    "trade-buyers": 0.14,
+    "movie-star": 0.1,
+    "politician": 0.08
+  },
+  "traitDelta": {
+    "noiseTolerance": 0.04,
+    "groupCohesion": -0.04
+  }
+}

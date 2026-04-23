@@ -1,0 +1,13 @@
+{
+  "identity": "luxury",
+  "archetypeBias": {
+    "movie-star": 1.25,
+    "foreign-prince": 0.95
+  },
+  "traitDelta": {
+    "statusSensitivity": 0.1,
+    "privacyDemand": 0.09,
+    "spendingPower": 0.08,
+    "cleanlinessDemand": 0.06
+  }
+}

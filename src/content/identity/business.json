@@ -1,0 +1,13 @@
+{
+  "identity": "business",
+  "archetypeBias": {
+    "trade-buyers": 0.5,
+    "politician": 0.25,
+    "labor-delegation": 0.2
+  },
+  "traitDelta": {
+    "patience": -0.05,
+    "noiseTolerance": 0.08,
+    "statusSensitivity": 0.05
+  }
+}

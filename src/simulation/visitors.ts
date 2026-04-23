@@ -1,4 +1,5 @@
 import { AUTHORED_VISITOR_ARCHETYPES } from '../content/cohorts';
+import { applyIdentityTraitDelta, IDENTITY_CONSEQUENCES } from '../content/identity';
 import { createSeededRandom, generateId } from './random';
 import type { EconomyState, TowerIdentity, TowerState } from './types';
 
@@ -269,25 +270,9 @@ function chooseArchetype(
     if (entry) entry[1] += Math.max(0, amount);
   };
 
-  if (towerIdentity === 'business') {
-    addWeight('trade-buyers', 0.5);
-    addWeight('politician', 0.25);
-    addWeight('labor-delegation', 0.2);
-  } else if (towerIdentity === 'hospitality') {
-    addWeight('movie-star', 1.15);
-    addWeight('foreign-prince', 0.76);
-    addWeight('trade-buyers', 0.36);
-  } else if (towerIdentity === 'civic') {
-    addWeight('school-teachers', 0.36);
-    addWeight('buddhist-monks', 0.24);
-    addWeight('city-inspectors', 0.28);
-  } else if (towerIdentity === 'luxury') {
-    addWeight('movie-star', 1.25);
-    addWeight('foreign-prince', 0.95);
-  } else if (towerIdentity === 'residential') {
-    addWeight('school-teachers', 0.28);
-    addWeight('stamp-collectors', 0.2);
-    addWeight('buddhist-monks', 0.16);
+  const identityBias = IDENTITY_CONSEQUENCES[towerIdentity]?.archetypeBias ?? {};
+  for (const [id, amount] of Object.entries(identityBias) as Array<[VisitorArchetypeId, number]>) {
+    addWeight(id, amount);
   }
 
   addWeight('movie-star', fame > 70 && trust > 50 ? 1.2 : fame > 45 ? 0.45 : 0);
@@ -374,6 +359,7 @@ export function generateVisitCohort(
 ): VisitCohort {
   const random = createSeededRandom(seed);
   const archetype = chooseArchetype(random, tower, context);
+  const activeIdentity = context.towerIdentity ?? estimateIdentity(tower);
   const sizeRange = archetype.maxSize - archetype.minSize;
   const createdHour = schedule.hour ?? 9;
   const size = archetype.minSize + Math.round(random() * sizeRange);
@@ -383,7 +369,7 @@ export function generateVisitCohort(
     archetypeId: archetype.id,
     label: archetype.label,
     size,
-    traits: varyTraits(archetype.traits, random),
+    traits: applyIdentityTraitDelta(varyTraits(archetype.traits, random), activeIdentity),
     goals: [...archetype.goals],
     volatility: clamp01(archetype.volatility + (random() - 0.5) * 0.12),
     status: 'inquiry',

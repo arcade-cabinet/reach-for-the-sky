@@ -1,0 +1,13 @@
+{
+  "identity": "civic",
+  "archetypeBias": {
+    "school-teachers": 0.36,
+    "buddhist-monks": 0.24,
+    "city-inspectors": 0.28
+  },
+  "traitDelta": {
+    "kindness": 0.06,
+    "patience": 0.05,
+    "statusSensitivity": -0.06
+  }
+}
