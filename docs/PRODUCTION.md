@@ -1,6 +1,6 @@
 ---
 title: Production Checklist
-updated: 2026-04-23
+updated: 2026-04-24
 status: current
 domain: release
 ---
@@ -62,13 +62,14 @@ This document owns release readiness and the explicit remaining work. It is the 
 ### Platform / Release
 
 - define and verify a full iOS release path
-- add a launch-readiness checklist specific to this repo
 - produce final store-listing copy and submission asset workflow
+
+Launch-readiness checklist for v1.0 lives in `docs/LAUNCH.md` and is the canonical day-of-launch gate.
 
 ### Documentation
 
 - keep docs current as systems and content expand
-- add a true launch-readiness doc once store submission work begins
+- extend `docs/LAUNCH.md` with store-submission lanes when that work begins
 
 ## Suggested Next Milestones
 
