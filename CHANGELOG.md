@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.1.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.0.1...v1.1.0) (2026-04-23)
+
+
+### Features
+
+* **audio:** expand cue set + contextual ambient score (T11) ([#16](https://github.com/arcade-cabinet/reach-for-the-sky/issues/16)) ([cb7660a](https://github.com/arcade-cabinet/reach-for-the-sky/commit/cb7660af51aaecf9f3bcdf36d647b0e7cb60ef2b))
+* **campaign:** reframe acts as emergent phases, remove player-facing ladder (T01) ([#5](https://github.com/arcade-cabinet/reach-for-the-sky/issues/5)) ([7b3c265](https://github.com/arcade-cabinet/reach-for-the-sky/commit/7b3c265afd44bf7babec2b452f976089e689321f))
+* **cohorts:** add 3 new archetypes, reach 13 authored (T06) ([#11](https://github.com/arcade-cabinet/reach-for-the-sky/issues/11)) ([83a2a42](https://github.com/arcade-cabinet/reach-for-the-sky/commit/83a2a429a3e8aa449a80cd15f4fb6853a1d59e8e))
+* **cohorts:** author per-archetype GOAP goals via JSON data files (T02) ([#7](https://github.com/arcade-cabinet/reach-for-the-sky/issues/7)) ([4f9e1a6](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4f9e1a66804ed720e58c21b3a21f20e8922af32d))
+* **dev:** agent debug overlay, tree-shaken from production (T05) ([#10](https://github.com/arcade-cabinet/reach-for-the-sky/issues/10)) ([f2ef4c7](https://github.com/arcade-cabinet/reach-for-the-sky/commit/f2ef4c7e2b5674ee7cdc3c47c62309d38393a93b))
+* **flock:** per-tick cohesion/separation for cohort groups (T03) ([#8](https://github.com/arcade-cabinet/reach-for-the-sky/issues/8)) ([a64a58e](https://github.com/arcade-cabinet/reach-for-the-sky/commit/a64a58e0ee01640eaaff20cf7b38fee0c46ee5b2))
+* **identity:** authored identity → cohort-pool and trait deltas (T04) ([#9](https://github.com/arcade-cabinet/reach-for-the-sky/issues/9)) ([8e8e8eb](https://github.com/arcade-cabinet/reach-for-the-sky/commit/8e8e8eb24cb19b3df1a257f4af6c501356b26567))
+* **mobile:** touch target audit + 44px floor on primary controls (T09) ([#14](https://github.com/arcade-cabinet/reach-for-the-sky/issues/14)) ([fd6238e](https://github.com/arcade-cabinet/reach-for-the-sky/commit/fd6238e9222d54a1d222961175f10e9675f1d04c))
+* **rendering:** authored SVG composites for all room families (T08) ([#13](https://github.com/arcade-cabinet/reach-for-the-sky/issues/13)) ([dd62ffa](https://github.com/arcade-cabinet/reach-for-the-sky/commit/dd62ffac06b1583332d16fd96627ac7d42fa0f5f))
+* **sandbox:** recovery arcs + 10k-tick seed-locked soak (T07) ([#12](https://github.com/arcade-cabinet/reach-for-the-sky/issues/12)) ([1fc6f2f](https://github.com/arcade-cabinet/reach-for-the-sky/commit/1fc6f2f8c8f2a4c2028dd850e61d0093c63a2413))
+* **ux:** first-run explainer + causal inspection lines + tooltips (T10) ([#15](https://github.com/arcade-cabinet/reach-for-the-sky/issues/15)) ([35a5196](https://github.com/arcade-cabinet/reach-for-the-sky/commit/35a51967c91dfd1e6f4739841d2b7764e1138b4f))
+* **verify:** console-clean gate + T13 web harden signoff ([#18](https://github.com/arcade-cabinet/reach-for-the-sky/issues/18)) ([3cfefd0](https://github.com/arcade-cabinet/reach-for-the-sky/commit/3cfefd0a680cf7b06c250834f92f333d189fb9e0))
+* **visual:** wire archetype silhouettes + T12 signoff + KNOWN_ISSUES (T12) ([#17](https://github.com/arcade-cabinet/reach-for-the-sky/issues/17)) ([11d5a40](https://github.com/arcade-cabinet/reach-for-the-sky/commit/11d5a4023def1a47ece7ae671393efba375eafa3))
+
+
+### Documentation
+
+* add launch-readiness checklist (T15) ([#20](https://github.com/arcade-cabinet/reach-for-the-sky/issues/20)) ([f0abca3](https://github.com/arcade-cabinet/reach-for-the-sky/commit/f0abca3904111180113265604b19e184b9b9b2a3))
+* audit known-issues registry + record T11 audio deferral (T17) ([#22](https://github.com/arcade-cabinet/reach-for-the-sky/issues/22)) ([e6fbec1](https://github.com/arcade-cabinet/reach-for-the-sky/commit/e6fbec15b8505ef48fc9bc997d58adbe972a5b41))
+* press kit + README doc-link sweep (T16) ([#21](https://github.com/arcade-cabinet/reach-for-the-sky/issues/21)) ([1e64ea1](https://github.com/arcade-cabinet/reach-for-the-sky/commit/1e64ea18298fd12bcb8af594be1f6d49dc31ab26))
+
 ## [1.0.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.0.0...v1.0.1) (2026-04-23)
 
 
