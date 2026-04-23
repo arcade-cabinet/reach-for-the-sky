@@ -12,7 +12,7 @@ import { BUILDINGS, type BuildingId } from '@/simulation/types';
 describe('production content registry', () => {
   it('declares the production release and pacing budgets', () => {
     expect(PRODUCTION_RELEASE).toMatchObject({
-      version: '1.0.0',
+      version: '1.0.1',
       releaseChannel: 'production',
       saveSchemaVersion: 1,
     });

@@ -55,7 +55,11 @@ async function verifyAndroidLauncherResources() {
 
 async function main() {
   const packageJson = JSON.parse(await readFile(resolve('package.json'), 'utf8'));
-  assert(packageJson.version === '1.0.0', 'Package version is not 1.0.0');
+  const expectedVersion = packageJson.version;
+  assert(
+    typeof expectedVersion === 'string' && expectedVersion.length > 0,
+    'Package version is missing',
+  );
 
   await verifyAndroidLauncherResources();
 
@@ -119,14 +123,14 @@ async function main() {
     );
 
     assert(metadata.title === 'Reach for the Sky', 'Document title is incorrect');
-    assert(metadata.appVersion === '1.0.0', 'Application version meta tag is incorrect');
+    assert(metadata.appVersion === expectedVersion, 'Application version meta tag is incorrect');
     assert(metadata.releaseChannel === 'production', 'Release channel meta tag is incorrect');
     assert(
       metadata.description.includes('modern living-tower simulator'),
       'Document description does not describe the game identity',
     );
     assert(metadata.manifest.name === 'Reach for the Sky', 'Manifest name is incorrect');
-    assert(metadata.manifest.version === '1.0.0', 'Manifest version is incorrect');
+    assert(metadata.manifest.version === expectedVersion, 'Manifest version is incorrect');
     assert(metadata.manifest.display === 'standalone', 'Manifest display mode is not standalone');
     assert(metadata.manifest.theme_color === '#061018', 'Manifest theme color is incorrect');
     assert(
