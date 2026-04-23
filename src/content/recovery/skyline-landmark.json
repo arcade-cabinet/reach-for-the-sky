@@ -1,0 +1,37 @@
+{
+  "institution": "skyline-landmark",
+  "label": "Skyline Landmark",
+  "trigger": {
+    "publicTrust": 45,
+    "direction": "below"
+  },
+  "arc": [
+    {
+      "phase": "soft-failure",
+      "headline": "Skyline status under public review",
+      "brief": "The tower's landmark credentials are being questioned in the press. The skyline charter isn't revoked — yet.",
+      "successCondition": "host two successful visits within 5 days",
+      "failureEscalation": "reputation-collapse",
+      "rewardTrust": 8,
+      "penaltyTrust": 6
+    },
+    {
+      "phase": "recovery-contract",
+      "headline": "Landmark Rehabilitation",
+      "brief": "Prove the institution is worth its charter. Clean rooms, calm queues, one authored public outcome.",
+      "successCondition": "public trust ≥ 60 AND one praised visit",
+      "failureEscalation": "charter-revocation",
+      "rewardTrust": 14,
+      "rewardFunds": 80000,
+      "penaltyTrust": 12
+    },
+    {
+      "phase": "charter-revocation",
+      "headline": "Skyline charter withdrawn",
+      "brief": "The tower is still operating but the skyline designation is gone. Re-earn it the long way.",
+      "successCondition": "reach 75 public trust AND 80 event readiness",
+      "rewardTrust": 20,
+      "rewardFunds": 140000
+    }
+  ]
+}

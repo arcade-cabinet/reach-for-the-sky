@@ -1,0 +1,37 @@
+{
+  "institution": "hospitality-wing",
+  "label": "Hospitality Wing",
+  "trigger": {
+    "tenantSatisfaction": 55,
+    "direction": "below"
+  },
+  "arc": [
+    {
+      "phase": "soft-failure",
+      "headline": "Hotel guests leave quiet reviews",
+      "brief": "Satisfaction is sliding. Not scandalous — yet it's visible to the cohorts who still arrive.",
+      "successCondition": "tenant satisfaction ≥ 68 within 4 days",
+      "failureEscalation": "luxury-exodus",
+      "rewardTrust": 3,
+      "penaltyTrust": 3
+    },
+    {
+      "phase": "recovery-contract",
+      "headline": "Hospitality Standards Review",
+      "brief": "A single luxury cohort will decide whether the wing keeps its reputation. Clean, private, quiet — no exceptions.",
+      "successCondition": "one praised luxury or hospitality cohort visit",
+      "failureEscalation": "luxury-exodus",
+      "rewardTrust": 9,
+      "rewardFunds": 70000,
+      "penaltyTrust": 9
+    },
+    {
+      "phase": "luxury-exodus",
+      "headline": "Luxury cohorts stop arriving",
+      "brief": "Movie-star and foreign-prince pools are routing around the tower. Rebuild the reputation before the identity drifts.",
+      "successCondition": "reach 72 tenant satisfaction AND host 2 praised visits",
+      "rewardTrust": 15,
+      "rewardFunds": 100000
+    }
+  ]
+}
