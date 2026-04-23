@@ -1,3 +1,4 @@
+import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
 import { createEffect, createMemo, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { SkyAudioEngine } from '@/audio';
 import { createDiagnosticsBundle, diagnosticsFilename } from '@/diagnostics/diagnosticsBundle';
@@ -418,6 +419,8 @@ export function App() {
   const [expandedObjectiveKey, setExpandedObjectiveKey] = createSignal<string | null>(null);
   let audio: SkyAudioEngine | null = null;
   let persistenceQueue: Promise<unknown> = Promise.resolve();
+  let nativeBackButtonHandle: PluginListenerHandle | null = null;
+  let nativeBackButtonDisposed = false;
 
   const phaseState = createMemo(() => requireValue(phase(), 'phase'));
   const towerState = createMemo(() => requireValue(tower(), 'tower'));
@@ -738,6 +741,41 @@ export function App() {
     });
   };
 
+  const installNativeBackButton = async () => {
+    if (Capacitor.getPlatform() === 'web' || nativeBackButtonDisposed) return;
+    try {
+      const { App: CapacitorApp } = await import('@capacitor/app');
+      const handle = await CapacitorApp.addListener('backButton', (event) => {
+        if (settingsOpen()) {
+          setSettingsOpen(false);
+          return;
+        }
+        if (contractsOpen()) {
+          setContractsOpen(false);
+          return;
+        }
+        if (phaseState().phase === 'playing') {
+          setSpeed(0);
+          setSettingsOpen(true);
+          setSaveNotice('Paused from Android back. Save, load, or close Settings to continue.');
+          return;
+        }
+        if (event.canGoBack) {
+          window.history.back();
+          return;
+        }
+        void CapacitorApp.minimizeApp();
+      });
+      if (nativeBackButtonDisposed) {
+        void handle.remove();
+        return;
+      }
+      nativeBackButtonHandle = handle;
+    } catch {
+      nativeBackButtonHandle = null;
+    }
+  };
+
   onMount(() => {
     void (async () => {
       await installCapacitorPreferences().catch(() => undefined);
@@ -758,6 +796,7 @@ export function App() {
     })();
 
     audio = new SkyAudioEngine(settingsState().audio);
+    void installNativeBackButton();
     const interval = window.setInterval(() => {
       if (phaseState().phase !== 'playing') return;
       const events = tickWorld();
@@ -775,7 +814,11 @@ export function App() {
       if (events.includes('contract-failed')) audio?.play('warning');
       if (events.includes('victory')) audio?.play('milestone');
     }, TICK_RATE);
-    onCleanup(() => window.clearInterval(interval));
+    onCleanup(() => {
+      nativeBackButtonDisposed = true;
+      window.clearInterval(interval);
+      void nativeBackButtonHandle?.remove();
+    });
   });
 
   createEffect(() => {

@@ -25,6 +25,8 @@ A standalone Solid + PixiJS vertical cutaway skyscraper simulator.
 
 Keep `sql.js` pinned to `1.11.0` while using `jeep-sqlite@2.8.0`; the web component's WASM loader expects that ABI.
 
+Android hardware Back belongs to the native game shell. It should close Settings, close Contracts, or pause an active run into Settings before falling through to browser history or minimizing the app.
+
 ## Implementation Notes
 
 The 2D POC remains the gameplay blueprint. The 3D POC informs atmosphere and skyline/depth, but the primary player interaction is a Pixi-rendered cutaway tower. Solid should observe selected Koota slices for HUD and panels; Pixi should consume compact simulation snapshots and avoid high-volume reactive room or agent components.

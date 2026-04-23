@@ -38,8 +38,12 @@ pnpm verify:build-flow
 pnpm verify:campaign-flow
 pnpm verify:mobile-build-flow
 pnpm verify:save-load
+pnpm verify:corrupt-save
 pnpm verify:preferences
 pnpm verify:report-loop
+pnpm verify:public-memory
+pnpm verify:memory-repair
+pnpm verify:invite-visit
 pnpm verify:menu-scenarios
 pnpm verify:audio-assets
 pnpm verify:app-metadata
@@ -50,6 +54,8 @@ pnpm exec cap sync android
 ```
 
 `pnpm build` copies `node_modules/sql.js/dist/sql-wasm.wasm` to `public/assets/sql-wasm.wasm` before typechecking and bundling. Keep `sql.js` pinned to `1.11.0`; `jeep-sqlite@2.8.0` expects that WASM ABI and newer `sql.js` binaries fail in the browser web store.
+
+Android hardware Back is treated as part of the game shell: it closes the right Settings drawer first, then the left Contracts drawer, pauses an active run into Settings, and only falls through to web history or app minimize when no in-game panel needs handling.
 
 ## Game Direction
 
