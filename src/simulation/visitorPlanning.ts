@@ -71,26 +71,39 @@ function priorityFromDraft(draft: PriorityDraft): VisitorHostingPriority {
 }
 
 class HostingPriorityEvaluator extends GoalEvaluator {
-  readonly priority: VisitorHostingPriority;
+  readonly index: number;
 
-  constructor(priority: VisitorHostingPriority) {
+  constructor(index: number) {
     super(1);
-    this.priority = priority;
+    this.index = index;
   }
 
-  override calculateDesirability(): number {
-    return this.priority.score / 100;
+  override calculateDesirability(owner: HostingPlanOwner): number {
+    return (owner.priorities[this.index]?.score ?? 0) / 100;
   }
 
   override setGoal(owner: HostingPlanOwner): void {
-    owner.selectedPriority = this.priority;
+    owner.selectedPriority = owner.priorities[this.index] ?? null;
   }
+}
+
+const hostingThinkers = new Map<number, Think>();
+
+function thinkerForPriorityCount(count: number): Think {
+  const cached = hostingThinkers.get(count);
+  if (cached) return cached;
+  const thinker = new Think();
+  for (let index = 0; index < count; index += 1) {
+    thinker.addEvaluator(new HostingPriorityEvaluator(index));
+  }
+  hostingThinkers.set(count, thinker);
+  return thinker;
 }
 
 function choosePrimaryWithYuka(priorities: VisitorHostingPriority[]): VisitorHostingPriority {
   const owner: HostingPlanOwner = { priorities, selectedPriority: null };
-  const thinker = new Think(owner);
-  for (const priority of priorities) thinker.addEvaluator(new HostingPriorityEvaluator(priority));
+  const thinker = thinkerForPriorityCount(priorities.length);
+  thinker.owner = owner;
   thinker.arbitrate();
   return owner.selectedPriority ?? priorities[0];
 }

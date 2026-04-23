@@ -1,4 +1,4 @@
-package com.getcapacitor.myapp;
+package com.arcadecabinet.reachforthesky;
 
 import static org.junit.Assert.*;
 

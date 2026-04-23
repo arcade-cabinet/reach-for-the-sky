@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { planAgentRoute } from '@/simulation/ai/navigation';
+import {
+  createTowerNavigationSignature,
+  getTowerNavigationGraph,
+  planAgentRoute,
+} from '@/simulation/ai/navigation';
 import { createInitialEconomy, createInitialTower } from '@/simulation/initialState';
 import { placeBuild } from '@/simulation/placement';
 import { resetIdsForTests } from '@/simulation/random';
@@ -68,5 +72,25 @@ describe('Yuka tower navigation', () => {
 
     expect(route.reachable).toBe(false);
     expect(route.waypoints).toHaveLength(0);
+  });
+
+  it('caches navigation graphs by topology instead of room runtime state', () => {
+    const { tower } = applyBuilds([
+      ['lobby', { gx: 0, gy: 0 }, { gx: 2, gy: 0 }],
+      ['floor', { gx: 0, gy: 1 }, { gx: 2, gy: 1 }],
+      ['elevator', { gx: 0, gy: 0 }, { gx: 0, gy: 1 }],
+      ['office', { gx: 1, gy: 1 }, { gx: 2, gy: 1 }],
+    ] as const);
+
+    const signature = createTowerNavigationSignature(tower);
+    const first = getTowerNavigationGraph(tower);
+    const dirtyClone = {
+      ...tower,
+      rooms: tower.rooms.map((room) => ({ ...room, dirt: room.type === 'office' ? 100 : 0 })),
+    };
+    const second = getTowerNavigationGraph(dirtyClone);
+
+    expect(createTowerNavigationSignature(dirtyClone)).toBe(signature);
+    expect(second).toBe(first);
   });
 });

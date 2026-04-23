@@ -260,28 +260,22 @@ class IdleEvaluator extends GoalEvaluator {
   }
 }
 
-export function selectAgentIntent(
-  agent: Agent,
-  tower: TowerState,
-  economy: EconomyState,
-  hour: number,
-  cohort?: VisitCohort,
-): AgentDecisionContext {
-  const context: AgentDecisionContext = { agent, tower, economy, hour, intent: 'idle', cohort };
-  const thinker = new Think(context);
-  thinker
-    .addEvaluator(new EatAtCafeEvaluator(profileFor(agent).lunchBias))
-    .addEvaluator(new KeepWorkingEvaluator(profileFor(agent).punctuality))
-    .addEvaluator(new ExitEvaluator(profileFor(agent).punctuality))
-    .addEvaluator(new CleanRoomEvaluator(profileFor(agent).serviceBias))
+const agentThinkers = new Map<AgentPersonality, Think>();
+
+function createThinkerForProfile(profile: PersonalityProfile): Think {
+  return new Think()
+    .addEvaluator(new EatAtCafeEvaluator(profile.lunchBias))
+    .addEvaluator(new KeepWorkingEvaluator(profile.punctuality))
+    .addEvaluator(new ExitEvaluator(profile.punctuality))
+    .addEvaluator(new CleanRoomEvaluator(profile.serviceBias))
     .addEvaluator(
       new VisitorRoomEvaluator(
         ['quiet'],
         ['gallery', 'skyGarden', 'conference', 'office'],
-        (owner, profile) =>
+        (owner, activeProfile) =>
           0.2 +
           (1 - (owner.cohort?.traits.noiseTolerance ?? 0.5)) * 0.52 +
-          profile.cleanlinessSensitivity * 0.16 -
+          activeProfile.cleanlinessSensitivity * 0.16 -
           owner.economy.transitPressure / 500,
       ),
     )
@@ -316,11 +310,31 @@ export function selectAgentIntent(
       new VisitorRoomEvaluator(
         ['food'],
         ['cafe', 'hotel', 'retail'],
-        (owner, profile) =>
-          0.18 + profile.lunchBias * 0.34 + (owner.cohort?.traits.kindness ?? 0.5) * 0.12,
+        (owner, activeProfile) =>
+          0.18 + activeProfile.lunchBias * 0.34 + (owner.cohort?.traits.kindness ?? 0.5) * 0.12,
       ),
     )
     .addEvaluator(new IdleEvaluator(0.2));
+}
+
+function thinkerFor(personality: AgentPersonality): Think {
+  const cached = agentThinkers.get(personality);
+  if (cached) return cached;
+  const thinker = createThinkerForProfile(PERSONALITY_PROFILES[personality]);
+  agentThinkers.set(personality, thinker);
+  return thinker;
+}
+
+export function selectAgentIntent(
+  agent: Agent,
+  tower: TowerState,
+  economy: EconomyState,
+  hour: number,
+  cohort?: VisitCohort,
+): AgentDecisionContext {
+  const context: AgentDecisionContext = { agent, tower, economy, hour, intent: 'idle', cohort };
+  const thinker = thinkerFor(agent.personality);
+  thinker.owner = context;
   thinker.arbitrate();
   return context;
 }

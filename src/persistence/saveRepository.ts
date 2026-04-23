@@ -59,6 +59,8 @@ export interface CorruptSaveRecord {
   detectedAt: string;
 }
 
+type GameDatabase = Awaited<ReturnType<typeof getDatabase>>;
+
 export type ParseSnapshotResult =
   | { ok: true; snapshot: SimulationSnapshot }
   | { ok: false; error: string };
@@ -230,12 +232,14 @@ export async function deleteCorruptSave(slotId: string): Promise<void> {
 
 export async function recordSimulationEvent(eventType: string, data: unknown): Promise<void> {
   const db = await getDatabase();
-  await db.run('INSERT INTO simulation_events (event_type, data, created_at) VALUES (?, ?, ?)', [
-    eventType,
-    JSON.stringify(data),
-    new Date().toISOString(),
-  ]);
-  await pruneSimulationEventsInDatabase(db);
+  await withDatabaseTransaction(db, async () => {
+    await db.run(
+      'INSERT INTO simulation_events (event_type, data, created_at) VALUES (?, ?, ?)',
+      [eventType, JSON.stringify(data), new Date().toISOString()],
+      false,
+    );
+    await pruneSimulationEventsInDatabase(db, PRODUCTION_BUDGETS.maxSavedEvents, false);
+  });
   await saveWebStore();
 }
 
@@ -252,14 +256,16 @@ export async function recordSimulationEvents(
 
   const db = await getDatabase();
   const createdAt = new Date().toISOString();
-  for (const eventType of durableEvents) {
-    await db.run('INSERT INTO simulation_events (event_type, data, created_at) VALUES (?, ?, ?)', [
-      eventType,
-      JSON.stringify({ ...context, batch: durableEvents }),
-      createdAt,
-    ]);
-  }
-  await pruneSimulationEventsInDatabase(db);
+  await withDatabaseTransaction(db, async () => {
+    for (const eventType of durableEvents) {
+      await db.run(
+        'INSERT INTO simulation_events (event_type, data, created_at) VALUES (?, ?, ?)',
+        [eventType, JSON.stringify({ ...context, batch: durableEvents }), createdAt],
+        false,
+      );
+    }
+    await pruneSimulationEventsInDatabase(db, PRODUCTION_BUDGETS.maxSavedEvents, false);
+  });
   await saveWebStore();
   return durableEvents.length;
 }
@@ -297,8 +303,9 @@ export async function listSimulationEvents(limit = 100): Promise<SimulationEvent
 }
 
 async function pruneSimulationEventsInDatabase(
-  db: Awaited<ReturnType<typeof getDatabase>>,
+  db: GameDatabase,
   maxRows = PRODUCTION_BUDGETS.maxSavedEvents,
+  transaction = true,
 ): Promise<void> {
   const boundedRows = Math.max(100, Math.floor(maxRows));
   await db.run(
@@ -307,6 +314,7 @@ async function pruneSimulationEventsInDatabase(
        SELECT id FROM simulation_events ORDER BY id DESC LIMIT ?
      )`,
     [boundedRows],
+    transaction,
   );
 }
 
@@ -315,7 +323,7 @@ async function quarantineCorruptSave(
   data: string,
   error: string,
   savedAt: string | undefined,
-  db: Awaited<ReturnType<typeof getDatabase>>,
+  db: GameDatabase,
 ): Promise<void> {
   await db.run(
     `INSERT OR REPLACE INTO corrupt_saves
@@ -324,6 +332,18 @@ async function quarantineCorruptSave(
     [slotId, data, error, savedAt ?? null, new Date().toISOString()],
   );
   await db.run('DELETE FROM saves WHERE slot_id = ?', [slotId]);
+}
+
+async function withDatabaseTransaction<T>(db: GameDatabase, work: () => Promise<T>): Promise<T> {
+  await db.beginTransaction();
+  try {
+    const result = await work();
+    await db.commitTransaction();
+    return result;
+  } catch (error) {
+    await db.rollbackTransaction().catch(() => undefined);
+    throw error;
+  }
 }
 
 function parseSimulationEventData(raw: string | undefined): unknown {

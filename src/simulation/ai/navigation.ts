@@ -32,6 +32,9 @@ interface BuildGraphResult {
   byIndex: Map<number, TowerNode>;
 }
 
+const NAVIGATION_GRAPH_CACHE_LIMIT = 8;
+const navigationGraphCache = new Map<string, BuildGraphResult>();
+
 function cellKey(x: number, floor: number): string {
   return `${x}:${floor}`;
 }
@@ -141,12 +144,38 @@ export function buildTowerNavigationGraph(tower: TowerState): BuildGraphResult {
   return graphData;
 }
 
+export function createTowerNavigationSignature(tower: TowerState): string {
+  const infrastructure = tower.rooms
+    .filter((room) => {
+      const category = BUILDINGS[room.type].cat;
+      return category === 'infra' || category === 'trans';
+    })
+    .map((room) => `${room.type}:${room.x}:${room.y}:${room.width}:${room.height}`)
+    .sort();
+  const shafts = tower.shafts.map((shaft) => `${shaft.x}:${shaft.min}:${shaft.max}`).sort();
+  return `${infrastructure.join('|')}#${shafts.join('|')}`;
+}
+
+export function getTowerNavigationGraph(tower: TowerState): BuildGraphResult {
+  const signature = createTowerNavigationSignature(tower);
+  const cached = navigationGraphCache.get(signature);
+  if (cached) return cached;
+
+  const graphData = buildTowerNavigationGraph(tower);
+  navigationGraphCache.set(signature, graphData);
+  if (navigationGraphCache.size > NAVIGATION_GRAPH_CACHE_LIMIT) {
+    const oldestKey = navigationGraphCache.keys().next().value;
+    if (oldestKey) navigationGraphCache.delete(oldestKey);
+  }
+  return graphData;
+}
+
 export function planAgentRoute(
   tower: TowerState,
   from: { x: number; floor: number },
   to: { x: number; floor: number },
 ): PlannedRoute {
-  const graphData = buildTowerNavigationGraph(tower);
+  const graphData = getTowerNavigationGraph(tower);
   const source =
     getNode(graphData, Math.round(from.x), Math.round(from.floor)) ??
     nearestNodeOnFloor(graphData, Math.round(from.x), Math.round(from.floor));
