@@ -112,6 +112,14 @@ Run `pnpm cap:sync:android` then install the resulting debug APK. Perf measureme
 
 Device-matrix hardware traces and Android Studio profiler captures are manual hardware tasks. They are **not** v1.0 release blockers — the automated lanes above guard the invariants that actually break between releases (control sizing, tick-loop stability, mobile viewport render). Hardware-specific perf tuning is post-v1.0 work, tracked in `docs/plans/` when it surfaces a real player-facing problem.
 
+## Web 1.0 Harden (T13)
+
+`verify:browser:metadata` now runs a **console-clean gate** — `scripts/verify-console-clean.mjs` boots the opening scenario, toggles both drawers, runs the sim for 2.5s, and asserts the browser console is clean (zero `Runtime.exceptionThrown`, zero `console.error`, zero `console.warning`). The gate is implemented in the CDP harness (`DevToolsSession.drainConsoleProblems`), so the accumulator is available to any future verifier without code-path changes.
+
+Headless **campaign smoke** is already covered by `verify:campaign-flow.mjs` — it loads the skyline scenario, waits for the victory state, and asserts act 1–5 contracts completed plus sandbox unlock + mixed-use identity + funds/skyline/floor-count thresholds. That's stricter than the PRD's "reach act-3 equivalent" floor, so no separate smoke is needed.
+
+**Lighthouse budget** is deferred (`docs/KNOWN_ISSUES.md`). The added dependency weight isn't justified by the marginal coverage over what the console-clean gate plus the existing `verify:render-stats` already catch.
+
 ## Current Verification Debt
 
 - no browser automation for every tower identity branch yet

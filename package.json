@@ -21,7 +21,7 @@
     "verify:browser:core": "pnpm verify:render-stats && pnpm verify:build-flow && pnpm verify:campaign-flow && pnpm verify:mobile-build-flow",
     "verify:browser:persistence": "pnpm verify:save-load && pnpm verify:corrupt-save && pnpm verify:preferences && pnpm verify:report-loop",
     "verify:browser:public": "pnpm verify:public-memory && pnpm verify:memory-repair && pnpm verify:invite-visit && pnpm verify:visit-lifecycle",
-    "verify:browser:metadata": "pnpm verify:menu-scenarios && pnpm verify:audio-assets && pnpm verify:app-metadata",
+    "verify:browser:metadata": "pnpm verify:menu-scenarios && pnpm verify:audio-assets && pnpm verify:app-metadata && pnpm verify:console-clean",
     "verify:release": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm verify:browser && pnpm capture:screenshots && pnpm cap:sync:android",
     "verify:save-load": "node scripts/verify-save-load.mjs",
     "verify:corrupt-save": "node scripts/verify-corrupt-save.mjs",
@@ -39,7 +39,8 @@
     "verify:public-memory": "node scripts/verify-public-memory.mjs",
     "verify:memory-repair": "node scripts/verify-memory-repair.mjs",
     "verify:invite-visit": "node scripts/verify-invite-visit.mjs",
-    "verify:visit-lifecycle": "node scripts/verify-visit-lifecycle.mjs"
+    "verify:visit-lifecycle": "node scripts/verify-visit-lifecycle.mjs",
+    "verify:console-clean": "node scripts/verify-console-clean.mjs"
   },
   "dependencies": {
     "@capacitor-community/sqlite": "^8.1.0",
