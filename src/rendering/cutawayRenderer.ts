@@ -49,10 +49,25 @@ function seedNoise(seed: number, offset: number): number {
   return (Math.sin(seed * 9_973 + offset * 1_337) + 1) / 2;
 }
 
-function agentVectorKey(type: AgentType): AgentVectorKey {
+function agentVectorKey(type: AgentType, archetypeId?: string): AgentVectorKey {
   if (type === 'janitor') return 'agent-janitor';
   if (type === 'guest') return 'agent-guest';
-  if (type === 'visitor') return 'agent-visitor';
+  if (type === 'visitor') {
+    // Route high-contrast visitor archetypes to their authored silhouettes so
+    // players can read a movie-star entourage from a civic delegation at a
+    // glance in the cutaway. Unmapped cohorts fall back to the generic
+    // visitor silhouette.
+    if (archetypeId === 'press-swarm') return 'agent-visitor-press';
+    if (
+      archetypeId === 'movie-star' ||
+      archetypeId === 'foreign-prince' ||
+      archetypeId === 'film-festival-jury'
+    )
+      return 'agent-visitor-luxury';
+    if (archetypeId === 'city-inspectors' || archetypeId === 'civic-delegation')
+      return 'agent-visitor-inspector';
+    return 'agent-visitor';
+  }
   return 'agent-worker';
 }
 
@@ -242,7 +257,7 @@ export class CutawayRenderer {
     }
 
     for (const elevator of tower.elevators) this.drawElevator(elevator, view);
-    for (const agent of tower.agents) this.drawAgent(agent, view);
+    for (const agent of tower.agents) this.drawAgent(agent, tower, view);
     for (const particle of tower.particles)
       this.drawParticle(particle.x, particle.y, particle.text, particle.color);
 
@@ -893,12 +908,17 @@ export class CutawayRenderer {
     }
   }
 
-  private drawAgent(agent: Agent, view: ViewState): void {
+  private drawAgent(agent: Agent, tower: TowerState, view: ViewState): void {
     if (view.lensMode === 'maintenance' && agent.type !== 'janitor') return;
     const x = agent.x * CELL_SIZE.w + CELL_SIZE.w / 2;
     const y = -agent.y * CELL_SIZE.h - 6;
     const transit = view.lensMode === 'transit';
-    const agentTexture = this.vectorAssets.agentTexture(agentVectorKey(agent.type));
+    const cohort = agent.cohortId
+      ? tower.visits.find((visit) => visit.id === agent.cohortId)
+      : undefined;
+    const agentTexture = this.vectorAssets.agentTexture(
+      agentVectorKey(agent.type, cohort?.archetypeId),
+    );
 
     if (agentTexture) {
       const sprite = new Sprite(agentTexture);
