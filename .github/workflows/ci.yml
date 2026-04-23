@@ -57,8 +57,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Browser app verifiers
-        run: pnpm run verify:browser
+      - name: Browser core verifiers
+        run: timeout --kill-after=30s 8m pnpm run verify:browser:core
+
+      - name: Browser persistence verifiers
+        run: timeout --kill-after=30s 8m pnpm run verify:browser:persistence
+
+      - name: Browser public-pressure verifiers
+        run: timeout --kill-after=30s 8m pnpm run verify:browser:public
+
+      - name: Browser metadata verifiers
+        run: timeout --kill-after=30s 5m pnpm run verify:browser:metadata
 
   android-sync:
     runs-on: ubuntu-latest

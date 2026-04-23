@@ -60,7 +60,10 @@ export async function waitFor(description, probe, timeoutMs = DEFAULT_TIMEOUT_MS
 }
 
 export function spawnLogged(command, args) {
-  const child = spawn(command, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(command, args, {
+    detached: process.platform !== 'win32',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
   let output = '';
   child.stdout.on('data', (chunk) => {
     output += chunk.toString();
@@ -74,16 +77,32 @@ export function spawnLogged(command, args) {
 
 async function stopProcess(child) {
   if (!child || child.exitCode !== null) return;
-  child.kill('SIGTERM');
+
+  const signal = (value) => {
+    try {
+      if (process.platform !== 'win32' && child.pid) {
+        process.kill(-child.pid, value);
+      } else {
+        child.kill(value);
+      }
+    } catch (error) {
+      if (error.code !== 'ESRCH') throw error;
+    }
+  };
+
+  signal('SIGTERM');
   await Promise.race([
     new Promise((resolve) => child.once('close', resolve)),
     new Promise((resolve) =>
       setTimeout(() => {
-        if (child.exitCode === null) child.kill('SIGKILL');
+        if (child.exitCode === null) signal('SIGKILL');
         resolve();
       }, 2_000),
     ),
   ]);
+
+  child.stdout?.destroy();
+  child.stderr?.destroy();
 }
 
 async function removeTemporaryDirectory(pathname) {
