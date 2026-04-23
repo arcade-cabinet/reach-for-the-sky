@@ -2908,3 +2908,79 @@ button:disabled {
 .agent-debug-row.muted {
   color: #687b8a;
 }
+
+.first-run-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 9, 16, 0.76);
+  backdrop-filter: blur(6px);
+}
+
+.first-run-card {
+  width: min(520px, 100%);
+  padding: 28px 30px;
+  background: linear-gradient(180deg, #10192c 0%, #0a121e 100%);
+  border: 1px solid #274869;
+  border-radius: 18px;
+  color: #e2ecf5;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.first-run-progress {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.first-run-progress span {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.first-run-progress span.active {
+  background: #7cb8e0;
+}
+
+.first-run-progress span.done {
+  background: rgba(124, 184, 224, 0.5);
+}
+
+.first-run-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.28rem;
+  font-weight: 700;
+}
+
+.first-run-card p {
+  margin: 0 0 22px;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: #b7c9d7;
+}
+
+.first-run-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.first-run-skip {
+  min-height: 44px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #91a5b8;
+}
+
+.first-run-card .primary {
+  min-height: 44px;
+  padding: 10px 22px;
+  font-weight: 700;
+}

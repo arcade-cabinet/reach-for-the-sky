@@ -49,12 +49,26 @@ Shipping:
 - elevator inspections
 - public-story focus inspections
 - contract diagnostics with lens/build actions
+- **causal "because..." line at the top of every inspection** (T10): every room, agent, elevator, and empty-cell inspection leads with a reasoning line tied to current simulation state (dirt level, transit pressure, agent wait burden, route-block state, identity drift, market cycle). Players get *why this matters right now* before the raw numbers.
 
 Remaining work:
 
-- agent-level inspection depth
 - better comparison language between current value and target state
 - more explicit touch affordances for inspection on mobile
+
+## First-Run Explainer (T10)
+
+A 3-step modal plays once on first launch, persisted via `preferences.tutorialStep = "completed"`. Steps:
+
+1. Introduces the living-tower framing (every person is an algorithm, emergent not scripted)
+2. Teaches the cutaway + lens row
+3. Points at identity declaration in the contracts drawer
+
+Keyboard-accessible (Enter/Space/→ advance, ← back, Esc skip). Skip and Start-building buttons both persist completion so it never replays. Dismissable without blocking; not a tutorial — a framing.
+
+## Tooltips
+
+All primary HUD and drawer buttons carry `title` attrs that explain purpose and keyboard affordance where relevant: Contracts drawer, Pause/Play/Fast speed controls, Settings drawer button. More to follow as drawer sections grow.
 
 ## Mobile UX
 

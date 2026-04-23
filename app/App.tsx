@@ -1,4 +1,5 @@
 import { AgentDebugOverlay } from '@app/components/AgentDebugOverlay';
+import { FirstRunExplainer } from '@app/components/FirstRunExplainer';
 import { GameCanvas } from '@app/components/GameCanvas';
 import { StartScreen } from '@app/components/StartScreen';
 import { Capacitor, type PluginListenerHandle } from '@capacitor/core';
@@ -1056,6 +1057,7 @@ export function App() {
     >
       <GameCanvas onBuildCommitted={handleBuildCommitted} />
       <AgentDebugOverlay tower={towerState} />
+      <FirstRunExplainer />
       <section class="top-hud">
         <div class="top-clock">
           <button
@@ -1064,6 +1066,7 @@ export function App() {
             classList={{ active: contractsOpen() }}
             aria-expanded={contractsOpen()}
             onClick={() => setContractsOpen((open) => !open)}
+            title="Contracts: active goals, visits, and identity declaration"
           >
             <span>Contracts</span>
             <small>Goals & visits</small>
@@ -1077,6 +1080,7 @@ export function App() {
               type="button"
               classList={{ active: clockState().speed === 0 }}
               onClick={() => setSpeed(0)}
+              title="Pause simulation"
             >
               Pause
             </button>
@@ -1084,6 +1088,7 @@ export function App() {
               type="button"
               classList={{ active: clockState().speed === 1 }}
               onClick={() => setSpeed(1)}
+              title="Run simulation at normal speed"
             >
               Play
             </button>
@@ -1091,6 +1096,7 @@ export function App() {
               type="button"
               classList={{ active: clockState().speed === 4 }}
               onClick={() => setSpeed(4)}
+              title="Run simulation at 4x speed"
             >
               Fast
             </button>
@@ -1137,6 +1143,7 @@ export function App() {
             aria-label="Open settings"
             aria-expanded={settingsOpen()}
             onClick={() => setSettingsOpen((open) => !open)}
+            title="Settings: audio, display, accessibility, and saves"
           >
             <span>Settings</span>
             <small>Audio & saves</small>
