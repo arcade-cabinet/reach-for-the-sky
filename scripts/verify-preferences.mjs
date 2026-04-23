@@ -1,5 +1,10 @@
 import { waitFor, withDevPage } from './browser-smoke-harness.mjs';
 
+const PREFERENCE_KEYS = {
+  lensMode: 'reach.sky.ui.lens_mode',
+  muted: 'reach.sky.audio.muted',
+};
+
 const buttonExpression = (label) => `
 (() => {
   const button = Array.from(document.querySelectorAll('button')).find((candidate) => {
@@ -18,10 +23,32 @@ async function clickButton(devtools, label) {
 }
 
 async function readPreference(devtools, key, fallback) {
+  const storageKey = PREFERENCE_KEYS[key];
+  if (!storageKey) throw new Error(`Unknown preference key: ${key}`);
   return devtools.evaluate(`
-(async () => {
-  const { getPreferenceJson, PREF_KEYS } = await import('/reach-for-the-sky/src/persistence/preferences.ts');
-  return getPreferenceJson(PREF_KEYS[${JSON.stringify(key)}], ${JSON.stringify(fallback)});
+(() => {
+  const storageKey = ${JSON.stringify(storageKey)};
+  const raw =
+    window.localStorage.getItem(\`CapacitorStorage.\${storageKey}\`) ??
+    window.localStorage.getItem(storageKey);
+  if (!raw) return ${JSON.stringify(fallback)};
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return ${JSON.stringify(fallback)};
+  }
+})()
+`);
+}
+
+async function clearPreferenceStorage(devtools) {
+  await devtools.evaluate(`
+(() => {
+  const keys = ${JSON.stringify(Object.values(PREFERENCE_KEYS))};
+  for (const key of keys) {
+    window.localStorage.removeItem(key);
+    window.localStorage.removeItem(\`CapacitorStorage.\${key}\`);
+  }
 })()
 `);
 }
@@ -29,6 +56,14 @@ async function readPreference(devtools, key, fallback) {
 async function main() {
   await withDevPage('/reach-for-the-sky/', async ({ url, devtools }) => {
     await waitFor('start screen', async () => {
+      const ready = await devtools.evaluate(
+        `document.body.textContent?.includes('Break Ground') ?? false`,
+      );
+      return ready ? true : null;
+    });
+    await clearPreferenceStorage(devtools);
+    await devtools.send('Page.navigate', { url });
+    await waitFor('fresh start screen', async () => {
       const ready = await devtools.evaluate(
         `document.body.textContent?.includes('Break Ground') ?? false`,
       );
