@@ -9,3 +9,4 @@ test-screenshots/
 *.tsbuildinfo
 .DS_Store
 ios/
+.claude/

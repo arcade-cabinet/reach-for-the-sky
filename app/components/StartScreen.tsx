@@ -80,8 +80,8 @@ export function StartScreen(props: StartScreenProps) {
           </div>
           <div class="start-stat-grid">
             <article>
-              <span>Campaign</span>
-              <strong>5 Acts</strong>
+              <span>Progression</span>
+              <strong>Emergent</strong>
             </article>
             <article>
               <span>First Loop</span>
@@ -92,13 +92,13 @@ export function StartScreen(props: StartScreenProps) {
               <strong>Sandbox</strong>
             </article>
           </div>
-          <ol class="start-journey-map" aria-label="Player journey">
-            <li>Empty Lot</li>
-            <li>Working Tower</li>
-            <li>District Player</li>
-            <li>Public Landmark</li>
-            <li>Skyline Institution</li>
-          </ol>
+          <ul class="start-journey-map" aria-label="What emerges from play">
+            <li>Every tenant is a free-thinking algorithm</li>
+            <li>Crowds move as flocks, not formations</li>
+            <li>Identity drifts as the city reacts</li>
+            <li>Late-game arcs are earned, not unlocked</li>
+            <li>No star ladder, no obvious path</li>
+          </ul>
         </aside>
 
         <section class="start-manifesto" aria-label="What the game asks from the player">
@@ -125,7 +125,7 @@ export function StartScreen(props: StartScreenProps) {
             <button type="button" onClick={() => void props.onScenario(scenario.id)}>
               <img src={props.assetUrl(scenario.preview)} alt="" />
               <span>
-                <em>Act {scenario.actFocus}</em>
+                <em>City moment</em>
                 <strong>{scenario.title}</strong>
                 <small>{scenario.description}</small>
               </span>

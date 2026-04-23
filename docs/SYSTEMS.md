@@ -29,10 +29,13 @@ This document owns the simulation domains: tower operations, economy, campaign, 
 
 ### Campaign
 
-- five-act campaign spine
-- act progression and permit unlocks
-- skyline-charter victory
-- post-victory sandbox city-cycle mandate generation
+- five internal pacing anchors (Empty Lot, Working Tower, District Player, Public Landmark, Reach for the Sky)
+- phase advancement gated by a state predicate (cohort mix, identity drift, public-memory weight, pressure signatures) — **not** a clock or checklist
+- permit tier counter exists internally but is never surfaced as a player-facing progression ladder
+- skyline-charter legitimacy endpoint
+- post-endpoint sandbox city-cycle mandate generation
+
+Anti-pattern (rejected): a SimTower-style visible star ladder with an obvious path from one star to the next. If it ever reappears in a player-facing surface (`Act N of 5`, numbered stars, progression ladder), treat it as a regression.
 
 ### Contracts
 

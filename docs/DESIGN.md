@@ -29,8 +29,17 @@ It is not a nostalgia port, not a passive builder, and not a decorative skyline 
 2. Observe tenant and visitor behavior.
 3. Diagnose emerging pressure through lenses, reports, and inspections.
 4. Respond with layout, staffing, service, and hosting decisions.
-5. Progress into new acts, contracts, and public expectations.
+5. Let new obligations and public expectations emerge from what the tower has actually become.
 6. Repeat as the tower becomes more visible and politically exposed.
+
+## Progression Philosophy — Emergent, Not Laddered
+
+Reach for the Sky is explicitly **not** a modernized SimTower star-path game. SimTower exposed five stars as a visible progression ladder where each star was a point on the algorithm, so the player's job became "reach the next star." We reject that framing.
+
+- Every person is a free-thinking algorithm (GOAP-style utility, authored per archetype), not a role in a script.
+- The five internal phases — `Empty Lot`, `Working Tower`, `District Player`, `Public Landmark`, `Reach for the Sky` — remain as **pacing anchors for authored content**. They are not surfaced to the player as `Act N of 5`, they are not surfaced as stars, and there is no visible progression ladder to climb.
+- Phase transitions unlock from observed simulation state — cohort diversity, agent conflict, identity drift, public-memory accumulation — not from a clock or checklist.
+- The player is never shown "what's next." They are shown **what is happening in their tower right now**, and the world responds to that.
 
 ## Macro / Meso / Micro
 
@@ -40,57 +49,29 @@ It is not a nostalgia port, not a passive builder, and not a decorative skyline 
 
 The design requirement is that all three layers feed each other. Macro creates opportunity and scrutiny. Meso determines whether the tower can handle it. Micro creates the stories that the city remembers.
 
-## Player Journey
+## Internal Phase Anchors (authoring, not UI)
 
-### Act 1 — Empty Lot
+These phases are authoring scaffolding. They structure what content becomes available when the simulation reaches a given tower-state predicate. They are **never** labeled `Act N`, never numbered, and never visualized as a ladder in player-facing surfaces.
 
-Teach the build grammar:
+### Empty Lot — unlocks from: cold start
 
-- lobby
-- floors
-- offices
-- elevator core
-- first rent loop
-- first bottleneck recognition
+Teach the build grammar: lobby, floors, offices, elevator core, first rent loop, first bottleneck recognition.
 
-### Act 2 — Working Tower
+### Working Tower — unlocks from: sustained occupancy + first pressure events
 
-Teach operations:
+Teach operations: dirt and service pressure, daily reports, sentiment and rent leakage, basic reactive contracts.
 
-- dirt and service pressure
-- daily reports
-- sentiment and rent leakage
-- basic reactive contracts
+### District Player — unlocks from: identity signal crossing threshold
 
-### Act 3 — District Player
+Force a meaningful identity declaration emerging from what the tower's cohort mix already demands: business hub, vertical village, event destination, civic tower, prestige tower, mixed ecosystem.
 
-Force a meaningful identity declaration:
+### Public Landmark — unlocks from: public-memory accumulation + visit diversity
 
-- business hub
-- vertical village
-- event destination
-- civic tower
-- prestige tower
-- mixed ecosystem
+The tower becomes a public-stage object: visit cohorts, public memory, inspectors and press, repair contracts, scrutiny under failure.
 
-### Act 4 — Public Landmark
+### Reach for the Sky — unlocks from: sustained legitimacy + late-game stressors
 
-The tower becomes a public-stage object:
-
-- visit cohorts
-- public memory
-- inspectors and press
-- repair contracts
-- scrutiny under failure
-
-### Act 5 — Reach for the Sky
-
-The tower becomes an institution:
-
-- skyline charter
-- city-cycle mandates
-- sandbox continuation
-- weather and public legitimacy pressure
+The tower becomes an institution: skyline charter, city-cycle mandates, sandbox continuation, weather and public legitimacy pressure.
 
 ## Differentiators
 
