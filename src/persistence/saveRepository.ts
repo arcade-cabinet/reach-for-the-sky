@@ -52,6 +52,13 @@ export interface SimulationEventRecord {
   createdAt: string;
 }
 
+export interface CorruptSaveRecord {
+  slotId: string;
+  error: string;
+  savedAt: string | null;
+  detectedAt: string;
+}
+
 export type ParseSnapshotResult =
   | { ok: true; snapshot: SimulationSnapshot }
   | { ok: false; error: string };
@@ -146,34 +153,78 @@ export async function saveSnapshot(
     serializeSnapshot(snapshot),
     snapshot.savedAt,
   ]);
+  await db.run('DELETE FROM corrupt_saves WHERE slot_id = ?', [slotId]);
   await saveWebStore();
 }
 
 export async function loadSnapshot(slotId = DEFAULT_SAVE_SLOT): Promise<SimulationSnapshot | null> {
   const db = await getDatabase();
-  const result = await db.query('SELECT data FROM saves WHERE slot_id = ? LIMIT 1', [slotId]);
-  const row = result.values?.[0] as { data?: string } | undefined;
+  const result = await db.query('SELECT data, saved_at FROM saves WHERE slot_id = ? LIMIT 1', [
+    slotId,
+  ]);
+  const row = result.values?.[0] as { data?: string; saved_at?: string } | undefined;
   if (!row?.data) return null;
   const parsed = tryParseSnapshot(row.data);
+  if (!parsed.ok) {
+    await quarantineCorruptSave(slotId, row.data, parsed.error, row.saved_at, db);
+    await saveWebStore();
+    return null;
+  }
   return parsed.ok ? parsed.snapshot : null;
 }
 
 export async function listSaveSlots(): Promise<SaveSlotSummary[]> {
   const db = await getDatabase();
   const result = await db.query('SELECT slot_id, data, saved_at FROM saves ORDER BY saved_at DESC');
-  return (result.values ?? [])
-    .map((row) => row as { slot_id?: string; data?: string; saved_at?: string })
-    .flatMap((row) => {
-      if (!row.slot_id || !row.data) return [];
-      const parsed = tryParseSnapshot(row.data);
-      if (!parsed.ok) return [];
-      return [createSaveSlotSummary(row.slot_id, parsed.snapshot, row.saved_at)];
-    });
+  const summaries: SaveSlotSummary[] = [];
+  let quarantined = false;
+  for (const row of result.values ?? []) {
+    const record = row as { slot_id?: string; data?: string; saved_at?: string };
+    if (!record.slot_id || !record.data) continue;
+    const parsed = tryParseSnapshot(record.data);
+    if (!parsed.ok) {
+      await quarantineCorruptSave(record.slot_id, record.data, parsed.error, record.saved_at, db);
+      quarantined = true;
+      continue;
+    }
+    summaries.push(createSaveSlotSummary(record.slot_id, parsed.snapshot, record.saved_at));
+  }
+  if (quarantined) await saveWebStore();
+  return summaries;
 }
 
 export async function deleteSnapshot(slotId = DEFAULT_SAVE_SLOT): Promise<void> {
   const db = await getDatabase();
   await db.run('DELETE FROM saves WHERE slot_id = ?', [slotId]);
+  await saveWebStore();
+}
+
+export async function listCorruptSaves(limit = 20): Promise<CorruptSaveRecord[]> {
+  const db = await getDatabase();
+  const boundedLimit = Math.max(1, Math.min(100, Math.floor(limit)));
+  const result = await db.query(
+    'SELECT slot_id, error, saved_at, detected_at FROM corrupt_saves ORDER BY detected_at DESC LIMIT ?',
+    [boundedLimit],
+  );
+  return (result.values ?? []).map((row) => {
+    const record = row as {
+      slot_id?: string;
+      error?: string;
+      saved_at?: string | null;
+      detected_at?: string;
+    };
+    return {
+      slotId: record.slot_id ?? 'unknown',
+      error: record.error ?? 'Unknown save parse error',
+      savedAt: record.saved_at ?? null,
+      detectedAt: record.detected_at ?? '',
+    };
+  });
+}
+
+export async function deleteCorruptSave(slotId: string): Promise<void> {
+  const db = await getDatabase();
+  await db.run('DELETE FROM corrupt_saves WHERE slot_id = ?', [slotId]);
   await saveWebStore();
 }
 
@@ -257,6 +308,22 @@ async function pruneSimulationEventsInDatabase(
      )`,
     [boundedRows],
   );
+}
+
+async function quarantineCorruptSave(
+  slotId: string,
+  data: string,
+  error: string,
+  savedAt: string | undefined,
+  db: Awaited<ReturnType<typeof getDatabase>>,
+): Promise<void> {
+  await db.run(
+    `INSERT OR REPLACE INTO corrupt_saves
+      (slot_id, data, error, saved_at, detected_at)
+     VALUES (?, ?, ?, ?, ?)`,
+    [slotId, data, error, savedAt ?? null, new Date().toISOString()],
+  );
+  await db.run('DELETE FROM saves WHERE slot_id = ?', [slotId]);
 }
 
 function parseSimulationEventData(raw: string | undefined): unknown {

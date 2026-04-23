@@ -8,8 +8,11 @@ import {
   setPreferenceJson,
 } from '@/persistence/preferences';
 import {
+  type CorruptSaveRecord,
   DEFAULT_SAVE_SLOT,
+  deleteCorruptSave,
   deleteSnapshot,
+  listCorruptSaves,
   listSaveSlots,
   listSimulationEvents,
   loadSnapshot,
@@ -410,6 +413,7 @@ export function App() {
   const [visitNotice, setVisitNotice] = createSignal<string | null>(null);
   const [selectedSaveSlot, setSelectedSaveSlot] = createSignal<string>(DEFAULT_SAVE_SLOT);
   const [saveSlots, setSaveSlots] = createSignal<SaveSlotSummary[]>([]);
+  const [corruptSaves, setCorruptSaves] = createSignal<CorruptSaveRecord[]>([]);
   const [recentEvents, setRecentEvents] = createSignal<SimulationEventRecord[]>([]);
   const [expandedObjectiveKey, setExpandedObjectiveKey] = createSignal<string | null>(null);
   let audio: SkyAudioEngine | null = null;
@@ -613,6 +617,14 @@ export function App() {
     }
   };
 
+  const refreshCorruptSaves = async () => {
+    try {
+      setCorruptSaves(await listCorruptSaves());
+    } catch {
+      setCorruptSaves([]);
+    }
+  };
+
   const refreshSimulationHistory = async () => {
     try {
       setRecentEvents(await listSimulationEvents(8));
@@ -699,7 +711,10 @@ export function App() {
         events: extra.events ?? [reason],
       });
       await refreshSaveSlots();
-      if (settingsOpen()) await refreshSimulationHistory();
+      if (settingsOpen()) {
+        await refreshCorruptSaves();
+        await refreshSimulationHistory();
+      }
     });
   };
 
@@ -733,11 +748,13 @@ export function App() {
         hydrateSnapshot(snapshot);
         setPreferencesReady(true);
         void refreshSaveSlots();
+        void refreshCorruptSaves();
         return;
       }
       await applyStoredPreferences();
       setPreferencesReady(true);
       void refreshSaveSlots();
+      void refreshCorruptSaves();
     })();
 
     audio = new SkyAudioEngine(settingsState().audio);
@@ -790,6 +807,7 @@ export function App() {
   createEffect(() => {
     if (!settingsOpen()) return;
     void refreshSaveSlots();
+    void refreshCorruptSaves();
     void refreshSimulationHistory();
   });
 
@@ -859,6 +877,7 @@ export function App() {
       tick: snapshot.clock.tick,
     });
     await refreshSaveSlots();
+    await refreshCorruptSaves();
     if (settingsOpen()) await refreshSimulationHistory();
     setSaveNotice(`${slotLabel(slotId)} saved on day ${snapshot.clock.day}.`);
   };
@@ -866,7 +885,8 @@ export function App() {
   const handleLoad = async (slotId = selectedSaveSlot()) => {
     const snapshot = await loadSnapshot(slotId);
     if (!snapshot) {
-      setSaveNotice(`${slotLabel(slotId)} is empty.`);
+      await refreshCorruptSaves();
+      setSaveNotice(`${slotLabel(slotId)} is empty or was quarantined after recovery.`);
       return;
     }
     setSelectedSaveSlot(slotId);
@@ -885,10 +905,17 @@ export function App() {
     setSaveNotice(`${slotLabel(slotId)} deleted.`);
   };
 
+  const handleDeleteCorruptSave = async (slotId: string) => {
+    await deleteCorruptSave(slotId);
+    await refreshCorruptSaves();
+    setSaveNotice(`${slotLabel(slotId)} recovery backup deleted.`);
+  };
+
   const handleExportDiagnostics = () => {
     const bundle = createDiagnosticsBundle({
       snapshot: createSnapshot(),
       saveSlots: saveSlots(),
+      corruptSaves: corruptSaves(),
       recentEvents: recentEvents(),
       rendererStats: window.reachForTheSkyRenderer?.getStats?.() ?? null,
       preferencesReady: preferencesReady(),
@@ -1616,6 +1643,24 @@ export function App() {
                 Export Debug Bundle
               </button>
             </div>
+            {corruptSaves().length > 0 && (
+              <div class="corrupt-save-list">
+                <strong>Corrupt save recovery</strong>
+                {corruptSaves().map((save) => (
+                  <article>
+                    <div>
+                      <span>{slotLabel(save.slotId)}</span>
+                      <small>
+                        {save.error} · recovered {formatSaveDate(save.detectedAt)}
+                      </small>
+                    </div>
+                    <button type="button" onClick={() => void handleDeleteCorruptSave(save.slotId)}>
+                      Forget
+                    </button>
+                  </article>
+                ))}
+              </div>
+            )}
             {recentEvents().length > 0 ? (
               <div class="event-history-list">
                 {recentEvents().map((event) => (

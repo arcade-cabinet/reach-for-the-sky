@@ -103,6 +103,8 @@ In dev builds, `window.reachForTheSkyRenderer.getStats()` exposes frame, base re
 
 `pnpm verify:save-load` uses the same browser harness to select Campaign A, click the app Save control, wait for a real SQLite web row and slot summary, reset the game, and restore the saved snapshot through Load. This protects the Capacitor SQLite + `jeep-sqlite` + WASM path beyond unit-level JSON serialization.
 
+`pnpm verify:corrupt-save` inserts an invalid SQLite save row, verifies the repository quarantines it out of normal save slots, opens Settings, confirms the corrupt-save recovery UI explains the backup, and clears the quarantine entry through the app.
+
 `pnpm verify:preferences` checks the Capacitor Preferences path by writing lens mode through the app, reloading the page, starting a fresh game, and asserting the stored lens mode is restored.
 
 `pnpm verify:report-loop` advances the opening scenario through a live midnight tick loop in headless Chrome, verifies rent collection and the `daily-report` event, asserts that those rows are persisted in SQLite simulation history, asserts Autosave contains the resulting report snapshot, opens the Contracts drawer, and fails if the end-of-day report is not visible to the player.

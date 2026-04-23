@@ -18,6 +18,7 @@
     "verify:build-flow": "node scripts/verify-build-flow.mjs",
     "verify:campaign-flow": "node scripts/verify-campaign-flow.mjs",
     "verify:save-load": "node scripts/verify-save-load.mjs",
+    "verify:corrupt-save": "node scripts/verify-corrupt-save.mjs",
     "verify:preferences": "node scripts/verify-preferences.mjs",
     "verify:report-loop": "node scripts/verify-report-loop.mjs",
     "verify:menu-scenarios": "node scripts/verify-menu-scenarios.mjs",

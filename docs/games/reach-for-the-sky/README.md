@@ -85,6 +85,8 @@ Use `pnpm verify:mobile-build-flow` as the touch-input smoke check. It runs Chro
 
 Use `pnpm verify:save-load` as the browser smoke check for persistence. It launches the opening scenario, selects Campaign A, writes through the app Save control into Capacitor SQLite's web fallback, verifies the slot summary, resets the app, and restores the snapshot through Load.
 
+Use `pnpm verify:corrupt-save` as the browser smoke check for corrupted-save recovery. It injects an invalid SQLite save row, verifies quarantine, checks the Settings diagnostics recovery surface, and clears the quarantine entry through the UI.
+
 Use `pnpm verify:preferences` as the browser smoke check for lightweight KV state. It writes lens mode through Capacitor Preferences, reloads, starts a fresh game, and verifies that the lens is restored.
 
 Use `pnpm verify:report-loop` as the browser smoke check for the day-loop digest. It advances the opening scenario through a real midnight tick loop, verifies rent and daily-report events, asserts those rows land in SQLite simulation history, asserts Autosave contains the report-bearing snapshot, and confirms the generated report appears in the Contracts drawer.

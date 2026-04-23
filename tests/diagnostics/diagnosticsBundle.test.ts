@@ -35,6 +35,14 @@ describe('diagnostics bundle', () => {
     const bundle = createDiagnosticsBundle({
       snapshot,
       saveSlots: [],
+      corruptSaves: [
+        {
+          slotId: 'campaign-a',
+          error: 'Unsupported save version: 99',
+          savedAt: '2026-04-22T00:00:00.000Z',
+          detectedAt: '2026-04-23T00:00:00.000Z',
+        },
+      ],
       recentEvents: [],
       rendererStats: {
         frames: 12,
@@ -50,6 +58,7 @@ describe('diagnostics bundle', () => {
 
     expect(bundle.release.version).toBe('1.0.0');
     expect(bundle.summary).toMatchObject({ day: 9, act: 3, funds: 123_456 });
+    expect(bundle.corruptSaves[0]?.slotId).toBe('campaign-a');
     expect(bundle.rendererStats?.normalBaseHits).toBe(11);
     expect(bundle.runtime).toMatchObject({ preferencesReady: true, userAgent: 'vitest' });
     expect(diagnosticsFilename(bundle)).toContain('reach-for-the-sky-diagnostics-1.0.0-');

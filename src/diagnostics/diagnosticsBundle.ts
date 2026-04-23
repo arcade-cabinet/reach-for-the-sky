@@ -1,4 +1,8 @@
-import type { SaveSlotSummary, SimulationEventRecord } from '@/persistence/saveRepository';
+import type {
+  CorruptSaveRecord,
+  SaveSlotSummary,
+  SimulationEventRecord,
+} from '@/persistence/saveRepository';
 import type { RenderStats } from '@/rendering/cutawayRenderer';
 import { PRODUCTION_BUDGETS, PRODUCTION_RELEASE } from '@/simulation/content';
 import type { SimulationSnapshot } from '@/simulation/types';
@@ -6,6 +10,7 @@ import type { SimulationSnapshot } from '@/simulation/types';
 export interface DiagnosticsBundleInput {
   snapshot: SimulationSnapshot;
   saveSlots: readonly SaveSlotSummary[];
+  corruptSaves: readonly CorruptSaveRecord[];
   recentEvents: readonly SimulationEventRecord[];
   rendererStats: RenderStats | null;
   preferencesReady: boolean;
@@ -38,6 +43,7 @@ export interface DiagnosticsBundle {
   };
   rendererStats: RenderStats | null;
   saveSlots: readonly SaveSlotSummary[];
+  corruptSaves: readonly CorruptSaveRecord[];
   recentEvents: readonly SimulationEventRecord[];
   snapshot: SimulationSnapshot;
 }
@@ -68,6 +74,7 @@ export function createDiagnosticsBundle(input: DiagnosticsBundleInput): Diagnost
     },
     rendererStats: input.rendererStats,
     saveSlots: input.saveSlots,
+    corruptSaves: input.corruptSaves,
     recentEvents: input.recentEvents,
     snapshot: input.snapshot,
   };

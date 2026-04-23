@@ -8,7 +8,7 @@ import {
 import { defineCustomElements as defineJeepSqlite } from 'jeep-sqlite/loader';
 
 const DB_NAME = 'reach_for_the_sky';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 const sqlite = new SQLiteConnection(CapacitorSQLite);
 let connectionPromise: Promise<SQLiteDBConnection> | null = null;
@@ -26,6 +26,14 @@ CREATE TABLE IF NOT EXISTS simulation_events (
   event_type TEXT NOT NULL,
   data       TEXT NOT NULL,
   created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS corrupt_saves (
+  slot_id     TEXT PRIMARY KEY,
+  data        TEXT NOT NULL,
+  error       TEXT NOT NULL,
+  saved_at    TEXT,
+  detected_at TEXT NOT NULL
 );
 `;
 
