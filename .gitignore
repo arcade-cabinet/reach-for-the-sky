@@ -1,0 +1,11 @@
+node_modules/
+dist/
+android/.gradle/
+android/**/build/
+coverage/
+.vite/
+.vitest-attachments/
+test-screenshots/
+*.tsbuildinfo
+.DS_Store
+ios/

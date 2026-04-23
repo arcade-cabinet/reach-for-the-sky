@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Reach for the Sky app icon</title>
+  <desc id="desc">A precise art-deco tower cutaway rising through a muted evening city field.</desc>
+  <defs>
+    <linearGradient id="sky" x1="74" x2="438" y1="34" y2="484" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#173847"/>
+      <stop offset="0.58" stop-color="#0b1e29"/>
+      <stop offset="1" stop-color="#071116"/>
+    </linearGradient>
+    <linearGradient id="tower" x1="150" x2="370" y1="52" y2="462" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a7c2c7"/>
+      <stop offset="0.45" stop-color="#657f87"/>
+      <stop offset="1" stop-color="#263740"/>
+    </linearGradient>
+    <linearGradient id="cutaway" x1="204" x2="328" y1="104" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2ddaa" stop-opacity="0.92"/>
+      <stop offset="0.52" stop-color="#caa86d" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#725a3d" stop-opacity="0.72"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(196 0 0 196 256 174)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d7eced" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#d7eced" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="70" y="34" width="372" height="454" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" flood-color="#02070a" flood-opacity="0.48" stdDeviation="15"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#sky)"/>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <path d="M54 405c66-29 130-43 202-43 75 0 141 15 202 44v72H54z" fill="#071116" opacity="0.6"/>
+  <path d="M52 385h56v48H52zm82-34h48v82h-48zm244 18h54v64h-54zm-72-37h48v101h-48z" fill="#102833" opacity="0.62"/>
+  <g filter="url(#shadow)">
+    <path d="M234 44h44l8 54h38l16 64h28v277H144V162h28l16-64h38z" fill="url(#tower)"/>
+    <path d="M234 44h44l8 54h38l16 64h28v277H144V162h28l16-64h38z" fill="none" stroke="#d9e6e5" stroke-opacity="0.2" stroke-width="5"/>
+    <path d="M206 112h100l16 54v242H190V166z" fill="#101b22" opacity="0.52"/>
+    <path d="M214 122h84l12 46v225H202V168z" fill="url(#cutaway)" opacity="0.86"/>
+    <path d="M144 162h224M144 220h224M144 278h224M144 336h224M144 394h224" stroke="#071116" stroke-opacity="0.48" stroke-width="7"/>
+    <path d="M182 166v272M256 99v339M330 166v272" stroke="#071116" stroke-opacity="0.55" stroke-width="6"/>
+    <path d="M204 194h104M204 252h104M204 310h104M204 368h104" stroke="#f5e2b7" stroke-opacity="0.38" stroke-width="4"/>
+    <path d="M164 189h18M164 247h18M164 305h18M164 363h18M330 189h18M330 247h18M330 305h18M330 363h18" stroke="#d7eced" stroke-opacity="0.52" stroke-width="8" stroke-linecap="round"/>
+    <path d="M218 185h30v18h-30zm48 0h30v18h-30zm-48 58h30v18h-30zm48 58h30v18h-30zm-48 58h30v18h-30zm48 0h30v18h-30z" fill="#16252c" opacity="0.48"/>
+    <path d="M232 45v-24m46 24V21m-23 78V45" stroke="#d3b15d" stroke-linecap="round" stroke-width="6"/>
+    <path d="M190 434h132l-18 34h-96z" fill="#071116" opacity="0.72"/>
+  </g>
+</svg>

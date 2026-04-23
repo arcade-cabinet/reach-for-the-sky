@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Reach for the Sky</string>
+    <string name="title_activity_main">Reach for the Sky</string>
+    <string name="package_name">com.arcadecabinet.reachforthesky</string>
+    <string name="custom_url_scheme">com.arcadecabinet.reachforthesky</string>
+</resources>

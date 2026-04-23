@@ -1,0 +1,15 @@
+<svg width="96" height="32" viewBox="0 0 96 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="96" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b9877e" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#6f4f5e" stop-opacity="0.18"/>
+    </linearGradient>
+    <pattern id="hazard" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 5h10" stroke="#edd4c6" stroke-opacity="0.42" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+  <rect x="1.5" y="1.5" width="93" height="29" rx="1.8" fill="url(#wash)" stroke="#d59686" stroke-opacity="0.92" stroke-width="1.5"/>
+  <rect x="4" y="4" width="88" height="24" fill="url(#hazard)" opacity="0.54"/>
+  <path d="M34 8l28 16M62 8L34 24" stroke="#f1d1c4" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M7 24h82" stroke="#f1d1c4" stroke-opacity="0.52" stroke-width="1" stroke-dasharray="5 4"/>
+</svg>
