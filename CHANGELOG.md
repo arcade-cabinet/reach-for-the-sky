@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.0...v1.2.1) (2026-04-24)
+
+
+### Bug Fixes
+
+* **security:** set strict-origin-when-cross-origin referrer policy ([#72](https://github.com/arcade-cabinet/reach-for-the-sky/issues/72)) ([4b5b04d](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4b5b04d7ae96236c934920cb016637c6bad7b683))
+
 ## [1.2.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.15...v1.2.0) (2026-04-24)
 
 
