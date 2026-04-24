@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.3...v1.2.4) (2026-04-24)
+
+
+### Accessibility
+
+* aria-pressed on start-screen save slot buttons ([#82](https://github.com/arcade-cabinet/reach-for-the-sky/issues/82)) ([8e01310](https://github.com/arcade-cabinet/reach-for-the-sky/commit/8e0131089a1501b9d379c751f362732707cfc2f4))
+* drawer toggle aria-label reflects open/close action ([#83](https://github.com/arcade-cabinet/reach-for-the-sky/issues/83)) ([40cb9a1](https://github.com/arcade-cabinet/reach-for-the-sky/commit/40cb9a114e2c900fb05688dc733b6b1e4bcdd653))
+* Escape key closes open drawers ([#81](https://github.com/arcade-cabinet/reach-for-the-sky/issues/81)) ([7b841ae](https://github.com/arcade-cabinet/reach-for-the-sky/commit/7b841ae2888295a7fd31985dce6fb954855386d3))
+
 ## [1.2.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.2...v1.2.3) (2026-04-24)
 
 
