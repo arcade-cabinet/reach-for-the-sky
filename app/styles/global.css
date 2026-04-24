@@ -140,6 +140,21 @@ a:focus-visible {
   transition: none !important;
 }
 
+/* Honor the OS preference even when the in-app setting is off. Players
+   who have reduce-motion enabled at the OS level get an animation-free
+   UI by default, and can still toggle the in-app setting off if they
+   want animations back inside this specific app. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 .canvas-host {
   position: absolute;
   inset: 0;
