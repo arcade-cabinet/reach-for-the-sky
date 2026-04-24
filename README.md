@@ -1,3 +1,10 @@
+---
+title: Reach for the Sky
+updated: 2026-04-24
+status: current
+domain: product
+---
+
 # Reach for the Sky
 
 Reach for the Sky is a modern living-tower simulator where architecture, people, reputation, and city pressure collide. Build from an empty lot into a district-defining institution, then keep the tower credible under contracts, visits, scrutiny, and weather.

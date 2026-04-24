@@ -1,3 +1,10 @@
+---
+title: Agent Guide
+updated: 2026-04-24
+status: current
+domain: context
+---
+
 # Reach for the Sky Agent Guide
 
 This repository is the standalone home for Reach for the Sky.
