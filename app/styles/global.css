@@ -1586,6 +1586,11 @@ a:focus-visible {
   aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
+  /* Tint while the lazy-loaded preview decodes so the card doesn't
+     flash an empty rectangle on slow connections. The tint blends
+     into the card body so the transition to the loaded image reads
+     as a single element coming into focus. */
+  background: linear-gradient(180deg, rgba(134, 189, 199, 0.08), rgba(6, 16, 24, 0.35));
 }
 
 .start-scenario-card > div {
