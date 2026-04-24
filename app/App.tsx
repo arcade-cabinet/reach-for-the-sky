@@ -1890,7 +1890,7 @@ export function App() {
       <aside class="settings-drawer" classList={{ open: settingsOpen() }}>
         <div class="drawer-head">
           <div>
-            <div class="eyebrow">Operations</div>
+            <div class="eyebrow">Your tower</div>
             <h2>Settings</h2>
           </div>
           <button type="button" onClick={() => setSettingsOpen(false)}>
