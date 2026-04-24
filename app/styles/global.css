@@ -2596,6 +2596,39 @@ a:focus-visible {
   color: #91a5b8;
 }
 
+/* Honor high-contrast — the first-run overlay is a new player's first
+   interaction, so it needs to read cleanly when HC is on. Lift card fill
+   contrast, firm the border, and brighten the secondary text/skip button. */
+.app-shell.high-contrast .first-run-card {
+  background: var(--hc-panel-hard);
+  border-color: var(--hc-line);
+  color: white;
+}
+
+.app-shell.high-contrast .first-run-card p {
+  color: #d8eaf6;
+}
+
+.app-shell.high-contrast .first-run-skip {
+  color: #e1f0fa;
+  border-color: var(--hc-line);
+}
+
+@media (prefers-contrast: more) {
+  .first-run-card {
+    background: var(--hc-panel-hard);
+    border-color: var(--hc-line);
+    color: white;
+  }
+  .first-run-card p {
+    color: #d8eaf6;
+  }
+  .first-run-skip {
+    color: #e1f0fa;
+    border-color: var(--hc-line);
+  }
+}
+
 .first-run-card .primary {
   min-height: 44px;
   padding: 10px 22px;
