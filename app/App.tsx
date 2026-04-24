@@ -1529,6 +1529,7 @@ export function App() {
                     <button
                       type="button"
                       classList={{ active: campaignState().declaredIdentity === identity }}
+                      aria-pressed={campaignState().declaredIdentity === identity}
                       disabled={campaignState().act < 3 && campaignState().victory !== 'won'}
                       onClick={() => {
                         if (declareTowerIdentity(identity)) {
@@ -1959,6 +1960,7 @@ export function App() {
                   type="button"
                   data-save-slot={slot.id}
                   classList={{ active: selectedSaveSlot() === slot.id }}
+                  aria-pressed={selectedSaveSlot() === slot.id}
                   onClick={() => setSelectedSaveSlot(slot.id)}
                 >
                   <strong>{slot.label}</strong>
@@ -2086,6 +2088,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().audio.muted }}
+              aria-pressed={settingsState().audio.muted}
               onClick={() => setAudioSettings({ muted: !settingsState().audio.muted })}
             >
               Mute
@@ -2093,6 +2096,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().accessibility.highContrast }}
+              aria-pressed={settingsState().accessibility.highContrast}
               onClick={() =>
                 setAccessibilitySettings({
                   highContrast: !settingsState().accessibility.highContrast,
@@ -2104,6 +2108,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().accessibility.reducedMotion }}
+              aria-pressed={settingsState().accessibility.reducedMotion}
               onClick={() =>
                 setAccessibilitySettings({
                   reducedMotion: !settingsState().accessibility.reducedMotion,
@@ -2133,6 +2138,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.inputHints }}
+              aria-pressed={settingsState().ui.inputHints}
               onClick={() => setUiSettings({ inputHints: !settingsState().ui.inputHints })}
             >
               Hints
@@ -2140,6 +2146,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.diagnosticsVisible }}
+              aria-pressed={settingsState().ui.diagnosticsVisible}
               onClick={() =>
                 setUiSettings({ diagnosticsVisible: !settingsState().ui.diagnosticsVisible })
               }
@@ -2149,6 +2156,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.safeAreaMode === 'compact' }}
+              aria-pressed={settingsState().ui.safeAreaMode === 'compact'}
               onClick={() =>
                 setUiSettings({
                   safeAreaMode: settingsState().ui.safeAreaMode === 'compact' ? 'auto' : 'compact',
