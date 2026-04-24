@@ -339,22 +339,22 @@ function metricTone(value: number, direction: 'up' | 'down'): string {
 // mask the lowercase enums; removing that transform meant every value needed
 // to travel through a humanizer at render time instead.
 /**
- * Decide whether to go through with a Reset click.
+ * Decide whether to go through with a destructive UI action (Reset,
+ * Delete save, etc).
  *
- *   - If automated (webdriver), always reset — verifiers must not deadlock.
+ *   - If automated (webdriver), always proceed — verifiers must not deadlock.
  *   - Otherwise prompt with confirmFn and honor the answer.
  *
- * Exported so tests can cover all three branches without instantiating
- * the whole App component.
+ * Exported so tests can cover all three branches (automated, confirmed,
+ * cancelled) without instantiating the whole App component.
  */
-export function shouldRunReset(options: {
+export function shouldRunDestructive(options: {
   automated: boolean;
   confirmFn: (message: string) => boolean;
+  message: string;
 }): boolean {
   if (options.automated) return true;
-  return options.confirmFn(
-    'Reset the tower? This clears the current session and returns you to the start screen.',
-  );
+  return options.confirmFn(options.message);
 }
 
 function humanizeEnum(value: string): string {
@@ -1073,6 +1073,17 @@ export function App() {
     const slotId = selectedSaveSlot();
     if (!selectedSlotSummary()) {
       setSaveNotice(`${slotLabel(slotId)} is already empty.`);
+      return;
+    }
+    const automated = typeof navigator !== 'undefined' && navigator.webdriver === true;
+    const confirmFn = typeof window !== 'undefined' ? window.confirm.bind(window) : () => true;
+    if (
+      !shouldRunDestructive({
+        automated,
+        confirmFn,
+        message: `Delete the ${slotLabel(slotId)} save? This permanently removes that tower snapshot.`,
+      })
+    ) {
       return;
     }
     await deleteSnapshot(slotId);
@@ -2327,7 +2338,16 @@ export function App() {
           const automated = typeof navigator !== 'undefined' && navigator.webdriver === true;
           const confirmFn =
             typeof window !== 'undefined' ? window.confirm.bind(window) : () => true;
-          if (!shouldRunReset({ automated, confirmFn })) return;
+          if (
+            !shouldRunDestructive({
+              automated,
+              confirmFn,
+              message:
+                'Reset the tower? This clears the current session and returns you to the start screen.',
+            })
+          ) {
+            return;
+          }
           resetGame();
         }}
       >

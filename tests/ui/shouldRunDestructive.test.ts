@@ -1,25 +1,29 @@
 import { describe, expect, it, vi } from 'vitest';
-import { shouldRunReset } from '../../app/App';
+import { shouldRunDestructive } from '../../app/App';
 
-describe('shouldRunReset (Reset safety guard)', () => {
+describe('shouldRunDestructive (reset/delete safety guard)', () => {
+  const message = 'Destroy the thing?';
+
   it('bypasses confirm() under webdriver/automation', () => {
     const confirmFn = vi.fn(() => false);
-    const result = shouldRunReset({ automated: true, confirmFn });
+    const result = shouldRunDestructive({ automated: true, confirmFn, message });
     expect(result).toBe(true);
     expect(confirmFn).not.toHaveBeenCalled();
   });
 
   it('returns true when confirm() resolves true (user clicks OK)', () => {
     const confirmFn = vi.fn(() => true);
-    const result = shouldRunReset({ automated: false, confirmFn });
+    const result = shouldRunDestructive({ automated: false, confirmFn, message });
     expect(result).toBe(true);
     expect(confirmFn).toHaveBeenCalledOnce();
+    expect(confirmFn).toHaveBeenCalledWith(message);
   });
 
   it('returns false when confirm() resolves false (user cancels)', () => {
     const confirmFn = vi.fn(() => false);
-    const result = shouldRunReset({ automated: false, confirmFn });
+    const result = shouldRunDestructive({ automated: false, confirmFn, message });
     expect(result).toBe(false);
     expect(confirmFn).toHaveBeenCalledOnce();
+    expect(confirmFn).toHaveBeenCalledWith(message);
   });
 });
