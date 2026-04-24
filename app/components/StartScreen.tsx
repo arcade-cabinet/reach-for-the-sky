@@ -38,7 +38,17 @@ export function StartScreen(props: StartScreenProps) {
           <button type="button" class="primary" onClick={() => void props.onStart()}>
             Break Ground
           </button>
-          <button type="button" class="secondary" onClick={() => void props.onContinue()}>
+          <button
+            type="button"
+            class="secondary"
+            onClick={() => void props.onContinue()}
+            disabled={props.saveSlots.length === 0}
+            title={
+              props.saveSlots.length === 0
+                ? 'No saved tower yet — Break Ground to start one.'
+                : undefined
+            }
+          >
             Continue Tower
           </button>
         </div>
