@@ -1134,7 +1134,7 @@ export function App() {
       <Show when={phaseState().phase === 'playing'}>
         <FirstRunExplainer />
       </Show>
-      <section class="top-hud">
+      <section class="top-hud" aria-label="Game HUD and controls">
         <div class="top-clock">
           <button
             type="button"
@@ -2168,10 +2168,11 @@ export function App() {
               <span>{tutorialText(viewState().tutorialStep)}</span>
             </section>
           )}
-          <section class="lens-panel">
+          <section class="lens-panel" aria-label="Diagnostic lenses">
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'normal' }}
+              aria-pressed={viewState().lensMode === 'normal'}
               onClick={() => setLensMode('normal')}
             >
               Normal
@@ -2179,6 +2180,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'maintenance' }}
+              aria-pressed={viewState().lensMode === 'maintenance'}
               onClick={() => setLensMode('maintenance')}
             >
               Maintenance
@@ -2186,6 +2188,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'transit' }}
+              aria-pressed={viewState().lensMode === 'transit'}
               onClick={() => setLensMode('transit')}
             >
               Transit
@@ -2193,6 +2196,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'value' }}
+              aria-pressed={viewState().lensMode === 'value'}
               onClick={() => setLensMode('value')}
             >
               Value
@@ -2200,6 +2204,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'sentiment' }}
+              aria-pressed={viewState().lensMode === 'sentiment'}
               onClick={() => setLensMode('sentiment')}
             >
               Sentiment
@@ -2207,6 +2212,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'privacy' }}
+              aria-pressed={viewState().lensMode === 'privacy'}
               onClick={() => setLensMode('privacy')}
             >
               Privacy
@@ -2214,6 +2220,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'safety' }}
+              aria-pressed={viewState().lensMode === 'safety'}
               onClick={() => setLensMode('safety')}
             >
               Safety
@@ -2221,12 +2228,13 @@ export function App() {
             <button
               type="button"
               classList={{ active: viewState().lensMode === 'event' }}
+              aria-pressed={viewState().lensMode === 'event'}
               onClick={() => setLensMode('event')}
             >
               Events
             </button>
           </section>
-          <section class="toolbar">
+          <section class="toolbar" aria-label="Build tools">
             {TOOL_ORDER.map((toolId) => {
               const tool = BUILDINGS[toolId];
               return (
@@ -2234,6 +2242,7 @@ export function App() {
                   type="button"
                   class="tool-button"
                   classList={{ active: viewState().selectedTool === toolId }}
+                  aria-pressed={viewState().selectedTool === toolId}
                   onClick={() => selectTool(toolId)}
                   title={`${tool.name}: $${tool.cost.toLocaleString()}`}
                 >
@@ -2324,7 +2333,12 @@ export function App() {
         </section>
       )}
 
-      <section class="notifications" aria-live="polite" aria-atomic="false">
+      <section
+        class="notifications"
+        aria-label="Live notifications"
+        aria-live="polite"
+        aria-atomic="false"
+      >
         {towerState().notifications.map((notice) => (
           <article class={`notice ${notice.type}`}>{notice.text}</article>
         ))}
