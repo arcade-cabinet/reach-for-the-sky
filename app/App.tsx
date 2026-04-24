@@ -1270,13 +1270,19 @@ export function App() {
                 <span>Market</span>
                 <strong>{humanizeEnum(macroState().marketCycle)}</strong>
                 <span>Fame</span>
-                <strong>{macroState().fame}%</strong>
+                <strong class={metricTone(macroState().fame, 'up')}>{macroState().fame}%</strong>
                 <span>Skyline</span>
-                <strong>{macroState().skylineStatus}%</strong>
+                <strong class={metricTone(macroState().skylineStatus, 'up')}>
+                  {macroState().skylineStatus}%
+                </strong>
                 <span>Regulation</span>
-                <strong>{macroState().regulationPressure}%</strong>
+                <strong class={metricTone(macroState().regulationPressure, 'down')}>
+                  {macroState().regulationPressure}%
+                </strong>
                 <span>Weather</span>
-                <strong>{macroState().weatherRisk}%</strong>
+                <strong class={metricTone(macroState().weatherRisk, 'down')}>
+                  {macroState().weatherRisk}%
+                </strong>
               </div>
             </section>
             {campaignState().victory === 'won' && (
