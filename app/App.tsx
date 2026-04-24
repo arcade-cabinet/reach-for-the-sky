@@ -1148,7 +1148,17 @@ export function App() {
         <div class="top-metrics">
           <article>
             <span>Funds</span>
-            <strong>{formatMoneyCompact(economyState().funds)}</strong>
+            <strong
+              class={
+                economyState().funds < 0
+                  ? 'tone-bad'
+                  : economyState().netRevenue < 0
+                  ? 'tone-mid'
+                  : 'tone-good'
+              }
+            >
+              {formatMoneyCompact(economyState().funds)}
+            </strong>
           </article>
           <article>
             <span>Pop</span>
