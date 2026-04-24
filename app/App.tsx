@@ -341,10 +341,7 @@ function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
 }
 
 function formatEventType(eventType: string): string {
-  return eventType
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+  return humanizeEnum(eventType);
 }
 
 function formatEventContext(data: unknown): string {
@@ -361,10 +358,7 @@ function formatEventContext(data: unknown): string {
 }
 
 function formatPressureReason(reason: string): string {
-  return reason
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+  return humanizeEnum(reason);
 }
 
 function summarizePressureReasons(reasons: readonly string[]): Array<[string, number]> {
