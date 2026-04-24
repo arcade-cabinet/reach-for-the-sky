@@ -15,6 +15,15 @@ const shots = [
     height: 844,
     mobile: true,
   },
+  {
+    // Landing-page "opening-mobile" preview source. Same scenario URL, mobile
+    // viewport — gives us a canonical 390x844 capture matching the one in
+    // public/assets/previews/ so the thumbnail stays current.
+    name: 'reach-sky-opening-mobile.png',
+    width: 390,
+    height: 844,
+    mobile: true,
+  },
 ];
 
 const CELL_WIDTH = 32;
