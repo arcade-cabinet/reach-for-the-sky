@@ -4,15 +4,13 @@
  * test helpers can import it — no two separately-drifting declarations.
  */
 export interface ReachForTheSkyDebug {
-  getView: () =>
-    | {
-        panX: number;
-        panY: number;
-        zoom: number;
-        lensMode: string;
-        selectedTool: string | null;
-      }
-    | null;
+  getView: () => {
+    panX: number;
+    panY: number;
+    zoom: number;
+    lensMode: string;
+    selectedTool: string | null;
+  } | null;
   getClock: () => { day: number; tick: number; speed: number } | null;
   getItemCount: () => number;
 }

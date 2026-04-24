@@ -4,15 +4,12 @@ const IS_CI = !!process.env.CI;
 // CI defaults to headless; PW_HEADLESS=1 forces it in local too. PW_HEADLESS=0
 // explicitly opts out so local headed runs still work even under CI-like envs.
 const IS_HEADLESS =
-  process.env.PW_HEADLESS === '0'
-    ? false
-    : IS_CI || process.env.PW_HEADLESS === '1';
+  process.env.PW_HEADLESS === '0' ? false : IS_CI || process.env.PW_HEADLESS === '1';
 const CHROMIUM_CHANNEL =
   process.env.PW_CHROMIUM_CHANNEL ?? (!IS_CI && !IS_HEADLESS ? 'chrome' : undefined);
 const DEFAULT_PORT = 41741;
 const configuredPort = Number(process.env.PLAYWRIGHT_PORT ?? process.env.PW_PORT);
-const PORT =
-  Number.isInteger(configuredPort) && configuredPort > 0 ? configuredPort : DEFAULT_PORT;
+const PORT = Number.isInteger(configuredPort) && configuredPort > 0 ? configuredPort : DEFAULT_PORT;
 const BASE_URL = `http://127.0.0.1:${PORT}/reach-for-the-sky/`;
 const REUSE_SERVER = !IS_CI && process.env.PW_REUSE_SERVER === '1';
 
@@ -56,10 +53,7 @@ export default defineConfig({
     launchOptions: { args: GAME_ARGS },
   },
 
-  reporter: [
-    ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-  ],
+  reporter: [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
   outputDir: 'e2e-artifacts',
 
   webServer: {

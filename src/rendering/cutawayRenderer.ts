@@ -23,9 +23,9 @@ import { NormalTowerBaseTracker } from './renderSignatures';
 import { createRoomComposition, type VectorPlacement } from './roomCompositions';
 import {
   type AgentVectorKey,
+  resetVectorAssetCache,
   type UiVectorKey,
   VectorAssetLibrary,
-  resetVectorAssetCache,
 } from './vectorAssets';
 
 function colorNumber(hex: string): number {

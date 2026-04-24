@@ -107,9 +107,7 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
       getItemCount: () => {
         const t = tower();
         if (!t) return 0;
-        return (
-          t.rooms.length + t.shafts.length + t.elevators.length
-        );
+        return t.rooms.length + t.shafts.length + t.elevators.length;
       },
     };
     void renderer.init(host).then(requestRender);
