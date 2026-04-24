@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.11](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.10...v1.1.11) (2026-04-24)
+
+
+### Bug Fixes
+
+* **capture-screenshots:** raise rendered-scenario timeout to 90s ([#59](https://github.com/arcade-cabinet/reach-for-the-sky/issues/59)) ([4146cd3](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4146cd3d231f2c139ecef2a2ee1f3e304d415860))
+
 ## [1.1.10](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.9...v1.1.10) (2026-04-24)
 
 
