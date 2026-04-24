@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.7...v1.1.8) (2026-04-24)
+
+
+### Bug Fixes
+
+* **capture-screenshots:** eager-load + scroll for lazy mobile previews ([#52](https://github.com/arcade-cabinet/reach-for-the-sky/issues/52)) ([2c0ef00](https://github.com/arcade-cabinet/reach-for-the-sky/commit/2c0ef0036d78814b9965038a36bed0c693e44591))
+
 ## [1.1.7](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.6...v1.1.7) (2026-04-24)
 
 
