@@ -2064,6 +2064,7 @@ export function App() {
               max="1"
               step="0.05"
               value={settingsState().audio.proceduralVolume}
+              aria-valuetext={`${Math.round(settingsState().audio.proceduralVolume * 100)} percent`}
               onInput={(event) =>
                 setAudioSettings({ proceduralVolume: Number(event.currentTarget.value) })
               }
@@ -2077,6 +2078,7 @@ export function App() {
               max="1"
               step="0.05"
               value={settingsState().audio.sampleVolume}
+              aria-valuetext={`${Math.round(settingsState().audio.sampleVolume * 100)} percent`}
               onInput={(event) =>
                 setAudioSettings({ sampleVolume: Number(event.currentTarget.value) })
               }
@@ -2124,6 +2126,7 @@ export function App() {
               max="1.25"
               step="0.05"
               value={settingsState().ui.displayScale}
+              aria-valuetext={`${Math.round(settingsState().ui.displayScale * 100)} percent`}
               onInput={(event) =>
                 setUiSettings({ displayScale: Number(event.currentTarget.value) })
               }
