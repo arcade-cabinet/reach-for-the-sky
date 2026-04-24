@@ -4,7 +4,7 @@ export const SAVE_SCHEMA_VERSION = 1;
 
 export const PRODUCTION_RELEASE = {
   name: 'Reach for the Sky',
-  version: '1.1.14', // x-release-please-version
+  version: '1.1.15', // x-release-please-version
   releaseChannel: 'production',
   contentVersion: '2026.04-production-1',
   targets: ['web', 'android'],
