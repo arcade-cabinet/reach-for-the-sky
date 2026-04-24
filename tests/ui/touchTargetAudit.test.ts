@@ -94,7 +94,12 @@ function parseRules(css: string): Declaration[] {
     }
     const body = css.slice(bodyStart, bodyEnd);
 
-    if (selectorRaw && !selectorRaw.startsWith('@')) {
+    if (selectorRaw.startsWith('@media')) {
+      // Recurse into media queries — responsive-only hit-target rules
+      // (e.g. .mobile-speed-row button at ≤760px) still need to satisfy
+      // the 44px floor on the mobile lane they're written for.
+      rules.push(...parseRules(body));
+    } else if (selectorRaw && !selectorRaw.startsWith('@')) {
       for (const subSelector of selectorRaw.split(',')) {
         rules.push(declarationFor(subSelector.trim(), body));
       }
@@ -128,6 +133,7 @@ const MOBILE_TAP_SELECTORS = [
   '.side-button',
   '.tool-button',
   '.speed-row button',
+  '.mobile-speed-row button',
   '.drawer-head button',
   '.save-row button',
   '.start-actions button',
