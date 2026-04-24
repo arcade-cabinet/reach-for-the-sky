@@ -5,7 +5,7 @@ status: current
 domain: quality
 ---
 
-<!-- 40 tests across 6 files in real Chromium; last run 10:58:46 local. -->
+<!-- 44 tests across 7 files in real Chromium; last run 11:02:28 local. -->
 
 
 # Browser Test Coverage Plan
@@ -100,11 +100,13 @@ visible surface and its coverage status so new phases have an obvious home.
 - ⬜ `shouldRunDestructive` bypass when webdriver=true (unit-covered already)
 - 🔲 Confirm() flow — jsdom and unit tests cover `shouldRunDestructive` directly
 
-### 11. Visual regression — ⬜ `visual/*.test.tsx`
+### 11. Visual regression — ✅ partial (`visual.tone.browser.test.tsx`)
 - ⬜ Snapshot StartScreen desktop + mobile viewport
 - ⬜ Snapshot contracts drawer with each act's authored content
-- ⬜ Tone classes resolve to expected CSS (`getComputedStyle` check for tone-good/mid/bad)
-- ⬜ High-contrast + prefers-contrast: more lift the eyebrow color
+- ✅ Tone classes resolve to expected authored hex via `getComputedStyle`
+- ✅ `--text-muted` default value (`#9fb6c7`) resolves at runtime
+- ✅ Toolbar tool buttons meet 44px touch-target in rendered layout
+- ✅ Speed-row Pause+Play never both aria-pressed=true simultaneously
 - 🔲 Full scenario screenshot parity — already handled by capture-screenshots.mjs
 
 ## Out of scope for vitest browser
