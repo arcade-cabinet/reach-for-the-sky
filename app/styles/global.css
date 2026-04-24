@@ -37,6 +37,10 @@
   --gold: var(--brand-brass);
   --cyan: var(--brand-blueprint);
   --green: var(--brand-verdigris);
+  /* Secondary-text token. Used for eyebrow-style labels, hints, small
+     print, and muted side copy across HUD + drawers. Overridden in HC
+     mode to #d4e4ed for ≥7:1 contrast against the firmer panel fill. */
+  --text-muted: #9fb6c7;
 }
 
 * {
@@ -142,6 +146,7 @@ a:focus-visible {
   --line: var(--hc-line);
   --cyan: var(--hc-cyan);
   --green: var(--hc-green);
+  --text-muted: #d4e4ed;
   color: white;
 }
 
@@ -156,6 +161,7 @@ a:focus-visible {
     --line: var(--hc-line);
     --cyan: var(--hc-cyan);
     --green: var(--hc-green);
+    --text-muted: #d4e4ed;
     color: white;
   }
 }
@@ -272,22 +278,10 @@ a:focus-visible {
 }
 
 .eyebrow {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-
-/* In HC mode, lift eyebrow text above 7:1 contrast against the hard
-   panel fill. #d4e4ed on --hc-panel-hard clears AAA. */
-.app-shell.high-contrast .eyebrow {
-  color: #d4e4ed;
-}
-
-@media (prefers-contrast: more) {
-  .eyebrow {
-    color: #d4e4ed;
-  }
 }
 
 .timecode {
@@ -342,7 +336,7 @@ a:focus-visible {
 .drawer-metrics,
 .visit-card span,
 .visit-card small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -420,7 +414,7 @@ a:focus-visible {
 
 .side-button small {
   margin-top: 2px;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -636,7 +630,7 @@ a:focus-visible {
 
 .event-history-list span,
 .event-history-list small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.62rem;
   letter-spacing: 0.07em;
   line-height: 1.25;
@@ -678,7 +672,7 @@ a:focus-visible {
 
 .save-slot-list span,
 .save-slot-list small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -816,7 +810,7 @@ a:focus-visible {
 .journey-grid span,
 .operations-grid span,
 .public-pressure-grid span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -897,7 +891,7 @@ a:focus-visible {
 .public-story-head small,
 .public-story-repair small,
 .public-story-repair-note {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -920,7 +914,7 @@ a:focus-visible {
 }
 
 .public-story-grid span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -972,7 +966,7 @@ a:focus-visible {
 }
 
 .public-story-action small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -984,7 +978,7 @@ a:focus-visible {
 }
 
 .public-story-action-grid span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.64rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1168,7 +1162,7 @@ a:focus-visible {
 .daily-report-card span,
 .daily-report-card li,
 .contract-list small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.76rem;
   line-height: 1.35;
 }
@@ -1260,7 +1254,7 @@ a:focus-visible {
 .contract-objective-action p,
 .contract-objective-action small {
   margin: 0;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -1287,7 +1281,7 @@ a:focus-visible {
 .history-counts {
   display: flex;
   justify-content: space-between;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -1315,7 +1309,7 @@ a:focus-visible {
 }
 
 .history-row span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.68rem;
   white-space: nowrap;
 }
@@ -1557,7 +1551,7 @@ a:focus-visible {
 }
 
 .start-saves button span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
 }
 
@@ -1607,7 +1601,7 @@ a:focus-visible {
 }
 
 .start-scenario-card small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.74rem;
   line-height: 1.4;
 }
@@ -1734,7 +1728,7 @@ a:focus-visible {
 
 .permit-progress small,
 .build-readout small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.72rem;
 }
@@ -1853,7 +1847,7 @@ a:focus-visible {
   border-radius: 10px;
   background: rgba(2, 6, 23, 0.18);
   padding: 7px;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.7rem;
 }
 
@@ -2000,7 +1994,7 @@ a:focus-visible {
 .visit-action-row span,
 .visit-notice {
   margin: 0;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.76rem;
   line-height: 1.35;
 }
@@ -2052,14 +2046,14 @@ a:focus-visible {
 
 .memory-card span,
 .memory-card small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
 
 .empty-docket {
   margin: 0;
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -2212,7 +2206,7 @@ a:focus-visible {
 }
 
 .inspection-context-card small {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -2228,7 +2222,7 @@ a:focus-visible {
 }
 
 .inspection-context-grid span {
-  color: #9fb6c7;
+  color: var(--text-muted);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
