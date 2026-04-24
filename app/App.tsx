@@ -651,11 +651,19 @@ export function App() {
   };
 
   const ContractObjectiveItem = (props: { contractId: string; objective: ContractObjective }) => {
+    const progressTone = () => {
+      if (props.objective.complete) return 'tone-good';
+      const pct = props.objective.target > 0
+        ? (props.objective.value / props.objective.target) * 100
+        : 0;
+      if (pct >= 60) return 'tone-mid';
+      return undefined;
+    };
     return (
       <li classList={{ complete: props.objective.complete }}>
         <div class="contract-objective-line">
           <span>{props.objective.label}</span>
-          <small>
+          <small class={progressTone()}>
             {props.objective.value}/{props.objective.target}
           </small>
         </div>
