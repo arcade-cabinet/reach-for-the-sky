@@ -188,6 +188,13 @@ button:disabled {
   border-radius: 22px;
 }
 
+/* Mobile-only duplicate of the top-clock speed-row. Hidden on desktop; the
+   mobile media query below re-flows the top-hud as a two-row grid and puts
+   this bar on the second row so it has room to breathe. */
+.mobile-speed-row {
+  display: none;
+}
+
 .hud-top-left {
   top: max(16px, env(safe-area-inset-top));
   left: max(16px, env(safe-area-inset-left));
@@ -2176,6 +2183,34 @@ button:disabled {
 
   .top-clock .speed-row {
     display: none;
+  }
+
+  /* Surface the mobile-only speed row so players can Pause/Play/Fast
+     without opening a drawer. position:fixed so it anchors to the
+     viewport, not the .top-hud (which is position:absolute). */
+  .mobile-speed-row {
+    display: flex;
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 4px);
+    transform: translateX(-50%);
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(6px);
+    z-index: 6;
+  }
+
+  .mobile-speed-row button {
+    min-width: 60px;
+    min-height: 44px;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .top-clock .timecode {
