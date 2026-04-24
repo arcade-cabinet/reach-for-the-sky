@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.0...v1.3.1) (2026-04-24)
+
+
+### Accessibility
+
+* first-run explainer honors high-contrast + prefers-contrast ([#93](https://github.com/arcade-cabinet/reach-for-the-sky/issues/93)) ([6ae50d0](https://github.com/arcade-cabinet/reach-for-the-sky/commit/6ae50d0732e57c4c0fc4313fdc70c418caa3df49))
+
+
+### Documentation
+
+* **state:** refresh STATE.md to reflect v1.2.5 / v1.3.0 a11y surface ([#92](https://github.com/arcade-cabinet/reach-for-the-sky/issues/92)) ([8c34016](https://github.com/arcade-cabinet/reach-for-the-sky/commit/8c3401667fee3096113f4c85416d541598a0f45a))
+
 ## [1.3.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.5...v1.3.0) (2026-04-24)
 
 
