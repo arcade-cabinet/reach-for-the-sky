@@ -310,6 +310,17 @@ function formatMoney(value: number): string {
   return value < 0 ? `-$${magnitude}` : `$${magnitude}`;
 }
 
+// Compact currency for the top-HUD funds cell, where the column is narrow
+// (minmax(70px, 1fr)) and full $4,533,000 clips to "$4,533..." — unreadable.
+// $4.5M reads at a glance and fits. Keeps sign handling for negatives.
+function formatMoneyCompact(value: number): string {
+  const abs = Math.abs(Math.round(value));
+  const sign = value < 0 ? '-' : '';
+  if (abs >= 1_000_000) return `${sign}$${(abs / 1_000_000).toFixed(abs >= 10_000_000 ? 0 : 1)}M`;
+  if (abs >= 10_000) return `${sign}$${(abs / 1_000).toFixed(0)}k`;
+  return `${sign}$${abs.toLocaleString()}`;
+}
+
 function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
   if (!summary) return 'Empty';
   const identity = summary.declaredIdentity ?? summary.identity;
@@ -1120,7 +1131,7 @@ export function App() {
         <div class="top-metrics">
           <article>
             <span>Funds</span>
-            <strong>${economyState().funds.toLocaleString()}</strong>
+            <strong>{formatMoneyCompact(economyState().funds)}</strong>
           </article>
           <article>
             <span>Pop</span>
