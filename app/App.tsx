@@ -1045,9 +1045,15 @@ export function App() {
     }
   };
 
+  let visitNoticeTimer: number | null = null;
   const handleInviteVisit = () => {
     const result = invitePublicVisit();
     setVisitNotice(result.message);
+    if (visitNoticeTimer !== null) window.clearTimeout(visitNoticeTimer);
+    visitNoticeTimer = window.setTimeout(() => {
+      setVisitNotice(null);
+      visitNoticeTimer = null;
+    }, 6000);
     if (!result.ok) {
       audio?.play('warning');
       return;
