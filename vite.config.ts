@@ -1,6 +1,7 @@
 import { copyFileSync, mkdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
+import { playwright } from '@vitest/browser-playwright';
 import solid from 'vite-plugin-solid';
 import { defineConfig } from 'vitest/config';
 
@@ -87,9 +88,39 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'jsdom',
     globals: true,
-    setupFiles: ['./vitest.setup.ts'],
-    include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'jsdom',
+          setupFiles: ['./vitest.setup.ts'],
+          include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
+          exclude: ['tests/browser/**'],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'browser',
+          include: ['tests/browser/**/*.test.{ts,tsx}'],
+          // pnpm produces two vitest peer hashes (one for our direct dep,
+          // one for @vitest/browser-playwright's peer). The factory returned
+          // by playwright() is structurally identical at runtime but carries
+          // the "wrong" module's phantom types here. Drop the whole browser
+          // config into a typed escape so TS stops unwinding the peer mismatch
+          // — the schema is still validated at runtime by vitest itself.
+          // biome-ignore lint/suspicious/noExplicitAny: see above
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            instances: [{ browser: 'chromium' }],
+            // biome-ignore lint/suspicious/noExplicitAny: see above
+          } as any,
+        },
+      },
+    ],
   },
 });
