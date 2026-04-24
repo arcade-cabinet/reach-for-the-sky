@@ -119,6 +119,15 @@ export default defineConfig({
             instances: [{ browser: 'chromium' }],
             // biome-ignore lint/suspicious/noExplicitAny: see above
           } as any,
+          // Pre-bundle deps imported by components under test so Vite
+          // doesn't discover + reload mid-run on first use.
+          deps: {
+            optimizer: {
+              web: {
+                include: ['@capacitor/preferences', '@capacitor/core'],
+              },
+            },
+          },
         },
       },
     ],
