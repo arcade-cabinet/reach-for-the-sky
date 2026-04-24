@@ -945,9 +945,21 @@ export function App() {
         publicTrust: macroState().publicTrust,
       });
     }, TICK_RATE);
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (settingsOpen()) {
+        event.preventDefault();
+        setSettingsOpen(false);
+      } else if (contractsOpen()) {
+        event.preventDefault();
+        setContractsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeydown);
     onCleanup(() => {
       nativeBackButtonDisposed = true;
       window.clearInterval(interval);
+      window.removeEventListener('keydown', handleKeydown);
       void nativeBackButtonHandle?.remove();
     });
   });
