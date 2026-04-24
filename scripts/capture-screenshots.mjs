@@ -316,6 +316,25 @@ async function main() {
       mobile: true,
     });
     await devtools.send('Page.navigate', { url: menuUrl });
+    // Force eager load on all scenario previews and scroll the page so
+    // lazy-loaded below-the-fold cards decode before the assertion runs.
+    // On narrow mobile viewports the scenario row lives below the fold
+    // and otherwise never triggers the IntersectionObserver before the
+    // harness times out.
+    await waitFor('scenario cards mounted', async () =>
+      devtools.evaluate(`
+(() => {
+  const images = Array.from(document.querySelectorAll('.start-scenario-card img'));
+  if (images.length < 4) return null;
+  for (const image of images) {
+    image.loading = 'eager';
+    image.decoding = 'sync';
+  }
+  window.scrollTo(0, document.body.scrollHeight);
+  return true;
+})()
+`),
+    );
     await waitFor('rendered mobile start menu', async () =>
       devtools.evaluate(`
 (() => {
