@@ -1111,6 +1111,7 @@ export function App() {
             class="side-button"
             classList={{ active: contractsOpen() }}
             aria-expanded={contractsOpen()}
+            aria-label="Open contracts drawer"
             onClick={() => {
               const nextOpen = !contractsOpen();
               setContractsOpen(nextOpen);
@@ -1131,6 +1132,8 @@ export function App() {
               classList={{ active: clockState().speed === 0 }}
               onClick={() => setSpeed(0)}
               title="Pause simulation"
+              aria-label="Pause simulation"
+              aria-pressed={clockState().speed === 0}
             >
               Pause
             </button>
@@ -1139,6 +1142,8 @@ export function App() {
               classList={{ active: clockState().speed === 1 }}
               onClick={() => setSpeed(1)}
               title="Run simulation at normal speed"
+              aria-label="Play at normal speed"
+              aria-pressed={clockState().speed === 1}
             >
               Play
             </button>
@@ -1147,6 +1152,8 @@ export function App() {
               classList={{ active: clockState().speed === 4 }}
               onClick={() => setSpeed(4)}
               title="Run simulation at 4x speed"
+              aria-label="Fast forward at 4x speed"
+              aria-pressed={clockState().speed === 4}
             >
               Fast
             </button>
@@ -1234,6 +1241,8 @@ export function App() {
             classList={{ active: clockState().speed === 0 }}
             onClick={() => setSpeed(0)}
             title="Pause simulation"
+            aria-label="Pause simulation"
+            aria-pressed={clockState().speed === 0}
           >
             Pause
           </button>
@@ -1242,6 +1251,8 @@ export function App() {
             classList={{ active: clockState().speed === 1 }}
             onClick={() => setSpeed(1)}
             title="Run simulation at normal speed"
+            aria-label="Play at normal speed"
+            aria-pressed={clockState().speed === 1}
           >
             Play
           </button>
@@ -1250,6 +1261,8 @@ export function App() {
             classList={{ active: clockState().speed === 4 }}
             onClick={() => setSpeed(4)}
             title="Run simulation at 4x speed"
+            aria-label="Fast forward at 4x speed"
+            aria-pressed={clockState().speed === 4}
           >
             Fast
           </button>
