@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.2...v1.1.3) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** phase cell fits full act title without clipping ([#37](https://github.com/arcade-cabinet/reach-for-the-sky/issues/37)) ([eb80abe](https://github.com/arcade-cabinet/reach-for-the-sky/commit/eb80abeed00d007f940014866f93bdc3d1880990))
+
 ## [1.1.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.1...v1.1.2) (2026-04-24)
 
 
