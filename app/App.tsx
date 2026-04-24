@@ -2036,7 +2036,11 @@ export function App() {
                         {save.error} · recovered {formatSaveDate(save.detectedAt)}
                       </small>
                     </div>
-                    <button type="button" onClick={() => void handleDeleteCorruptSave(save.slotId)}>
+                    <button
+                      type="button"
+                      aria-label={`Forget corrupt save for ${slotLabel(save.slotId)}`}
+                      onClick={() => void handleDeleteCorruptSave(save.slotId)}
+                    >
                       Forget
                     </button>
                   </article>
