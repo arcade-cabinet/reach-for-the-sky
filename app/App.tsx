@@ -1552,8 +1552,12 @@ export function App() {
             <section class="drawer-section contract-history">
               <div class="eyebrow">History</div>
               <div class="history-counts">
-                <span>{campaignState().completedContracts.length} completed</span>
-                <span>{campaignState().failedContracts.length} failed</span>
+                <span classList={{ 'tone-good': campaignState().completedContracts.length > 0 }}>
+                  {campaignState().completedContracts.length} completed
+                </span>
+                <span classList={{ 'tone-bad': campaignState().failedContracts.length > 0 }}>
+                  {campaignState().failedContracts.length} failed
+                </span>
               </div>
               {campaignState()
                 .completedContracts.slice(0, 4)
