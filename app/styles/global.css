@@ -247,7 +247,12 @@ button:disabled {
 
 .top-metrics {
   display: grid;
-  grid-template-columns: repeat(7, minmax(70px, 1fr));
+  /* Phase (the last column) needs more room than the numeric cells —
+     'District Player' / 'Public Landmark' / 'Reach For The Sky' all
+     exceed the 70px floor. A generous last column keeps phase legible
+     without starving the numeric stats; the phase cell also shrinks
+     its font in .top-metrics strong for its class below. */
+  grid-template-columns: repeat(6, minmax(70px, 1fr)) minmax(110px, 1.3fr);
   gap: 8px;
   min-width: 0;
 }
@@ -279,6 +284,16 @@ button:disabled {
   font-size: clamp(0.86rem, 1.4vw, 1.05rem);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Phase values are narrative titles ('District Player', 'Reach For The
+   Sky', 'Public Landmark') that need a smaller font to fit the cell
+   without clipping. Switch to the body font so it reads as text rather
+   than competing with numeric monospace alongside. */
+.top-metrics .phase-article strong {
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
 }
 
 .top-actions {

@@ -1159,7 +1159,7 @@ export function App() {
             <span>Visits</span>
             <strong>{towerState().visits.length}</strong>
           </article>
-          <article>
+          <article class="phase-article">
             <span>Phase</span>
             <strong>
               {campaignState().victory === 'won'
