@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.14](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.13...v1.1.14) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** confirm before Delete save wipes a slot + generalize guard ([#65](https://github.com/arcade-cabinet/reach-for-the-sky/issues/65)) ([635458b](https://github.com/arcade-cabinet/reach-for-the-sky/commit/635458b5cea760958c2b7038651bed96f49ddf3f))
+
 ## [1.1.13](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.12...v1.1.13) (2026-04-24)
 
 
