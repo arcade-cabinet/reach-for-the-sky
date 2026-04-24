@@ -484,6 +484,15 @@ export function App() {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
   const [startNotice, setStartNotice] = createSignal<string | null>(null);
   const [saveNotice, setSaveNotice] = createSignal<string | null>(null);
+  let saveNoticeTimer: number | null = null;
+  const announceSaveAction = (message: string) => {
+    setSaveNotice(message);
+    if (saveNoticeTimer !== null) window.clearTimeout(saveNoticeTimer);
+    saveNoticeTimer = window.setTimeout(() => {
+      setSaveNotice(null);
+      saveNoticeTimer = null;
+    }, 6000);
+  };
   const [visitNotice, setVisitNotice] = createSignal<string | null>(null);
   const [selectedSaveSlot, setSelectedSaveSlot] = createSignal<string>(DEFAULT_SAVE_SLOT);
   const [saveSlots, setSaveSlots] = createSignal<SaveSlotSummary[]>([]);
@@ -1075,7 +1084,7 @@ export function App() {
     await refreshSaveSlots();
     await refreshCorruptSaves();
     if (settingsOpen()) await refreshSimulationHistory();
-    setSaveNotice(`${slotLabel(slotId)} saved on day ${snapshot.clock.day}.`);
+    announceSaveAction(`${slotLabel(slotId)} saved on day ${snapshot.clock.day}.`);
   };
 
   const handleLoad = async (slotId = selectedSaveSlot()) => {
@@ -1087,7 +1096,7 @@ export function App() {
     }
     setSelectedSaveSlot(slotId);
     hydrateSnapshot(snapshot);
-    setSaveNotice(`${slotLabel(slotId)} loaded.`);
+    announceSaveAction(`${slotLabel(slotId)} loaded.`);
   };
 
   const handleDeleteSave = async () => {
@@ -1109,13 +1118,13 @@ export function App() {
     }
     await deleteSnapshot(slotId);
     await refreshSaveSlots();
-    setSaveNotice(`${slotLabel(slotId)} deleted.`);
+    announceSaveAction(`${slotLabel(slotId)} deleted.`);
   };
 
   const handleDeleteCorruptSave = async (slotId: string) => {
     await deleteCorruptSave(slotId);
     await refreshCorruptSaves();
-    setSaveNotice(`${slotLabel(slotId)} recovery backup deleted.`);
+    announceSaveAction(`${slotLabel(slotId)} recovery backup deleted.`);
   };
 
   const handleExportDiagnostics = () => {
