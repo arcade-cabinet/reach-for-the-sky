@@ -1819,8 +1819,11 @@ export function App() {
                       <div>
                         <strong>{memory.label}</strong>
                         <span>
-                          {memory.outcome} · sentiment {memory.sentiment}% · day{' '}
-                          {memory.resolvedDay}
+                          {humanizeEnum(memory.outcome)} · sentiment{' '}
+                          <span class={metricTone(memory.sentiment, 'up')}>
+                            {memory.sentiment}%
+                          </span>{' '}
+                          · day {memory.resolvedDay}
                         </span>
                       </div>
                       <small>{memory.impressions[0]}</small>
