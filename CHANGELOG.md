@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.15](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.14...v1.1.15) (2026-04-24)
+
+
+### Accessibility
+
+* add launch_handler for focus-existing client mode ([#68](https://github.com/arcade-cabinet/reach-for-the-sky/issues/68)) ([344f426](https://github.com/arcade-cabinet/reach-for-the-sky/commit/344f426fd4a5fc0fac0a4a235ea9939e654b4202))
+
 ## [1.1.14](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.13...v1.1.14) (2026-04-24)
 
 

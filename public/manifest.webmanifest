@@ -1,7 +1,7 @@
 {
   "name": "Reach for the Sky",
   "short_name": "Reach Sky",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "description": "A modern living-tower simulator where architecture, people, reputation, and city pressure collide.",
   "lang": "en",
   "dir": "ltr",
@@ -9,7 +9,11 @@
   "start_url": "/reach-for-the-sky/",
   "scope": "/reach-for-the-sky/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "browser"
+  ],
   "launch_handler": {
     "client_mode": "focus-existing"
   },
