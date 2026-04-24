@@ -43,9 +43,17 @@ describe('tower placement', () => {
     expect(noFloor.valid).toBe(false);
     expect(noFloor.error).toMatch(/floor/i);
 
-    const floorResult = placeBuild(
+    // Structural support chain: a floor at y=1 needs a lobby at y=0 beneath.
+    const lobby = placeBuild(
       tower,
       economy,
+      'lobby',
+      { start: { gx: 0, gy: 0 }, end: { gx: 1, gy: 0 } },
+      0,
+    );
+    const floorResult = placeBuild(
+      lobby.tower,
+      lobby.economy,
       'floor',
       { start: { gx: 0, gy: 1 }, end: { gx: 1, gy: 1 } },
       1,
@@ -57,6 +65,18 @@ describe('tower placement', () => {
 
     expect(office.valid).toBe(true);
     expect(office.cost).toBe(12_000);
+  });
+
+  it('rejects floors placed in midair without a floor or lobby beneath', () => {
+    const tower = createInitialTower();
+    const economy = createInitialEconomy();
+
+    const floating = createBuildPreview(tower, economy, 'floor', {
+      start: { gx: 0, gy: 3 },
+      end: { gx: 2, gy: 3 },
+    });
+    expect(floating.valid).toBe(false);
+    expect(floating.error).toMatch(/floor or lobby directly beneath/i);
   });
 
   it('requires transit shafts to pass through infrastructure', () => {
@@ -99,7 +119,7 @@ describe('tower placement', () => {
     let tower = createInitialTower();
     let economy = createInitialEconomy();
     for (const [tool, start, end] of [
-      ['lobby', { gx: 0, gy: 0 }, { gx: 1, gy: 0 }],
+      ['lobby', { gx: 0, gy: 0 }, { gx: 3, gy: 0 }],
       ['floor', { gx: 0, gy: 1 }, { gx: 3, gy: 1 }],
       ['office', { gx: 0, gy: 1 }, { gx: 1, gy: 1 }],
       ['condo', { gx: 2, gy: 1 }, { gx: 3, gy: 1 }],
@@ -191,7 +211,7 @@ describe('tower placement', () => {
       let tower = createInitialTower();
       let economy = createInitialEconomy();
       for (const [tool, start, end] of [
-        ['lobby', { gx: -1, gy: 0 }, { gx: 1, gy: 0 }],
+        ['lobby', { gx: -1, gy: 0 }, { gx: 2, gy: 0 }],
         ['floor', { gx: -1, gy: 1 }, { gx: 2, gy: 1 }],
         ['office', { gx: -1, gy: 1 }, { gx: 0, gy: 1 }],
         ['condo', { gx: 1, gy: 1 }, { gx: 2, gy: 1 }],
