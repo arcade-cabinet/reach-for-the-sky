@@ -13,9 +13,9 @@ domain: context
 
 Current public web surface as of 2026-04-24:
 
-- GitHub Pages live on v1.1.6
+- GitHub Pages live on v1.2.5 (bumping to v1.3.0 after the pending release cycle)
 - production landing page deployed with current scenario previews
-- release and CD lanes green on every merged commit in the 1.1.x line
+- release and CD lanes green on every merged commit in the 1.2.x line
 - Android AAB published per tagged release as a GitHub Actions artifact
 
 ## Repository Reality
@@ -37,8 +37,11 @@ The project is a standalone game repo with:
 - deploy pipeline
 - HUD + drawer polish: tone-graded percentages across HUD / City Brief / Journey / Operations / Daily Report / build-readout / public story / memory card / history counts
 - label humanization: no raw kebab-case enums surface to players
-- a11y affordances on speed controls, drawer toggles, and Reset confirmation
+- comprehensive a11y surface: aria-pressed on every toggle (lens, tool, mute/contrast/motion/hints/diagnostics/compact, save slots), aria-checked + role="radio" on mutually-exclusive groups (identity declaration, save-slot panel, start-screen saves), aria-valuetext on range sliders with live numeric readout, aria-label + aria-hidden on drawers, toggle button labels reflect open/close state, Escape closes drawers + inspection overlay
+- OS preference honoring: prefers-reduced-motion clamps animations, prefers-contrast more pulls in the HC palette regardless of in-app toggle state
+- keyboard focus ring via :focus-visible on every interactive element
 - CDP harness auto-accepts dialogs so verifiers never deadlock on blocking prompts
+- CD stability: capture-screenshots and default waitFor timeouts sized for GitHub Actions runner variance (150s for Pixi first-frame, 30s default for reactive probes)
 
 ## What Is Not Finished
 
