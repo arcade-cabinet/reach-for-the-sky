@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.9...v1.1.10) (2026-04-24)
+
+
+### Accessibility
+
+* honor prefers-reduced-motion at the OS level ([#57](https://github.com/arcade-cabinet/reach-for-the-sky/issues/57)) ([147ee25](https://github.com/arcade-cabinet/reach-for-the-sky/commit/147ee250ba5f9ce7dbb77ca0f6b0875317ad284c))
+
 ## [1.1.9](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.8...v1.1.9) (2026-04-24)
 
 
