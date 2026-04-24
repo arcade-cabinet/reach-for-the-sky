@@ -304,18 +304,19 @@ button:disabled {
    red, tone-mid stays neutral gold. */
 /* Tone classes are general — any element can opt into them and
    they stay consistent across the HUD, drawers, reports, history
-   counts, build-readout, memory cards, etc. Keep these rules
-   broad rather than scoped so new surfaces can adopt the same
-   color language without touching CSS. */
-.tone-good {
+   counts, build-readout, memory cards, etc. Double the class in
+   each selector so the specificity (0,2,0) beats any single-class
+   parent rule like `.top-metrics strong` or `.journey-grid strong`
+   (0,1,1). Without this, the tone never wins on those elements. */
+.tone-good.tone-good {
   color: #a3d6a9;
 }
 
-.tone-mid {
+.tone-mid.tone-mid {
   color: #e1c77e;
 }
 
-.tone-bad {
+.tone-bad.tone-bad {
   color: #e09b94;
 }
 

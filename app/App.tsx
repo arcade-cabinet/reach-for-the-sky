@@ -338,6 +338,25 @@ function metricTone(value: number, direction: 'up' | 'down'): string {
 // Journey / city-brief grids used to lean on text-transform: uppercase to
 // mask the lowercase enums; removing that transform meant every value needed
 // to travel through a humanizer at render time instead.
+/**
+ * Decide whether to go through with a Reset click.
+ *
+ *   - If automated (webdriver), always reset — verifiers must not deadlock.
+ *   - Otherwise prompt with confirmFn and honor the answer.
+ *
+ * Exported so tests can cover all three branches without instantiating
+ * the whole App component.
+ */
+export function shouldRunReset(options: {
+  automated: boolean;
+  confirmFn: (message: string) => boolean;
+}): boolean {
+  if (options.automated) return true;
+  return options.confirmFn(
+    'Reset the tower? This clears the current session and returns you to the start screen.',
+  );
+}
+
 function humanizeEnum(value: string): string {
   return value
     .split(/[-_\s]+/)
@@ -2301,20 +2320,10 @@ export function App() {
         class="reset-button"
         aria-label="Reset tower and return to start screen"
         onClick={() => {
-          // Skip confirm() when automated (Playwright / Chrome DevTools
-          // Protocol / save-load verifier) — same escape hatch the
-          // first-run modal uses so browser smoke tests don't deadlock
-          // on a blocking prompt.
           const automated = typeof navigator !== 'undefined' && navigator.webdriver === true;
-          if (
-            !automated &&
-            typeof window !== 'undefined' &&
-            !window.confirm(
-              'Reset the tower? This clears the current session and returns you to the start screen.',
-            )
-          ) {
-            return;
-          }
+          const confirmFn =
+            typeof window !== 'undefined' ? window.confirm.bind(window) : () => true;
+          if (!shouldRunReset({ automated, confirmFn })) return;
           resetGame();
         }}
       >
