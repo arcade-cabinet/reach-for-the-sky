@@ -73,6 +73,60 @@ describe('StartScreen (browser)', () => {
     }
   });
 
+  it('scenario card click fires onScenario with the matching id', () => {
+    const onScenario = vi.fn();
+    const { container } = render(() => <StartScreen {...baseProps({ onScenario })} />);
+    const cards = Array.from(
+      container.querySelectorAll('.start-scenario-card') as NodeListOf<HTMLButtonElement>,
+    );
+    expect(cards.length).toBe(4);
+    for (const card of cards) card.click();
+    expect(onScenario).toHaveBeenCalledTimes(4);
+    // The four ids passed in the fixture, in order.
+    expect(onScenario.mock.calls.map((call) => call[0])).toEqual([
+      'opening',
+      'skyline',
+      'weather',
+      'recovery',
+    ]);
+  });
+
+  it('save-slot click calls onSelectSaveSlot with the clicked slot id', () => {
+    const onSelectSaveSlot = vi.fn();
+    const slots: SaveSlotSummary[] = [
+      { slotId: 'slot-a', savedAt: new Date().toISOString(), day: 3, funds: 100_000, population: 10 } as SaveSlotSummary,
+      { slotId: 'slot-b', savedAt: new Date().toISOString(), day: 5, funds: 200_000, population: 20 } as SaveSlotSummary,
+    ];
+    const { container } = render(() =>
+      <StartScreen {...baseProps({ saveSlots: slots, selectedSaveSlot: 'slot-a', onSelectSaveSlot })} />,
+    );
+    const radios = container.querySelectorAll(
+      '.start-save-row button[role="radio"]',
+    ) as NodeListOf<HTMLButtonElement>;
+    radios[1].click();
+    expect(onSelectSaveSlot).toHaveBeenCalledWith('slot-b');
+  });
+
+  it('renders the platform label', () => {
+    const { container } = render(() => <StartScreen {...baseProps({ platformLabel: 'Android' })} />);
+    const tag = container.querySelector('.start-platform-tag strong');
+    expect(tag?.textContent).toBe('Android');
+  });
+
+  it('renders start-notice when set and hides it when null', () => {
+    const { container: withNotice } = render(() =>
+      <StartScreen {...baseProps({ startNotice: 'No saved tower yet.' })} />,
+    );
+    const notice = withNotice.querySelector('.start-notice');
+    expect(notice?.textContent).toBe('No saved tower yet.');
+    expect(notice?.getAttribute('aria-live')).toBe('polite');
+
+    const { container: withoutNotice } = render(() =>
+      <StartScreen {...baseProps({ startNotice: null })} />,
+    );
+    expect(withoutNotice.querySelector('.start-notice')).toBeNull();
+  });
+
   it('save-slot buttons use radiogroup semantics for mutual exclusion', () => {
     const slots: SaveSlotSummary[] = [
       { slotId: 'slot-a', savedAt: new Date().toISOString(), day: 3, funds: 100_000, population: 10 } as SaveSlotSummary,

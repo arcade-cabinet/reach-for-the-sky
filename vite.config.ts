@@ -124,7 +124,18 @@ export default defineConfig({
           deps: {
             optimizer: {
               web: {
-                include: ['@capacitor/preferences', '@capacitor/core'],
+                include: [
+                  '@capacitor/preferences',
+                  '@capacitor/core',
+                  '@capacitor/app',
+                  '@capacitor-community/sqlite',
+                  'jeep-sqlite/loader',
+                  'howler',
+                  'tone',
+                  'yuka',
+                  'koota',
+                  'pixi.js',
+                ],
               },
             },
           },
