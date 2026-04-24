@@ -1,6 +1,6 @@
 import { render } from '@solidjs/testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { StartScreen } from '@/../app/components/StartScreen';
+import { StartScreen } from '@app/components/StartScreen';
 import type { SaveSlotSummary } from '@/persistence/saveRepository';
 
 function baseProps(overrides: Partial<Parameters<typeof StartScreen>[0]> = {}) {
