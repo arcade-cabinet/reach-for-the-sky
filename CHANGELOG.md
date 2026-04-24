@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.4.0...v1.4.1) (2026-04-24)
+
+
+### Polish
+
+* **ui:** show exact funds value in title on compact HUD cell ([#114](https://github.com/arcade-cabinet/reach-for-the-sky/issues/114)) ([2b46105](https://github.com/arcade-cabinet/reach-for-the-sky/commit/2b46105c2c63bcc0744743fba3290ff9d3f65ac3))
+* **ui:** tint scenario card preview while image decodes ([#113](https://github.com/arcade-cabinet/reach-for-the-sky/issues/113)) ([a645556](https://github.com/arcade-cabinet/reach-for-the-sky/commit/a64555670e5fea111a5d5896b3de1e89f270435e))
+
 ## [1.4.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.9...v1.4.0) (2026-04-24)
 
 
