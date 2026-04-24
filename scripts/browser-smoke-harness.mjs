@@ -292,6 +292,18 @@ export async function withDevPage(pathname, callback) {
     await devtools.open();
     await devtools.send('Runtime.enable');
     await devtools.send('Page.enable');
+    // Auto-accept any window.confirm()/alert()/prompt() so verifier UI
+    // flows that trigger dialogs (e.g. the Reset safety prompt) don't
+    // deadlock the harness. Inject before navigation so no guarded
+    // button can surprise us with a blocking dialog.
+    await devtools.send('Page.addScriptToEvaluateOnNewDocument', {
+      source: `
+        window.confirm = () => true;
+        window.alert = () => undefined;
+        window.prompt = () => null;
+        Object.defineProperty(navigator, 'webdriver', { get: () => true });
+      `,
+    });
     await devtools.send('Page.navigate', { url });
 
     return await callback({ url, devtools });
