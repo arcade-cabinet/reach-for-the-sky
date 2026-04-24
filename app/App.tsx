@@ -653,9 +653,8 @@ export function App() {
   const ContractObjectiveItem = (props: { contractId: string; objective: ContractObjective }) => {
     const progressTone = () => {
       if (props.objective.complete) return 'tone-good';
-      const pct = props.objective.target > 0
-        ? (props.objective.value / props.objective.target) * 100
-        : 0;
+      const pct =
+        props.objective.target > 0 ? (props.objective.value / props.objective.target) * 100 : 0;
       if (pct >= 60) return 'tone-mid';
       return undefined;
     };
@@ -1161,8 +1160,8 @@ export function App() {
                 economyState().funds < 0
                   ? 'tone-bad'
                   : economyState().netRevenue < 0
-                  ? 'tone-mid'
-                  : 'tone-good'
+                    ? 'tone-mid'
+                    : 'tone-good'
               }
             >
               {formatMoneyCompact(economyState().funds)}
@@ -1644,8 +1643,8 @@ export function App() {
                         (latestReport()?.reputationDelta ?? 0) > 0
                           ? 'tone-good'
                           : (latestReport()?.reputationDelta ?? 0) < 0
-                          ? 'tone-bad'
-                          : 'tone-mid'
+                            ? 'tone-bad'
+                            : 'tone-mid'
                       }
                     >
                       {(latestReport()?.reputationDelta ?? 0) >= 0 ? '+' : ''}
@@ -1662,8 +1661,8 @@ export function App() {
                           (latestReport()?.netRevenue ?? 0) > 0
                             ? 'tone-good'
                             : (latestReport()?.netRevenue ?? 0) < 0
-                            ? 'tone-bad'
-                            : 'tone-mid'
+                              ? 'tone-bad'
+                              : 'tone-mid'
                         }
                       >
                         {formatMoney(latestReport()?.netRevenue ?? 0)}
