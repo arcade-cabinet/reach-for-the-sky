@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.7](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.6...v1.1.7) (2026-04-24)
+
+
+### Documentation
+
+* **state:** refresh to v1.1.6 polish milestone ([#49](https://github.com/arcade-cabinet/reach-for-the-sky/issues/49)) ([52115af](https://github.com/arcade-cabinet/reach-for-the-sky/commit/52115af40ddef1b74634e3925edc6f0556ab85db))
+
 ## [1.1.6](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.5...v1.1.6) (2026-04-24)
 
 
