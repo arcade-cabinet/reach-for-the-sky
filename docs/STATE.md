@@ -1,6 +1,6 @@
 ---
 title: State
-updated: 2026-04-23
+updated: 2026-04-24
 status: current
 domain: context
 ---
@@ -9,30 +9,36 @@ domain: context
 
 ## Where We Are
 
-`main` currently contains the standalone production runtime, upgraded landing/start surfaces, GitHub Pages deployment, Android debug CI packaging, and the five-act campaign-backed sandbox spine.
+`main` contains the standalone production runtime, the polished landing and HUD surfaces, GitHub Pages deployment, Android debug CI packaging, and the five-act campaign-backed sandbox spine. Web lane and Android debug artifact lane are both green.
 
-Current public web surface as of 2026-04-23:
+Current public web surface as of 2026-04-24:
 
-- GitHub Pages live
-- production landing page deployed
-- release and CD lanes green on the latest merged commit at that date
+- GitHub Pages live on v1.1.6
+- production landing page deployed with current scenario previews
+- release and CD lanes green on every merged commit in the 1.1.x line
+- Android AAB published per tagged release as a GitHub Actions artifact
 
 ## Repository Reality
 
-The project is no longer a cabinet subfolder abstraction. It is a standalone game repo with:
+The project is a standalone game repo with:
 
-- its own CI/CD
-- its own release lane
+- its own CI/CD (ci / release / cd lanes)
+- release-please tag automation
 - its own Capacitor shell
 - its own docs surface
+- 152 passing tests across unit, UI, and browser-persistence layers
 
 ## What Is Stable
 
 - build/run/test toolchain
 - campaign proof spine
 - persistence and diagnostics surface
-- browser verifier matrix
+- browser verifier matrix (save-load, corrupt recovery, preferences, report loop, public memory, invite visit, visit lifecycle)
 - deploy pipeline
+- HUD + drawer polish: tone-graded percentages across HUD / City Brief / Journey / Operations / Daily Report / build-readout / public story / memory card / history counts
+- label humanization: no raw kebab-case enums surface to players
+- a11y affordances on speed controls, drawer toggles, and Reset confirmation
+- CDP harness auto-accepts dialogs so verifiers never deadlock on blocking prompts
 
 ## What Is Not Finished
 
@@ -44,7 +50,7 @@ The project is no longer a cabinet subfolder abstraction. It is a standalone gam
 
 ## Immediate Next Work Themes
 
-- documentation alignment
 - content breadth and authored differentiation
-- UX polish and inspection depth
-- platform/store readiness
+- late-game pacing and authored campaign depth
+- platform/store readiness (iOS + Play Store)
+- continued SVG authoring to cover remaining room and agent families
