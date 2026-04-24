@@ -321,6 +321,18 @@ function formatMoneyCompact(value: number): string {
   return `${sign}$${abs.toLocaleString()}`;
 }
 
+// Color-grade a 0-100 percentage metric for the top HUD. Goodness direction:
+// 'up' means high is good (trust, sentiment — green high, red low), 'down'
+// means high is bad (transit pressure — red high, green low). Returns a
+// class name that the HUD CSS maps to the gold/cyan/red color tokens.
+function metricTone(value: number, direction: 'up' | 'down'): string {
+  const high = direction === 'up' ? value >= 70 : value <= 40;
+  const low = direction === 'up' ? value < 40 : value > 70;
+  if (high) return 'tone-good';
+  if (low) return 'tone-bad';
+  return 'tone-mid';
+}
+
 // Turn kebab-case / single-word enum values into title-case display labels
 // for player-facing surfaces. 'mixed-use' → 'Mixed Use', 'steady' → 'Steady'.
 // Journey / city-brief grids used to lean on text-transform: uppercase to
@@ -1145,15 +1157,21 @@ export function App() {
           </article>
           <article>
             <span>Trust</span>
-            <strong>{macroState().publicTrust}%</strong>
+            <strong class={metricTone(macroState().publicTrust, 'up')}>
+              {macroState().publicTrust}%
+            </strong>
           </article>
           <article>
             <span>Sentiment</span>
-            <strong>{economyState().tenantSatisfaction}%</strong>
+            <strong class={metricTone(economyState().tenantSatisfaction, 'up')}>
+              {economyState().tenantSatisfaction}%
+            </strong>
           </article>
           <article>
             <span>Transit</span>
-            <strong>{economyState().transitPressure}%</strong>
+            <strong class={metricTone(economyState().transitPressure, 'down')}>
+              {economyState().transitPressure}%
+            </strong>
           </article>
           <article>
             <span>Visits</span>
