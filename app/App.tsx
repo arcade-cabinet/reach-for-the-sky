@@ -338,6 +338,25 @@ function metricTone(value: number, direction: 'up' | 'down'): string {
 // Journey / city-brief grids used to lean on text-transform: uppercase to
 // mask the lowercase enums; removing that transform meant every value needed
 // to travel through a humanizer at render time instead.
+/**
+ * Decide whether to go through with a Reset click.
+ *
+ *   - If automated (webdriver), always reset — verifiers must not deadlock.
+ *   - Otherwise prompt with confirmFn and honor the answer.
+ *
+ * Exported so tests can cover all three branches without instantiating
+ * the whole App component.
+ */
+export function shouldRunReset(options: {
+  automated: boolean;
+  confirmFn: (message: string) => boolean;
+}): boolean {
+  if (options.automated) return true;
+  return options.confirmFn(
+    'Reset the tower? This clears the current session and returns you to the start screen.',
+  );
+}
+
 function humanizeEnum(value: string): string {
   return value
     .split(/[-_\s]+/)
@@ -388,7 +407,7 @@ function BehaviorProfile(props: { behavior: VisitorBehaviorProfile | null; label
       {(behavior) => (
         <div class="visit-personality">
           <span>{props.label ?? 'Personality'}</span>
-          <strong>{behavior().temperament}</strong>
+          <strong>{humanizeEnum(behavior().temperament)}</strong>
           <p>{behavior().summary}</p>
           <div class="personality-chips">
             <span>Values: {behavior().values.join(', ')}</span>
@@ -405,7 +424,7 @@ function HostingPlan(props: { plan: VisitorHostingPlan | null }) {
     <Show when={props.plan}>
       {(plan) => (
         <div class="visit-hosting-plan">
-          <span>Yuka hosting plan</span>
+          <span>Hosting plan</span>
           <strong>{plan().primary.label}</strong>
           <p>{plan().summary}</p>
           <div class="hosting-priorities">
@@ -1890,7 +1909,7 @@ export function App() {
       <aside class="settings-drawer" classList={{ open: settingsOpen() }}>
         <div class="drawer-head">
           <div>
-            <div class="eyebrow">Operations</div>
+            <div class="eyebrow">Your tower</div>
             <h2>Settings</h2>
           </div>
           <button type="button" onClick={() => setSettingsOpen(false)}>
@@ -2296,7 +2315,18 @@ export function App() {
         ))}
       </section>
 
-      <button type="button" class="reset-button" onClick={() => resetGame()}>
+      <button
+        type="button"
+        class="reset-button"
+        aria-label="Reset tower and return to start screen"
+        onClick={() => {
+          const automated = typeof navigator !== 'undefined' && navigator.webdriver === true;
+          const confirmFn =
+            typeof window !== 'undefined' ? window.confirm.bind(window) : () => true;
+          if (!shouldRunReset({ automated, confirmFn })) return;
+          resetGame();
+        }}
+      >
         Reset
       </button>
     </main>

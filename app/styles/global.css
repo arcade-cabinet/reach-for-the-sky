@@ -302,24 +302,21 @@ button:disabled {
    player couldn't tell 30% trust from 90% trust without reading the
    number. tone-good pulls toward muted green, tone-bad toward muted
    red, tone-mid stays neutral gold. */
-.top-metrics strong.tone-good,
-.city-brief-grid strong.tone-good,
-.journey-grid strong.tone-good,
-.operations-grid strong.tone-good {
+/* Tone classes are general — any element can opt into them and
+   they stay consistent across the HUD, drawers, reports, history
+   counts, build-readout, memory cards, etc. Double the class in
+   each selector so the specificity (0,2,0) beats any single-class
+   parent rule like `.top-metrics strong` or `.journey-grid strong`
+   (0,1,1). Without this, the tone never wins on those elements. */
+.tone-good.tone-good {
   color: #a3d6a9;
 }
 
-.top-metrics strong.tone-mid,
-.city-brief-grid strong.tone-mid,
-.journey-grid strong.tone-mid,
-.operations-grid strong.tone-mid {
+.tone-mid.tone-mid {
   color: #e1c77e;
 }
 
-.top-metrics strong.tone-bad,
-.city-brief-grid strong.tone-bad,
-.journey-grid strong.tone-bad,
-.operations-grid strong.tone-bad {
+.tone-bad.tone-bad {
   color: #e09b94;
 }
 

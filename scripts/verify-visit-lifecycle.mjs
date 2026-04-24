@@ -158,7 +158,7 @@ async function main() {
       return text.includes('Active commitment') &&
         text.includes('Personality') &&
         text.includes('Dealbreakers') &&
-        text.includes('Yuka hosting plan') &&
+        text.includes('Hosting plan') &&
         text.includes('Protect now')
         ? true
         : null;

@@ -103,7 +103,7 @@ function agentCausalLine(
   personality: string,
 ): string {
   if (routeStatus === 'blocked') {
-    return 'Because Yuka cannot find a valid route, this agent is stuck — the tower topology is missing a connection.';
+    return 'Because no valid route exists, this agent is stuck — the tower topology is missing a connection.';
   }
   if (waitTicks > 80) {
     return `Because this person has waited ${waitTicks} ticks, their visit memory will cite queues as the dominant reason.`;
@@ -167,7 +167,7 @@ export function createInspectionForCell(
       : null;
     const warnings: string[] = [];
     if (agent.routeStatus === 'blocked') {
-      warnings.push('Yuka cannot find a valid route from this agent to its target.');
+      warnings.push('No valid route exists from this agent to its target.');
     }
     if (agent.state === 'waiting' && (agent.waitTicks ?? 0) > 80) {
       warnings.push('This person has waited long enough to affect transit pressure.');
