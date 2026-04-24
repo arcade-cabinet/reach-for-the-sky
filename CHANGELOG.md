@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.5...v1.3.0) (2026-04-24)
+
+
+### Features
+
+* **ui:** show numeric value beside settings range sliders ([#89](https://github.com/arcade-cabinet/reach-for-the-sky/issues/89)) ([4063407](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4063407f7935d32266e60fd42aea06169bf3656e))
+
+
+### Accessibility
+
+* aria-pressed on remaining settings + identity + save-slot toggles ([#86](https://github.com/arcade-cabinet/reach-for-the-sky/issues/86)) ([c33f90e](https://github.com/arcade-cabinet/reach-for-the-sky/commit/c33f90ed8991abf6c7b83d901afaae35dba4864f))
+* Escape also closes inspection overlay ([#91](https://github.com/arcade-cabinet/reach-for-the-sky/issues/91)) ([b422e21](https://github.com/arcade-cabinet/reach-for-the-sky/commit/b422e21c51ac110f21be5737d9ee5807a8b53601))
+
 ## [1.2.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.4...v1.2.5) (2026-04-24)
 
 
