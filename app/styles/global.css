@@ -2182,17 +2182,20 @@ button:disabled {
   }
 
   .top-clock .speed-row {
-    display: none;
+    display: none !important;
   }
 
   /* Surface the mobile-only speed row so players can Pause/Play/Fast
      without opening a drawer. position:fixed so it anchors to the
-     viewport, not the .top-hud (which is position:absolute). */
+     viewport, not the .top-hud (which is position:absolute). Explicit
+     reset of top/right defends against inherited positioning. */
   .mobile-speed-row {
-    display: flex;
-    position: fixed;
-    left: 50%;
-    bottom: calc(env(safe-area-inset-bottom) + 4px);
+    display: flex !important;
+    position: fixed !important;
+    top: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 16px !important;
     transform: translateX(-50%);
     gap: 6px;
     padding: 6px 10px;
