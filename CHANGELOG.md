@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.4...v1.2.5) (2026-04-24)
+
+
+### Accessibility
+
+* aria-valuetext on audio + scale range sliders ([#88](https://github.com/arcade-cabinet/reach-for-the-sky/issues/88)) ([211d176](https://github.com/arcade-cabinet/reach-for-the-sky/commit/211d17638b55afd127ccd803dfacbd2eaf5fb681))
+* explicit aria-label on build tool buttons with cost ([#85](https://github.com/arcade-cabinet/reach-for-the-sky/issues/85)) ([e077e2c](https://github.com/arcade-cabinet/reach-for-the-sky/commit/e077e2c4e1f5996e3b8d629349a678c9bac249d4))
+
 ## [1.2.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.3...v1.2.4) (2026-04-24)
 
 
