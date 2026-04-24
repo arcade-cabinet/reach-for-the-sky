@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.4...v1.1.5) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** tone-grade daily report metrics ([#45](https://github.com/arcade-cabinet/reach-for-the-sky/issues/45)) ([4ea3809](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4ea380955acfd594cd071994a58ed741bcd5f501))
+
 ## [1.1.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.3...v1.1.4) (2026-04-24)
 
 
