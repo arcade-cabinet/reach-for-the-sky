@@ -1524,12 +1524,14 @@ export function App() {
               </div>
               <div class="identity-choice">
                 <div class="eyebrow">Declare Identity</div>
-                <div class="identity-buttons">
+                <div class="identity-buttons" role="radiogroup" aria-label="Declare tower identity">
                   {IDENTITY_OPTIONS.map(([identity, label]) => (
+                    // biome-ignore lint/a11y/useSemanticElements: rich button content (label + styling) cannot be expressed as <input type="radio">; WAI-ARIA APG permits role="radio" on buttons in toolbar-style groupings
                     <button
                       type="button"
+                      role="radio"
                       classList={{ active: campaignState().declaredIdentity === identity }}
-                      aria-pressed={campaignState().declaredIdentity === identity}
+                      aria-checked={campaignState().declaredIdentity === identity}
                       disabled={campaignState().act < 3 && campaignState().victory !== 'won'}
                       onClick={() => {
                         if (declareTowerIdentity(identity)) {
@@ -1952,15 +1954,17 @@ export function App() {
         </div>
         <section class="save-slot-panel">
           <div class="settings-title">Save Slots</div>
-          <div class="save-slot-list">
+          <div class="save-slot-list" role="radiogroup" aria-label="Save slot">
             {SAVE_SLOT_OPTIONS.map((slot) => {
               const summary = saveSlots().find((candidate) => candidate.slotId === slot.id);
               return (
+                // biome-ignore lint/a11y/useSemanticElements: rich button content (label + summary + metadata) cannot be expressed as <input type="radio">; WAI-ARIA APG permits role="radio" on buttons in toolbar-style groupings
                 <button
                   type="button"
+                  role="radio"
                   data-save-slot={slot.id}
                   classList={{ active: selectedSaveSlot() === slot.id }}
-                  aria-pressed={selectedSaveSlot() === slot.id}
+                  aria-checked={selectedSaveSlot() === slot.id}
                   onClick={() => setSelectedSaveSlot(slot.id)}
                 >
                   <strong>{slot.label}</strong>
