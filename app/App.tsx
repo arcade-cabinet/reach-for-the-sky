@@ -1571,21 +1571,37 @@ export function App() {
               <div class="eyebrow">Operations</div>
               <div class="operations-grid">
                 <span>Grade</span>
-                <strong>{operationsState().operationalGrade}%</strong>
+                <strong class={metricTone(operationsState().operationalGrade, 'up')}>
+                  {operationsState().operationalGrade}%
+                </strong>
                 <span>Service</span>
-                <strong>{operationsState().serviceCoverage}%</strong>
+                <strong class={metricTone(operationsState().serviceCoverage, 'up')}>
+                  {operationsState().serviceCoverage}%
+                </strong>
                 <span>Venue</span>
-                <strong>{operationsState().venueCredibility}%</strong>
+                <strong class={metricTone(operationsState().venueCredibility, 'up')}>
+                  {operationsState().venueCredibility}%
+                </strong>
                 <span>Safety</span>
-                <strong>{operationsState().safetyReadiness}%</strong>
+                <strong class={metricTone(operationsState().safetyReadiness, 'up')}>
+                  {operationsState().safetyReadiness}%
+                </strong>
                 <span>Events</span>
-                <strong>{operationsState().eventReadiness}%</strong>
+                <strong class={metricTone(operationsState().eventReadiness, 'up')}>
+                  {operationsState().eventReadiness}%
+                </strong>
                 <span>Privacy</span>
-                <strong>{operationsState().privacyComfort}%</strong>
+                <strong class={metricTone(operationsState().privacyComfort, 'up')}>
+                  {operationsState().privacyComfort}%
+                </strong>
                 <span>Noise</span>
-                <strong>{operationsState().noiseControl}%</strong>
+                <strong class={metricTone(operationsState().noiseControl, 'up')}>
+                  {operationsState().noiseControl}%
+                </strong>
                 <span>Height Risk</span>
-                <strong>{operationsState().heightRisk}%</strong>
+                <strong class={metricTone(operationsState().heightRisk, 'down')}>
+                  {operationsState().heightRisk}%
+                </strong>
               </div>
               {latestReport() && (
                 <article class="daily-report-card">
