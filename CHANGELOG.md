@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.4...v1.3.5) (2026-04-24)
+
+
+### Accessibility
+
+* corrupt-save Forget button gets slot-specific aria-label ([#101](https://github.com/arcade-cabinet/reach-for-the-sky/issues/101)) ([0eb1515](https://github.com/arcade-cabinet/reach-for-the-sky/commit/0eb151582b308e8a29d27378d8a1502b2587c3e7))
+
 ## [1.3.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.3...v1.3.4) (2026-04-24)
 
 
