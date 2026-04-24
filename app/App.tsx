@@ -2301,7 +2301,13 @@ export function App() {
         class="reset-button"
         aria-label="Reset tower and return to start screen"
         onClick={() => {
+          // Skip confirm() when automated (Playwright / Chrome DevTools
+          // Protocol / save-load verifier) — same escape hatch the
+          // first-run modal uses so browser smoke tests don't deadlock
+          // on a blocking prompt.
+          const automated = typeof navigator !== 'undefined' && navigator.webdriver === true;
           if (
+            !automated &&
             typeof window !== 'undefined' &&
             !window.confirm(
               'Reset the tower? This clears the current session and returns you to the start screen.',
