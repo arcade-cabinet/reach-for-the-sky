@@ -5,6 +5,9 @@ status: current
 domain: quality
 ---
 
+<!-- 40 tests across 6 files in real Chromium; last run 10:58:46 local. -->
+
+
 # Browser Test Coverage Plan
 
 This directory holds vitest browser-mode tests — real Chromium via playwright,
@@ -53,18 +56,18 @@ visible surface and its coverage status so new phases have an obvious home.
 - ⬜ Mobile speed-row appears only under narrow viewport emulation
 - ⬜ Tone-graded metric classes resolve to expected computed colors
 
-### 4. Build flow — ⚠️ partial (covered in `App.scenario.browser.test.tsx`)
+### 4. Build flow — ✅ `App.interaction.browser.test.tsx`
 - ✅ Toolbar labels itself + every button carries aria-pressed + cost-bearing aria-label
-- ⬜ Tool click sets selectedTool and flips aria-pressed exclusively
-- ⬜ Build-readout reads "Select a tool" until one is picked
-- ⬜ Build-readout shows preview.cost when valid and preview.error when invalid
+- ✅ Tool click: at-most-one aria-pressed invariant holds across 3 sequential clicks
+- ✅ Build-readout title reflects selection state and swaps with tool picks
+- ⬜ Build-readout shows preview.cost when valid and preview.error when invalid (requires canvas drag)
 - 🔲 Canvas drag → commit (Pixi integration — covered by CDP verifier)
 - 🔲 Particles + tone-good/bad cost animation (visual only)
 
-### 5. Lens swap — ✅ `App.scenario.browser.test.tsx`
+### 5. Lens swap — ✅ `App.scenario.browser.test.tsx` + `App.interaction.browser.test.tsx`
 - ✅ Lens-panel has aria-label="Diagnostic lenses"
 - ✅ All 8 lens buttons render with aria-pressed; exactly one is "true"
-- ⬜ Click flips aria-pressed exclusively
+- ✅ Click flips aria-pressed exclusively (Maintenance click → it becomes the sole pressed)
 - ⬜ `canvas-host` background switches off sky gradient in non-normal lenses
 
 ### 6. Inspection — ⬜ `Inspection.browser.test.tsx`
@@ -92,8 +95,8 @@ visible surface and its coverage status so new phases have an obvious home.
 ### 9. Day loop — 🔲
 - 🔲 Tick → autosave → daily report (covered by CDP verifier)
 
-### 10. Reset flow — ⬜ `Reset.browser.test.tsx`
-- ⬜ Reset button has aria-label
+### 10. Reset flow — ✅ `App.interaction.browser.test.tsx`
+- ✅ Reset button has a full aria-label
 - ⬜ `shouldRunDestructive` bypass when webdriver=true (unit-covered already)
 - 🔲 Confirm() flow — jsdom and unit tests cover `shouldRunDestructive` directly
 
