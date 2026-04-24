@@ -296,6 +296,23 @@ button:disabled {
   letter-spacing: 0.01em;
 }
 
+/* Glanceable color grades on the percentage metrics (trust, sentiment,
+   transit). The HUD pre-polish rendered every metric in the same #f8fbff
+   white — a player couldn't tell 30% trust from 90% trust without reading
+   the number. tone-good pulls toward the muted green family, tone-bad
+   toward muted red, tone-mid stays neutral gold. */
+.top-metrics strong.tone-good {
+  color: #a3d6a9;
+}
+
+.top-metrics strong.tone-mid {
+  color: #e1c77e;
+}
+
+.top-metrics strong.tone-bad {
+  color: #e09b94;
+}
+
 .top-actions {
   display: flex;
   align-items: center;
