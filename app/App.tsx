@@ -1355,17 +1355,23 @@ export function App() {
               <div class="eyebrow">Journey</div>
               <div class="journey-grid">
                 <span>Mode</span>
-                <strong>{campaignState().mode}</strong>
+                <strong>{campaignState().mode === 'campaign' ? 'Campaign' : 'Sandbox'}</strong>
                 <span>Reputation</span>
                 <strong>{campaignState().reputation}%</strong>
                 <span>Influence</span>
                 <strong>{macroState().cityInfluence}%</strong>
-                <span>Visits</span>
-                <strong>
-                  {campaignState().successfulVisits} / {campaignState().failedVisits}
-                </strong>
+                <span>Visits won</span>
+                <strong>{campaignState().successfulVisits}</strong>
+                <span>Visits lost</span>
+                <strong>{campaignState().failedVisits}</strong>
                 <span>Focus</span>
-                <strong>{campaignState().declaredIdentity ?? 'undeclared'}</strong>
+                <strong>
+                  {(() => {
+                    const declared = campaignState().declaredIdentity;
+                    if (!declared) return 'Undeclared';
+                    return IDENTITY_OPTIONS.find(([id]) => id === declared)?.[1] ?? declared;
+                  })()}
+                </strong>
               </div>
               <div class="identity-choice">
                 <div class="eyebrow">Declare Identity</div>
