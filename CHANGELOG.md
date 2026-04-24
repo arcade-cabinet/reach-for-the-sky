@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.3...v1.3.4) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** disable Continue Tower when no save slots exist ([#99](https://github.com/arcade-cabinet/reach-for-the-sky/issues/99)) ([9e68758](https://github.com/arcade-cabinet/reach-for-the-sky/commit/9e68758b1c301dfdeccdd8595a651032190e3130))
+
 ## [1.3.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.2...v1.3.3) (2026-04-24)
 
 
