@@ -1941,10 +1941,16 @@ export function App() {
 
       {phaseState().phase === 'playing' && (
         <>
-          <section class="tutorial-card">
-            <strong>{tutorialTitle(viewState().tutorialStep)}</strong>
-            <span>{tutorialText(viewState().tutorialStep)}</span>
-          </section>
+          {/* Tutorial card guides the first 5 build steps, then dismisses the
+              moment the player presses Play or a new day starts. Leaving it
+              up after step 4 (the "5. Run the Day" hint) creates a persistent
+              floating callout in the middle of gameplay — clutter, not help. */}
+          {clockState().day === 1 && clockState().speed === 0 && (
+            <section class="tutorial-card">
+              <strong>{tutorialTitle(viewState().tutorialStep)}</strong>
+              <span>{tutorialText(viewState().tutorialStep)}</span>
+            </section>
+          )}
           <section class="lens-panel">
             <button
               type="button"

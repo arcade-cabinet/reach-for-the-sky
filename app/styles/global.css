@@ -61,10 +61,20 @@ button {
   font: inherit;
 }
 
-button:hover,
-button.active {
+button:hover {
   border-color: var(--cyan);
   box-shadow: 0 0 18px rgba(134, 189, 199, 0.18);
+  color: white;
+}
+
+button.active {
+  /* Active state must read at a glance across all lens / mode / filter
+     buttons. Border glow alone is too subtle against the dark background —
+     a solid cyan border plus a tinted fill lets a player see which lens
+     they're looking through without comparing buttons side-by-side. */
+  border-color: var(--cyan);
+  background: rgba(134, 189, 199, 0.22);
+  box-shadow: 0 0 22px rgba(134, 189, 199, 0.32);
   color: white;
 }
 
