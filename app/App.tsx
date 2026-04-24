@@ -2296,7 +2296,22 @@ export function App() {
         ))}
       </section>
 
-      <button type="button" class="reset-button" onClick={() => resetGame()}>
+      <button
+        type="button"
+        class="reset-button"
+        aria-label="Reset tower and return to start screen"
+        onClick={() => {
+          if (
+            typeof window !== 'undefined' &&
+            !window.confirm(
+              'Reset the tower? This clears the current session and returns you to the start screen.',
+            )
+          ) {
+            return;
+          }
+          resetGame();
+        }}
+      >
         Reset
       </button>
     </main>
