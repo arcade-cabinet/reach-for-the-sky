@@ -349,7 +349,7 @@ function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
   if (!summary) return 'Empty';
   const identity = summary.declaredIdentity ?? summary.identity;
   const phase = summary.victory === 'won' ? 'City cycle' : 'Building';
-  return `${phase} · Day ${summary.day} · ${identity}`;
+  return `${phase} · Day ${summary.day} · ${humanizeEnum(identity)}`;
 }
 
 function formatEventType(eventType: string): string {
@@ -360,10 +360,9 @@ function formatEventContext(data: unknown): string {
   if (!data || typeof data !== 'object') return 'No context';
   const context = data as Partial<SimulationEventContext>;
   const parts = [
-    typeof context.source === 'string' ? context.source : null,
-    typeof context.day === 'number' ? `day ${context.day}` : null,
+    typeof context.source === 'string' ? humanizeEnum(context.source) : null,
+    typeof context.day === 'number' ? `Day ${context.day}` : null,
     typeof context.hour === 'number' ? `${context.hour.toString().padStart(2, '0')}:00` : null,
-    typeof context.act === 'number' ? `act ${context.act}` : null,
     typeof context.funds === 'number' ? formatMoney(context.funds) : null,
   ].filter(Boolean);
   return parts.join(' · ') || 'No context';
