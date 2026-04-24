@@ -503,6 +503,11 @@ export function App() {
   let persistenceQueue: Promise<unknown> = Promise.resolve();
   let nativeBackButtonHandle: PluginListenerHandle | null = null;
   let nativeBackButtonDisposed = false;
+  // Gate async callbacks (save-slot refreshes, preference loads, native
+  // back-button registration) so any promise that resolves AFTER the
+  // component unmounts doesn't write to disposed signals. Every `refresh*`
+  // helper below checks this flag before calling its setter.
+  let disposed = false;
 
   const phaseState = createMemo(() => requireValue(phase(), 'phase'));
   const towerState = createMemo(() => requireValue(tower(), 'tower'));
@@ -703,25 +708,28 @@ export function App() {
 
   const refreshSaveSlots = async () => {
     try {
-      setSaveSlots(await listSaveSlots());
+      const slots = await listSaveSlots();
+      if (!disposed) setSaveSlots(slots);
     } catch {
-      setSaveSlots([]);
+      if (!disposed) setSaveSlots([]);
     }
   };
 
   const refreshCorruptSaves = async () => {
     try {
-      setCorruptSaves(await listCorruptSaves());
+      const saves = await listCorruptSaves();
+      if (!disposed) setCorruptSaves(saves);
     } catch {
-      setCorruptSaves([]);
+      if (!disposed) setCorruptSaves([]);
     }
   };
 
   const refreshSimulationHistory = async () => {
     try {
-      setRecentEvents(await listSimulationEvents(8));
+      const events = await listSimulationEvents(8);
+      if (!disposed) setRecentEvents(events);
     } catch {
-      setRecentEvents([]);
+      if (!disposed) setRecentEvents([]);
     }
   };
 
@@ -817,7 +825,10 @@ export function App() {
   const queuePersistence = (work: () => Promise<void>) => {
     persistenceQueue = persistenceQueue
       .catch(() => undefined)
-      .then(work)
+      .then(async () => {
+        if (disposed) return;
+        await work();
+      })
       .catch(() => undefined);
   };
 
@@ -910,17 +921,20 @@ export function App() {
   onMount(() => {
     void (async () => {
       await installCapacitorPreferences().catch(() => undefined);
+      if (disposed) return;
       const scenario = new URLSearchParams(window.location.search).get('scenario');
       if (isScenarioId(scenario)) {
         const snapshot = createScenarioSnapshot(scenario);
         snapshot.view = { ...snapshot.view, ...scenarioCamera(scenario) };
         hydrateSnapshot(snapshot);
+        if (disposed) return;
         setPreferencesReady(true);
         void refreshSaveSlots();
         void refreshCorruptSaves();
         return;
       }
       await applyStoredPreferences();
+      if (disposed) return;
       setPreferencesReady(true);
       void refreshSaveSlots();
       void refreshCorruptSaves();
@@ -969,6 +983,7 @@ export function App() {
     };
     window.addEventListener('keydown', handleKeydown);
     onCleanup(() => {
+      disposed = true;
       nativeBackButtonDisposed = true;
       window.clearInterval(interval);
       window.removeEventListener('keydown', handleKeydown);

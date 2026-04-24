@@ -1,6 +1,8 @@
-import { render } from '@solidjs/testing-library';
+import { cleanup, render } from '@solidjs/testing-library';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { App } from '@app/App';
+
+afterEach(cleanup);
 
 /**
  * Full-App coordination tests. Mounts <App /> with a scenario deep-link so

@@ -51,8 +51,13 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   let canInspect = false;
   let dragStart: { gx: number; gy: number } | null = null;
   let renderFrame = 0;
+  // Guards against the init→then→requestRender race: if the component
+  // unmounts before `renderer.init()`'s promise resolves, the deferred
+  // requestRender would fire on a destroyed renderer.
+  let disposed = false;
 
   const renderCurrent = () => {
+    if (disposed) return;
     renderer?.render({
       tower: requireValue(tower(), 'tower'),
       economy: requireValue(economy(), 'economy'),
@@ -65,7 +70,7 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   };
 
   const requestRender = () => {
-    if (renderFrame) return;
+    if (disposed || renderFrame) return;
     renderFrame = window.requestAnimationFrame(() => {
       renderFrame = 0;
       renderCurrent();
@@ -110,12 +115,20 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
         return t.rooms.length + t.shafts.length + t.elevators.length;
       },
     };
-    void renderer.init(host).then(requestRender);
+    void renderer.init(host).then(() => {
+      // Init is async — if the component unmounted while we were waiting,
+      // don't schedule a render against a disposed renderer.
+      if (!disposed) requestRender();
+    });
     onCleanup(() => {
-      if (renderFrame) window.cancelAnimationFrame(renderFrame);
+      disposed = true;
+      if (renderFrame) {
+        window.cancelAnimationFrame(renderFrame);
+        renderFrame = 0;
+      }
       delete window.reachForTheSkyRenderer;
       delete window.reachForTheSky;
-      renderer.destroy();
+      renderer?.destroy();
     });
   });
 

@@ -1,7 +1,9 @@
-import { render } from '@solidjs/testing-library';
+import { cleanup, render } from '@solidjs/testing-library';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { App } from '@app/App';
 import '@app/styles/global.css';
+
+afterEach(cleanup);
 
 async function waitFor(
   predicate: () => boolean,

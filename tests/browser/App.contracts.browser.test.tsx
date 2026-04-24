@@ -1,6 +1,11 @@
-import { render } from '@solidjs/testing-library';
+import { cleanup, render } from '@solidjs/testing-library';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { App } from '@app/App';
+
+// Unmount between cases — eliminates the "GameCanvas mounted while prior
+// debug hooks still present" warning and prevents per-remount WebGL
+// context leaks the memory audit flagged (F5).
+afterEach(cleanup);
 
 async function waitFor(
   predicate: () => boolean,
