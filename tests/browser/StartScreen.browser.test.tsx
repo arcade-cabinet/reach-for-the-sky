@@ -103,6 +103,7 @@ describe('StartScreen (browser)', () => {
     const radios = container.querySelectorAll(
       '.start-save-row button[role="radio"]',
     ) as NodeListOf<HTMLButtonElement>;
+    expect(radios.length).toBeGreaterThanOrEqual(2);
     radios[1].click();
     expect(onSelectSaveSlot).toHaveBeenCalledWith('slot-b');
   });

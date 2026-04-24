@@ -18,23 +18,17 @@ function requireValue<T>(value: T | undefined, name: string): T {
   return value;
 }
 
+// The ReachForTheSkyDebug shape lives in `src/debug/debugHook.ts` so both
+// the app (here) and the e2e helpers share one authoritative declaration.
+// Importing the module ensures the declare-global augmentation is pulled
+// in alongside the ViewTrait / ClockTrait / TowerTrait reads below.
+import '@/debug/debugHook';
+
 declare global {
   interface Window {
     reachForTheSkyRenderer?: {
       getStats: () => RenderStats;
       resetStats: () => void;
-    };
-    reachForTheSky?: {
-      /** Current ViewTrait snapshot (pan + zoom + lens + tool). Used by e2e
-       * tests to translate grid coordinates into screen pixels for pointer
-       * drags, without having to hard-code scenario pan/zoom values. */
-      getView: () =>
-        | { panX: number; panY: number; zoom: number; lensMode: string; selectedTool: string | null }
-        | null;
-      /** Current ClockTrait snapshot — day/tick/speed. */
-      getClock: () => { day: number; tick: number; speed: number } | null;
-      /** Count of built tower items (rooms/floors/elevators). */
-      getItemCount: () => number;
     };
   }
 }

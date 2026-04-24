@@ -5,7 +5,7 @@ import { shot } from './helpers/shot';
 
 test.describe('Smoke — the game actually boots and plays', () => {
   test('landing page → Break Ground → HUD becomes live', async ({ page }, testInfo) => {
-    await page.goto('/?skip-intro=1');
+    await page.goto('?skip-intro=1');
     await expect(page.getByRole('button', { name: 'Break Ground' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Continue Tower' })).toBeVisible();
     await shot(page, testInfo, '01-landing.png');
@@ -58,6 +58,19 @@ test.describe('Smoke — the game actually boots and plays', () => {
   }, testInfo) => {
     await bootToHUD(page, testInfo);
 
+    // Prove the clock was ticking *before* pause, otherwise an already-stuck
+    // clock would pass this assertion trivially. Play speed first, sample
+    // twice, confirm advancement, then pause.
+    const playBtn = page.getByRole('button', { name: 'Play at normal speed' }).first();
+    await activate(playBtn, testInfo);
+    const tc0 = await readTimecode(page);
+    await page.waitForTimeout(2_000);
+    const tc1 = await readTimecode(page);
+    expect(
+      tc1,
+      'timecode should advance at Play speed before we can meaningfully test Pause',
+    ).not.toBe(tc0);
+
     const pauseBtn = page.getByRole('button', { name: 'Pause simulation' }).first();
     await activate(pauseBtn, testInfo);
 
@@ -74,9 +87,10 @@ test.describe('Smoke — the game actually boots and plays', () => {
   }, testInfo) => {
     await bootToScenario(page, 'skyline');
 
-    // Skyline opens with contracts drawer so you can declare identity.
+    // Skyline opens with contracts drawer aria-hidden=false so you can
+    // declare identity.
     const contractsDrawer = page.locator('aside.contracts-drawer');
-    await expect(contractsDrawer).toHaveAttribute('aria-hidden', /false|true/);
+    await expect(contractsDrawer).toHaveAttribute('aria-hidden', 'false');
 
     // Some tower state exists — top-metrics is populated.
     await expect(page.locator('.top-metrics')).toBeVisible();

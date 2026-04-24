@@ -1,7 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const IS_CI = !!process.env.CI;
-const IS_HEADLESS = process.env.PW_HEADLESS === '1';
+// CI defaults to headless; PW_HEADLESS=1 forces it in local too. PW_HEADLESS=0
+// explicitly opts out so local headed runs still work even under CI-like envs.
+const IS_HEADLESS =
+  process.env.PW_HEADLESS === '0'
+    ? false
+    : IS_CI || process.env.PW_HEADLESS === '1';
 const CHROMIUM_CHANNEL =
   process.env.PW_CHROMIUM_CHANNEL ?? (!IS_CI && !IS_HEADLESS ? 'chrome' : undefined);
 const DEFAULT_PORT = 41741;
@@ -58,7 +63,9 @@ export default defineConfig({
   outputDir: 'e2e-artifacts',
 
   webServer: {
-    command: `pnpm exec vite --host 127.0.0.1 --port ${PORT}`,
+    // --strictPort: fail if PORT is in use rather than silently binding to a
+    // different port that BASE_URL and webServer.url wouldn't match.
+    command: `pnpm exec vite --host 127.0.0.1 --port ${PORT} --strictPort`,
     url: BASE_URL,
     reuseExistingServer: REUSE_SERVER,
     timeout: 120_000,

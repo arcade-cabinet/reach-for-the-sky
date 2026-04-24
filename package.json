@@ -16,7 +16,7 @@
     "test:browser": "vitest run --project browser",
     "test:all": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "node scripts/run-playwright.mjs test e2e/smoke.spec.ts e2e/gameplay.spec.ts --project=desktop-chromium",
+    "test:e2e": "node scripts/run-playwright.mjs test e2e/smoke.spec.ts e2e/gameplay.spec.ts e2e/build.spec.ts --project=desktop-chromium",
     "test:e2e:smoke": "node scripts/run-playwright.mjs test e2e/smoke.spec.ts --project=desktop-chromium",
     "test:e2e:headless": "PW_HEADLESS=1 node scripts/run-playwright.mjs test --project=desktop-chromium",
     "test:e2e:ci": "PW_HEADLESS=1 node scripts/run-playwright.mjs test --project=desktop-chromium",

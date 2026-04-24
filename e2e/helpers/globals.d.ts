@@ -1,24 +1,6 @@
-// Mirror of the runtime debug hook declared in
-// app/components/GameCanvas.tsx. e2e tests don't share the app's tsconfig
-// so we re-declare the Window contract here for type-safe
-// page.evaluate() bodies.
-
-declare global {
-  interface Window {
-    reachForTheSky?: {
-      getView: () =>
-        | {
-            panX: number;
-            panY: number;
-            zoom: number;
-            lensMode: string;
-            selectedTool: string | null;
-          }
-        | null;
-      getClock: () => { day: number; tick: number; speed: number } | null;
-      getItemCount: () => number;
-    };
-  }
-}
+// Bring the single source-of-truth Window.reachForTheSky augmentation from
+// the app into the e2e tsconfig. One authoritative declaration; no
+// separately-drifting shapes.
+import '../../src/debug/debugHook';
 
 export {};

@@ -114,16 +114,25 @@ test.describe('Build tool palette — every tool is clickable and shows cost', (
     const count = await tools.count();
     expect(count).toBeGreaterThan(3);
 
-    // Walk through the first 5 tools. After each click, at most one tool
-    // has aria-pressed=true (selectTool either selects the new one or
-    // toggles the same one off).
+    // Walk through the first 5 tools. After each click, exactly one tool
+    // is aria-pressed=true (on a fresh selection) OR zero (on a toggle-off
+    // of the same tool). In either case, at most one is pressed AND if any
+    // is pressed it's the one we just clicked.
     for (let i = 0; i < Math.min(5, count); i++) {
+      const wasPressed = (await tools.nth(i).getAttribute('aria-pressed')) === 'true';
       await tools.nth(i).click({ force: true });
       await page.waitForTimeout(80);
       const pressedCount = await page
         .locator('.toolbar .tool-button[aria-pressed="true"]')
         .count();
       expect(pressedCount).toBeLessThanOrEqual(1);
+      if (wasPressed) {
+        // Click on an already-pressed tool toggles it off.
+        await expect(tools.nth(i)).toHaveAttribute('aria-pressed', 'false');
+      } else {
+        // Click on a previously-unpressed tool selects it.
+        await expect(tools.nth(i)).toHaveAttribute('aria-pressed', 'true');
+      }
     }
   });
 
@@ -172,12 +181,18 @@ test.describe('Speed controls — three-way exclusive state', () => {
   }, testInfo) => {
     await bootToHUD(page, testInfo);
 
-    // Pause.
+    // Pause. Contract: exactly one pressed button in each .speed-row.
     await activate(page.getByRole('button', { name: 'Pause simulation' }).first(), testInfo);
-    const pausedPressed = await page
-      .locator('.speed-row button[aria-pressed="true"]')
-      .count();
-    expect(pausedPressed).toBeGreaterThanOrEqual(1);
+    const rowCount = await page.locator('.speed-row').count();
+    expect(rowCount).toBeGreaterThan(0);
+    for (let i = 0; i < rowCount; i++) {
+      const rowPressed = await page
+        .locator('.speed-row')
+        .nth(i)
+        .locator('button[aria-pressed="true"]')
+        .count();
+      expect(rowPressed, `speed-row ${i} should have exactly one pressed`).toBe(1);
+    }
 
     // Switch to Fast.
     await activate(

@@ -1,4 +1,4 @@
-import type { Page, TestInfo } from '@playwright/test';
+import type { CDPSession, Page, TestInfo } from '@playwright/test';
 
 /**
  * Attach a named viewport screenshot to the current test.
@@ -28,9 +28,12 @@ export async function shot(
     });
     await testInfo.attach(name, { body: buf, contentType: 'image/png' });
   } catch {
-    // CDP fallback — bypasses all the actionability gates.
-    const cdp = await page.context().newCDPSession(page);
+    // CDP fallback — bypasses all the actionability gates. newCDPSession
+    // itself can throw under a closed context; swallow everything so the
+    // screenshot call is best-effort and never fails the test.
+    let cdp: CDPSession | null = null;
     try {
+      cdp = await page.context().newCDPSession(page);
       const { data } = await Promise.race([
         cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false }),
         new Promise<{ data: string }>((_, reject) =>
@@ -43,7 +46,7 @@ export async function shot(
       // Give up silently — test assertions are the source of truth, the
       // screenshot is just diagnostic artifact.
     } finally {
-      await cdp.detach().catch(() => undefined);
+      await cdp?.detach().catch(() => undefined);
     }
   }
 }

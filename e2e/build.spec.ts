@@ -73,6 +73,9 @@ test.describe('Build commit — dragging on the canvas commits a room', () => {
     await activate(page.getByRole('button', { name: 'Pause simulation' }).first(), testInfo);
 
     const startFunds = await readFunds(page);
+    const preItemCount = await page.evaluate(
+      () => window.reachForTheSky?.getItemCount() ?? 0,
+    );
 
     // Select the Lobby tool. Clear any tutorial-driven selection first.
     const toolbar = page.locator('.toolbar .tool-button');
@@ -88,12 +91,13 @@ test.describe('Build commit — dragging on the canvas commits a room', () => {
 
     await shot(page, testInfo, 'build-02-after-drag.png');
 
-    // Authoritative check: query the Koota world for room count. If the
-    // commit landed, we have >=1 more room than before.
-    const itemCount = await page.evaluate(
+    // Authoritative check: query the Koota world for item count. Must have
+    // strictly more items than before the drag (not just >0 — a scenario
+    // that pre-seeds rooms would pass a >0 check without a commit).
+    const postItemCount = await page.evaluate(
       () => window.reachForTheSky?.getItemCount() ?? 0,
     );
-    expect(itemCount).toBeGreaterThan(0);
+    expect(postItemCount).toBeGreaterThan(preItemCount);
 
     // And funds must have decreased by at least the lobby cost ($1,500).
     const fundsAfter = await readFunds(page);
