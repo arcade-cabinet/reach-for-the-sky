@@ -2220,7 +2220,12 @@ export function App() {
               up after step 4 (the "5. Run the Day" hint) creates a persistent
               floating callout in the middle of gameplay — clutter, not help. */}
           {clockState().day === 1 && clockState().speed === 0 && (
-            <section class="tutorial-card">
+            <section
+              class="tutorial-card"
+              aria-label="Tutorial hint"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <strong>{tutorialTitle(viewState().tutorialStep)}</strong>
               <span>{tutorialText(viewState().tutorialStep)}</span>
             </section>
