@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.1...v1.1.2) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** meaningful build-readout idle state + fix first-run lens copy ([#32](https://github.com/arcade-cabinet/reach-for-the-sky/issues/32)) ([41d0fb8](https://github.com/arcade-cabinet/reach-for-the-sky/commit/41d0fb8376a3e4f9082a8eb743f85ae9c3f397da))
+* **ui:** mobile speed row + surface Pause/Play/Fast ([#34](https://github.com/arcade-cabinet/reach-for-the-sky/issues/34)) ([22cb28c](https://github.com/arcade-cabinet/reach-for-the-sky/commit/22cb28c57451d061048677b67d9c87078db3c41d))
+* **ui:** render mobile-speed-row at app root so position:fixed works ([#35](https://github.com/arcade-cabinet/reach-for-the-sky/issues/35)) ([bcd44de](https://github.com/arcade-cabinet/reach-for-the-sky/commit/bcd44de69bb0a2a21a96a633d35e8201fb4c704e))
+
 ## [1.1.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.0...v1.1.1) (2026-04-24)
 
 
