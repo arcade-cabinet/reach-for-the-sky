@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.0...v1.1.1) (2026-04-24)
+
+
+### Bug Fixes
+
+* **render:** stabilize agent silhouette when visit cohort exits ([#25](https://github.com/arcade-cabinet/reach-for-the-sky/issues/25)) ([7f3853f](https://github.com/arcade-cabinet/reach-for-the-sky/commit/7f3853f8e348bb56d0b1fb76de98ad3c222f564b))
+* **ui:** compact HUD funds + refresh landing previews ([#28](https://github.com/arcade-cabinet/reach-for-the-sky/issues/28)) ([a28f141](https://github.com/arcade-cabinet/reach-for-the-sky/commit/a28f141a587d09cf4bc323f2ce043add06d8d56b))
+* **ui:** dismiss tutorial card after first day + strengthen active state ([#27](https://github.com/arcade-cabinet/reach-for-the-sky/issues/27)) ([a50a8c1](https://github.com/arcade-cabinet/reach-for-the-sky/commit/a50a8c194c42bb28d9b5a72b773de409dae098bc))
+* **ui:** drop uppercase transform + humanize remaining enum displays ([#31](https://github.com/arcade-cabinet/reach-for-the-sky/issues/31)) ([c9858fc](https://github.com/arcade-cabinet/reach-for-the-sky/commit/c9858fc086cd01ef2c6723c070e754c8cd2e0232))
+* **ui:** refresh opening-mobile preview + wire capture script ([#29](https://github.com/arcade-cabinet/reach-for-the-sky/issues/29)) ([96cc439](https://github.com/arcade-cabinet/reach-for-the-sky/commit/96cc4390d1432baa8df8af2d0d76da3e85b4386d))
+* **ui:** split visits metric + humanize journey labels ([#30](https://github.com/arcade-cabinet/reach-for-the-sky/issues/30)) ([7d54e76](https://github.com/arcade-cabinet/reach-for-the-sky/commit/7d54e7666429d1e8920d8d96aa513ef8cf6a010d))
+
 ## [1.1.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.0.1...v1.1.0) (2026-04-23)
 
 
