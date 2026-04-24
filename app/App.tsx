@@ -2063,7 +2063,12 @@ export function App() {
         <div class="settings-stack">
           <div class="settings-title">Signal</div>
           <label>
-            Procedural
+            <span class="range-label-head">
+              Procedural
+              <span class="range-value">
+                {Math.round(settingsState().audio.proceduralVolume * 100)}%
+              </span>
+            </span>
             <input
               type="range"
               min="0"
@@ -2077,7 +2082,12 @@ export function App() {
             />
           </label>
           <label>
-            Samples
+            <span class="range-label-head">
+              Samples
+              <span class="range-value">
+                {Math.round(settingsState().audio.sampleVolume * 100)}%
+              </span>
+            </span>
             <input
               type="range"
               min="0"
@@ -2128,7 +2138,10 @@ export function App() {
         <div class="settings-stack">
           <div class="settings-title">Interface</div>
           <label>
-            Scale
+            <span class="range-label-head">
+              Scale
+              <span class="range-value">{Math.round(settingsState().ui.displayScale * 100)}%</span>
+            </span>
             <input
               type="range"
               min="0.85"
