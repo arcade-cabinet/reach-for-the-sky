@@ -278,6 +278,18 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
+/* In HC mode, lift eyebrow text above 7:1 contrast against the hard
+   panel fill. #d4e4ed on --hc-panel-hard clears AAA. */
+.app-shell.high-contrast .eyebrow {
+  color: #d4e4ed;
+}
+
+@media (prefers-contrast: more) {
+  .eyebrow {
+    color: #d4e4ed;
+  }
+}
+
 .timecode {
   color: white;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
