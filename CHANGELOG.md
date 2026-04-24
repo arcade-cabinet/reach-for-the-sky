@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.7](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.6...v1.3.7) (2026-04-24)
+
+
+### Accessibility
+
+* visit-notice gets role=status + aria-live=polite ([#105](https://github.com/arcade-cabinet/reach-for-the-sky/issues/105)) ([7a1a586](https://github.com/arcade-cabinet/reach-for-the-sky/commit/7a1a58642eba8b8c5d6e748640a8e06280567f4d))
+
 ## [1.3.6](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.5...v1.3.6) (2026-04-24)
 
 
