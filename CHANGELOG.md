@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.4](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.3...v1.1.4) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** color-grade macro metrics in contracts drawer too ([#41](https://github.com/arcade-cabinet/reach-for-the-sky/issues/41)) ([2b256f2](https://github.com/arcade-cabinet/reach-for-the-sky/commit/2b256f2492fa01ffaabe0317d2f72dd593556227))
+* **ui:** color-grade percentage HUD metrics for glanceability ([#39](https://github.com/arcade-cabinet/reach-for-the-sky/issues/39)) ([872c388](https://github.com/arcade-cabinet/reach-for-the-sky/commit/872c3888267ec9749e0ef03a063b46292dd2b820))
+* **ui:** extend tone grading to journey section metrics ([#42](https://github.com/arcade-cabinet/reach-for-the-sky/issues/42)) ([64c368e](https://github.com/arcade-cabinet/reach-for-the-sky/commit/64c368ed5e61d02c5788d478908931d962b6cdac))
+* **ui:** humanize save-slot identity + event context source ([#44](https://github.com/arcade-cabinet/reach-for-the-sky/issues/44)) ([3490a68](https://github.com/arcade-cabinet/reach-for-the-sky/commit/3490a68284a276979aecbbb63ba679537ee91103))
+* **ui:** tone-grade all 8 operations-grid metrics ([#43](https://github.com/arcade-cabinet/reach-for-the-sky/issues/43)) ([3a559b9](https://github.com/arcade-cabinet/reach-for-the-sky/commit/3a559b9b4c9fed6a6dddaa5c679cb5aa90fe9211))
+
 ## [1.1.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.2...v1.1.3) (2026-04-24)
 
 
