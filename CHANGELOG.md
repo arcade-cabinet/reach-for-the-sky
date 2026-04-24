@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.2...v1.2.3) (2026-04-24)
+
+
+### Bug Fixes
+
+* **capture-screenshots:** raise timeouts to 150s for CD runner variance ([#76](https://github.com/arcade-cabinet/reach-for-the-sky/issues/76)) ([58cd1a2](https://github.com/arcade-cabinet/reach-for-the-sky/commit/58cd1a26a792808fbc925f44b5857a551ae71076))
+* **verify:** raise waitFor default timeout to 30s ([#79](https://github.com/arcade-cabinet/reach-for-the-sky/issues/79)) ([6b04792](https://github.com/arcade-cabinet/reach-for-the-sky/commit/6b0479272b1d34c10e2f2707161f438702d8c907))
+
+
+### Accessibility
+
+* aria-hidden + aria-label on contracts/settings drawers ([#80](https://github.com/arcade-cabinet/reach-for-the-sky/issues/80)) ([bc23bd0](https://github.com/arcade-cabinet/reach-for-the-sky/commit/bc23bd033e80b8e6b59e9fa990f11b7fb4c2fe04))
+* label lens/toolbar/HUD sections + aria-pressed on lens buttons ([#78](https://github.com/arcade-cabinet/reach-for-the-sky/issues/78)) ([4598bb8](https://github.com/arcade-cabinet/reach-for-the-sky/commit/4598bb801e0fa8d866c97d95282e90bc33f02fcc))
+
 ## [1.2.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.1...v1.2.2) (2026-04-24)
 
 
