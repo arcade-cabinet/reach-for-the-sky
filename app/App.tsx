@@ -953,6 +953,9 @@ export function App() {
       } else if (contractsOpen()) {
         event.preventDefault();
         setContractsOpen(false);
+      } else if (inspection()?.selection) {
+        event.preventDefault();
+        clearInspection();
       }
     };
     window.addEventListener('keydown', handleKeydown);
