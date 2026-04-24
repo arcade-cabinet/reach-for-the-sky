@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.13](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.12...v1.1.13) (2026-04-24)
+
+
+### Accessibility
+
+* honor prefers-contrast at the OS level ([#63](https://github.com/arcade-cabinet/reach-for-the-sky/issues/63)) ([46ea9e0](https://github.com/arcade-cabinet/reach-for-the-sky/commit/46ea9e0d382cabec94c5fbb7f6d8d040e249c015))
+
 ## [1.1.12](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.11...v1.1.12) (2026-04-24)
 
 
