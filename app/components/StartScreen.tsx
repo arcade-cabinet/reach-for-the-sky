@@ -57,12 +57,14 @@ export function StartScreen(props: StartScreenProps) {
         {props.saveSlots.length > 0 && (
           <div class="start-saves">
             <div class="start-section-eyebrow">Saved towers</div>
-            <div class="start-save-row">
+            <div class="start-save-row" role="radiogroup" aria-label="Saved towers">
               {props.saveSlots.slice(0, 4).map((slot) => (
+                // biome-ignore lint/a11y/useSemanticElements: rich button content (label + summary) cannot be expressed as <input type="radio">; WAI-ARIA APG permits role="radio" on buttons in toolbar-style groupings
                 <button
                   type="button"
+                  role="radio"
                   classList={{ active: props.selectedSaveSlot === slot.slotId }}
-                  aria-pressed={props.selectedSaveSlot === slot.slotId}
+                  aria-checked={props.selectedSaveSlot === slot.slotId}
                   onClick={() => props.onSelectSaveSlot(slot.slotId)}
                 >
                   <strong>{props.slotLabel(slot.slotId)}</strong>

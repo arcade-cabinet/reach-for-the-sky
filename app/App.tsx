@@ -1524,11 +1524,14 @@ export function App() {
               </div>
               <div class="identity-choice">
                 <div class="eyebrow">Declare Identity</div>
-                <div class="identity-buttons">
+                <div class="identity-buttons" role="radiogroup" aria-label="Declare tower identity">
                   {IDENTITY_OPTIONS.map(([identity, label]) => (
+                    // biome-ignore lint/a11y/useSemanticElements: rich button content (label + styling) cannot be expressed as <input type="radio">; WAI-ARIA APG permits role="radio" on buttons in toolbar-style groupings
                     <button
                       type="button"
+                      role="radio"
                       classList={{ active: campaignState().declaredIdentity === identity }}
+                      aria-checked={campaignState().declaredIdentity === identity}
                       disabled={campaignState().act < 3 && campaignState().victory !== 'won'}
                       onClick={() => {
                         if (declareTowerIdentity(identity)) {
@@ -1951,14 +1954,17 @@ export function App() {
         </div>
         <section class="save-slot-panel">
           <div class="settings-title">Save Slots</div>
-          <div class="save-slot-list">
+          <div class="save-slot-list" role="radiogroup" aria-label="Save slot">
             {SAVE_SLOT_OPTIONS.map((slot) => {
               const summary = saveSlots().find((candidate) => candidate.slotId === slot.id);
               return (
+                // biome-ignore lint/a11y/useSemanticElements: rich button content (label + summary + metadata) cannot be expressed as <input type="radio">; WAI-ARIA APG permits role="radio" on buttons in toolbar-style groupings
                 <button
                   type="button"
+                  role="radio"
                   data-save-slot={slot.id}
                   classList={{ active: selectedSaveSlot() === slot.id }}
+                  aria-checked={selectedSaveSlot() === slot.id}
                   onClick={() => setSelectedSaveSlot(slot.id)}
                 >
                   <strong>{slot.label}</strong>
@@ -2088,6 +2094,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().audio.muted }}
+              aria-pressed={settingsState().audio.muted}
               onClick={() => setAudioSettings({ muted: !settingsState().audio.muted })}
             >
               Mute
@@ -2095,6 +2102,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().accessibility.highContrast }}
+              aria-pressed={settingsState().accessibility.highContrast}
               onClick={() =>
                 setAccessibilitySettings({
                   highContrast: !settingsState().accessibility.highContrast,
@@ -2106,6 +2114,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().accessibility.reducedMotion }}
+              aria-pressed={settingsState().accessibility.reducedMotion}
               onClick={() =>
                 setAccessibilitySettings({
                   reducedMotion: !settingsState().accessibility.reducedMotion,
@@ -2136,6 +2145,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.inputHints }}
+              aria-pressed={settingsState().ui.inputHints}
               onClick={() => setUiSettings({ inputHints: !settingsState().ui.inputHints })}
             >
               Hints
@@ -2143,6 +2153,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.diagnosticsVisible }}
+              aria-pressed={settingsState().ui.diagnosticsVisible}
               onClick={() =>
                 setUiSettings({ diagnosticsVisible: !settingsState().ui.diagnosticsVisible })
               }
@@ -2152,6 +2163,7 @@ export function App() {
             <button
               type="button"
               classList={{ active: settingsState().ui.safeAreaMode === 'compact' }}
+              aria-pressed={settingsState().ui.safeAreaMode === 'compact'}
               onClick={() =>
                 setUiSettings({
                   safeAreaMode: settingsState().ui.safeAreaMode === 'compact' ? 'auto' : 'compact',
