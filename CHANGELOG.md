@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.4.2...v1.5.0) (2026-04-24)
+
+
+### Features
+
+* **sim:** utility rooms amortize per-floor height overhead ([#120](https://github.com/arcade-cabinet/reach-for-the-sky/issues/120)) ([6012264](https://github.com/arcade-cabinet/reach-for-the-sky/commit/6012264a4151dc6482afa3afad909480776e2abf))
+
+
+### Bug Fixes
+
+* **sim:** floors require a floor or lobby directly beneath ([#119](https://github.com/arcade-cabinet/reach-for-the-sky/issues/119)) ([2ef0f19](https://github.com/arcade-cabinet/reach-for-the-sky/commit/2ef0f1920eb5c4b2c0872f99b546f87333f019a2))
+
 ## [1.4.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.4.1...v1.4.2) (2026-04-24)
 
 

@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { createInitialEconomy, createInitialTower } from '@/simulation/initialState';
 import {
   calculateCommittedPopulation,
+  calculateDailyOperatingCosts,
   calculateDailyRevenue,
   calculateOperationalMetrics,
   calculateTransitPressure,
@@ -43,9 +44,17 @@ describe('tower placement', () => {
     expect(noFloor.valid).toBe(false);
     expect(noFloor.error).toMatch(/floor/i);
 
-    const floorResult = placeBuild(
+    // Structural support chain: a floor at y=1 needs a lobby at y=0 beneath.
+    const lobby = placeBuild(
       tower,
       economy,
+      'lobby',
+      { start: { gx: 0, gy: 0 }, end: { gx: 1, gy: 0 } },
+      0,
+    );
+    const floorResult = placeBuild(
+      lobby.tower,
+      lobby.economy,
       'floor',
       { start: { gx: 0, gy: 1 }, end: { gx: 1, gy: 1 } },
       1,
@@ -57,6 +66,18 @@ describe('tower placement', () => {
 
     expect(office.valid).toBe(true);
     expect(office.cost).toBe(12_000);
+  });
+
+  it('rejects floors placed in midair without a floor or lobby beneath', () => {
+    const tower = createInitialTower();
+    const economy = createInitialEconomy();
+
+    const floating = createBuildPreview(tower, economy, 'floor', {
+      start: { gx: 0, gy: 3 },
+      end: { gx: 2, gy: 3 },
+    });
+    expect(floating.valid).toBe(false);
+    expect(floating.error).toMatch(/floor or lobby directly beneath/i);
   });
 
   it('requires transit shafts to pass through infrastructure', () => {
@@ -99,7 +120,7 @@ describe('tower placement', () => {
     let tower = createInitialTower();
     let economy = createInitialEconomy();
     for (const [tool, start, end] of [
-      ['lobby', { gx: 0, gy: 0 }, { gx: 1, gy: 0 }],
+      ['lobby', { gx: 0, gy: 0 }, { gx: 3, gy: 0 }],
       ['floor', { gx: 0, gy: 1 }, { gx: 3, gy: 1 }],
       ['office', { gx: 0, gy: 1 }, { gx: 1, gy: 1 }],
       ['condo', { gx: 2, gy: 1 }, { gx: 3, gy: 1 }],
@@ -191,7 +212,7 @@ describe('tower placement', () => {
       let tower = createInitialTower();
       let economy = createInitialEconomy();
       for (const [tool, start, end] of [
-        ['lobby', { gx: -1, gy: 0 }, { gx: 1, gy: 0 }],
+        ['lobby', { gx: -1, gy: 0 }, { gx: 2, gy: 0 }],
         ['floor', { gx: -1, gy: 1 }, { gx: 2, gy: 1 }],
         ['office', { gx: -1, gy: 1 }, { gx: 0, gy: 1 }],
         ['condo', { gx: 1, gy: 1 }, { gx: 2, gy: 1 }],
@@ -204,6 +225,52 @@ describe('tower placement', () => {
     };
 
     expect(buildSeeds()).toEqual(buildSeeds());
+  });
+
+  it('utility rooms reduce daily operating costs by amortizing height overhead', () => {
+    // Build a 6-floor tower: lobby on ground, 5 floors stacked, one office on each.
+    let tower = createInitialTower();
+    let economy = createInitialEconomy();
+    const steps: Array<
+      [
+        'lobby' | 'floor' | 'office' | 'utilities',
+        { gx: number; gy: number },
+        { gx: number; gy: number },
+      ]
+    > = [
+      ['lobby', { gx: 0, gy: 0 }, { gx: 4, gy: 0 }],
+      ['floor', { gx: 0, gy: 1 }, { gx: 4, gy: 5 }],
+      ['office', { gx: 0, gy: 1 }, { gx: 1, gy: 1 }],
+      ['office', { gx: 0, gy: 2 }, { gx: 1, gy: 2 }],
+      ['office', { gx: 0, gy: 3 }, { gx: 1, gy: 3 }],
+    ];
+    for (const [tool, start, end] of steps) {
+      const result = placeBuild(tower, economy, tool, { start, end }, 0);
+      tower = result.tower;
+      economy = result.economy;
+    }
+    const baseline = calculateDailyOperatingCosts(tower.rooms, {
+      population: economy.population,
+      transitPressure: 0,
+      servicePressure: 0,
+    });
+
+    // Add one utility room — should reduce operating costs by the height relief
+    // (height=6, cost=180, relief=120 up to cap).
+    const withUtility = placeBuild(
+      tower,
+      economy,
+      'utilities',
+      { start: { gx: 2, gy: 1 }, end: { gx: 3, gy: 1 } },
+      0,
+    );
+    const withCost = calculateDailyOperatingCosts(withUtility.tower.rooms, {
+      population: withUtility.economy.population,
+      transitPressure: 0,
+      servicePressure: 0,
+    });
+
+    expect(withCost).toBeLessThan(baseline);
   });
 
   it('builds the deterministic opening contract scenario', () => {
