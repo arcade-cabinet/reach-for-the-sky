@@ -288,6 +288,13 @@ export function calculateDailyOperatingCosts(
       .length * 120;
   const infrastructure = rooms.filter((room) => BUILDINGS[room.type].cat === 'infra').length * 4;
   const height = rooms.reduce((max, room) => Math.max(max, room.y + room.height), 0);
+  // Utility rooms (utilities + mechanical) amortize the per-floor height cost —
+  // they represent HVAC / plumbing / electrical risers that let a tall tower
+  // stay economic. Each one offsets 4 floors' worth of height overhead, capped
+  // at the actual height cost so stacking beyond need can't drive costs negative.
+  const utilityRooms = rooms.filter((room) => BUILDINGS[room.type].cat === 'utility').length;
+  const heightCost = height * 30;
+  const utilityRelief = Math.min(heightCost, utilityRooms * 120);
   const operatingLoad =
     occupiedRooms * 18 +
     infrastructure +
@@ -295,7 +302,8 @@ export function calculateDailyOperatingCosts(
     metrics.population * 4 +
     metrics.transitPressure * 4 +
     metrics.servicePressure * 5 +
-    height * 30;
+    heightCost -
+    utilityRelief;
   return Math.max(0, Math.round(operatingLoad));
 }
 
