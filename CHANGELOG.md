@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.9](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.8...v1.3.9) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** save-notice action-feedback auto-clears after 6s ([#109](https://github.com/arcade-cabinet/reach-for-the-sky/issues/109)) ([b072aca](https://github.com/arcade-cabinet/reach-for-the-sky/commit/b072aca436a7fdaa373487830eae0c3caa031588))
+
 ## [1.3.8](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.7...v1.3.8) (2026-04-24)
 
 
