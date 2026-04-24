@@ -64,6 +64,10 @@ export default defineConfig({
     timeout: 120_000,
   },
 
+  // Mobile projects are opt-in via PW_ALL_PROJECTS=1 because each one
+  // boots a full WebGL Pixi context + SQLite WASM + tick interval. Running
+  // all three locally triples Chrome's resident memory even serialized —
+  // the GPU pools and JS heaps are not released between projects promptly.
   projects: [
     {
       name: 'desktop-chromium',
@@ -72,13 +76,11 @@ export default defineConfig({
         viewport: { width: 1440, height: 900 },
       },
     },
-    {
-      name: 'iphone-14',
-      use: { ...devices['iPhone 14'] },
-    },
-    {
-      name: 'pixel-7',
-      use: { ...devices['Pixel 7'] },
-    },
+    ...(process.env.PW_ALL_PROJECTS === '1'
+      ? [
+          { name: 'iphone-14', use: { ...devices['iPhone 14'] } },
+          { name: 'pixel-7', use: { ...devices['Pixel 7'] } },
+        ]
+      : []),
   ],
 });

@@ -79,6 +79,16 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   };
 
   onMount(() => {
+    // Warn (don't crash) if a prior GameCanvas instance's onCleanup didn't
+    // run — this happens when a browser test remounts without `cleanup()`
+    // between cases and would otherwise leak a CutawayRenderer + WebGL
+    // context per remount.
+    if (window.reachForTheSkyRenderer || window.reachForTheSky) {
+      // biome-ignore lint/suspicious/noConsole: testability warning
+      console.warn(
+        '[reach-for-the-sky] GameCanvas mounted while prior debug hooks still present — previous instance may have leaked. Call cleanup() between mounts.',
+      );
+    }
     renderer = new CutawayRenderer();
     window.reachForTheSkyRenderer = {
       getStats: () => renderer.getRenderStats(),

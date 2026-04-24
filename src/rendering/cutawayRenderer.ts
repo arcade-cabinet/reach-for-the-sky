@@ -21,10 +21,33 @@ import {
 import type { VisitorArchetypeId } from '@/simulation/visitors';
 import { NormalTowerBaseTracker } from './renderSignatures';
 import { createRoomComposition, type VectorPlacement } from './roomCompositions';
-import { type AgentVectorKey, type UiVectorKey, VectorAssetLibrary } from './vectorAssets';
+import {
+  type AgentVectorKey,
+  type UiVectorKey,
+  VectorAssetLibrary,
+  resetVectorAssetCache,
+} from './vectorAssets';
 
 function colorNumber(hex: string): number {
   return Number.parseInt(hex.replace('#', ''), 16);
+}
+
+/**
+ * Release children AND their GPU buffers. `Container.removeChildren()` only
+ * detaches from the display list — Graphics geometry and Sprite textures
+ * remain until the JS GC cycle catches them, which under a long session
+ * (and especially under headed Playwright with Pixi repainting 30× per
+ * second) accumulates tens of MB of WebGL buffer memory per minute.
+ * Destroying on clear is safe here because every dynamic layer is rebuilt
+ * from scratch on the next render tick.
+ */
+function destroyLayerChildren(container: Container): void {
+  const children = container.removeChildren();
+  for (const child of children) {
+    // children:true frees nested Graphics/Sprite/Text inside any compound
+    // (e.g. a room composition that contains a label + swatch).
+    child.destroy({ children: true });
+  }
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -229,13 +252,19 @@ export class CutawayRenderer {
     );
     this.stageRoot.scale.set(view.zoom, view.zoom);
 
-    this.backdropLayer.removeChildren();
-    this.gridLayer.removeChildren();
-    this.groundLayer.removeChildren();
-    this.cloudLayer.removeChildren();
-    this.roomOverlayLayer.removeChildren();
-    this.agentsLayer.removeChildren();
-    this.overlayLayer.removeChildren();
+    // Destroy-and-clear every dynamic layer. Plain `removeChildren()` drops
+    // the display-list reference but leaves Graphics geometry + Sprite
+    // textures holding GPU memory until GC eventually runs — under a long
+    // session that's tens of MB of pooled WebGL buffers per minute. We own
+    // the children (they're re-drawn each frame from scratch) so destroying
+    // them on clear is safe and necessary.
+    destroyLayerChildren(this.backdropLayer);
+    destroyLayerChildren(this.gridLayer);
+    destroyLayerChildren(this.groundLayer);
+    destroyLayerChildren(this.cloudLayer);
+    destroyLayerChildren(this.roomOverlayLayer);
+    destroyLayerChildren(this.agentsLayer);
+    destroyLayerChildren(this.overlayLayer);
 
     this.drawBackdrop(clock, view);
     this.drawWeatherOverlay(macro, operations, clock, view);
@@ -250,8 +279,8 @@ export class CutawayRenderer {
     else this.renderStats.lensBaseDraws += 1;
 
     if (baseEvaluation.decision !== 'hit') {
-      this.shaftsLayer.removeChildren();
-      this.roomsLayer.removeChildren();
+      destroyLayerChildren(this.shaftsLayer);
+      destroyLayerChildren(this.roomsLayer);
       for (const shaft of tower.shafts) this.drawShaft(shaft, view);
       for (const room of tower.rooms)
         this.drawRoom(room, tower.agents, economy, operations, clock, view);
@@ -300,6 +329,11 @@ export class CutawayRenderer {
     this.app = null;
     this.parent = null;
     this.normalTowerBase.reset();
+    this.cohortArchetypeCache.clear();
+    // Drop the module-level vector-texture cache. After app.destroy(true)
+    // the cached Texture objects reference destroyed GPU resources and must
+    // not be reused by a future CutawayRenderer instance.
+    resetVectorAssetCache();
   }
 
   getRenderStats(): RenderStats {

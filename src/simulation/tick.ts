@@ -5,6 +5,7 @@ import {
   personalityFromVisitTraits,
   selectAgentIntent,
 } from './ai/personality';
+import { PRODUCTION_BUDGETS } from './content';
 import {
   calculateDailyOperatingCosts,
   calculateDailyRevenue,
@@ -191,12 +192,19 @@ function spawnVisitRepresentatives(
   if (!target) return false;
   const remaining = cohort.representativeCount - cohort.spawnedAgents;
   if (remaining <= 0) return true;
-  for (let i = 0; i < remaining; i += 1) {
+  // Respect the runtime agent ceiling. If we're at or near the cap, spawn
+  // what fits and defer the rest to a later tick — dropping visitors on the
+  // floor is better than unbounded growth that compounds across cloneTower
+  // copies.
+  const capacity = Math.max(0, PRODUCTION_BUDGETS.maxAgents - tower.agents.length);
+  const toSpawn = Math.min(remaining, capacity);
+  if (toSpawn === 0) return false;
+  for (let i = 0; i < toSpawn; i += 1) {
     tower.agents.push(createVisitorAgent(target, cohort, cohort.spawnedAgents + i, random));
   }
-  cohort.spawnedAgents += remaining;
+  cohort.spawnedAgents += toSpawn;
   cohort.status = 'arriving';
-  return true;
+  return toSpawn === remaining;
 }
 
 function settleArrival(
@@ -786,15 +794,25 @@ export function stepSimulation(
     }
   }
 
+  // Hard agent ceiling — skips every spawn path below when at cap. Without
+  // this the probabilistic spawns multiply with speedMult on late-game
+  // towers and each new agent is deep-copied by cloneTower every tick.
+  const underCap = nextTower.agents.length < PRODUCTION_BUDGETS.maxAgents;
+
   const maintRooms = nextTower.rooms.filter((room) => room.type === 'maint');
   const targetJanitors = maintRooms.length * (BUILDINGS.maint.pop ?? 0);
   const currentJanitors = nextTower.agents.filter((agent) => agent.type === 'janitor').length;
   const firstMaintenanceRoom = maintRooms[0];
-  if (currentJanitors < targetJanitors && firstMaintenanceRoom && randomSource() < 0.1) {
+  if (
+    underCap &&
+    currentJanitors < targetJanitors &&
+    firstMaintenanceRoom &&
+    randomSource() < 0.1
+  ) {
     nextTower.agents.push(createAgent('janitor', firstMaintenanceRoom, randomSource));
   }
 
-  if (hour >= 7 && hour < 10 && randomSource() < 0.05 * speedMult) {
+  if (underCap && hour >= 7 && hour < 10 && randomSource() < 0.05 * speedMult) {
     const offices = nextTower.rooms.filter((room) => room.type === 'office');
     const target = offices.find(
       (office) =>
@@ -804,7 +822,7 @@ export function stepSimulation(
     if (target) nextTower.agents.push(createAgent('worker', target, randomSource));
   }
 
-  if (hour >= 16 && hour < 20 && randomSource() < 0.02 * speedMult) {
+  if (underCap && hour >= 16 && hour < 20 && randomSource() < 0.02 * speedMult) {
     const hotel = nextTower.rooms.find(
       (room) =>
         room.type === 'hotel' &&

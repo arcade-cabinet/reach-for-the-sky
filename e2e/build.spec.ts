@@ -1,5 +1,4 @@
 import { expect, test, type Page } from '@playwright/test';
-import './helpers/globals';
 import { bootToHUD, readFunds } from './helpers/flow';
 import { activate } from './helpers/activate';
 import { shot } from './helpers/shot';

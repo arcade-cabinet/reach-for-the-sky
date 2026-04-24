@@ -195,6 +195,35 @@ export class SkyAudioEngine {
     this.playProcedural(cue);
   }
 
+  /**
+   * Release every Tone node + Howler sprite this engine owns. Must be called
+   * from the app's onCleanup so hot-reload / browser-test teardown don't
+   * leave undisposed AudioContext nodes running (the ambient drone otherwise
+   * sustains indefinitely, and Tone.js nodes leak into the global context).
+   */
+  destroy(): void {
+    try {
+      this.ambient?.triggerRelease();
+    } catch {
+      // Tone can throw if the release time is past the transport end; ignore.
+    }
+    this.ambient?.dispose();
+    this.ambient = null;
+    this.ambientGain?.dispose();
+    this.ambientGain = null;
+    this.synth?.dispose();
+    this.synth = null;
+    this.membrane?.dispose();
+    this.membrane = null;
+    this.sampleSprite?.unload();
+    this.sampleSprite = null;
+    this.sampleSpriteCues.clear();
+    for (const sample of this.samples.values()) sample.unload();
+    this.samples.clear();
+    this.lastPlayedAt.clear();
+    this.unlocked = false;
+  }
+
   private playProcedural(cue: AudioCue): void {
     if (!this.unlocked || !this.synth || !this.membrane) return;
     const now = Tone.now();

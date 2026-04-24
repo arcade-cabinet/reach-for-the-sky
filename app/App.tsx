@@ -972,6 +972,16 @@ export function App() {
       nativeBackButtonDisposed = true;
       window.clearInterval(interval);
       window.removeEventListener('keydown', handleKeydown);
+      if (saveNoticeTimer !== null) {
+        window.clearTimeout(saveNoticeTimer);
+        saveNoticeTimer = null;
+      }
+      if (visitNoticeTimer !== null) {
+        window.clearTimeout(visitNoticeTimer);
+        visitNoticeTimer = null;
+      }
+      audio?.destroy();
+      audio = null;
       void nativeBackButtonHandle?.remove();
     });
   });
@@ -980,16 +990,13 @@ export function App() {
     audio?.applySettings(settingsState().audio);
   });
 
+  // Low-frequency prefs (lens, tutorial, all settings) — write on every
+  // change, these only fire when the user actually toggles something.
   createEffect(() => {
     if (!preferencesReady()) return;
     const currentView = viewState();
     void setPreferenceJson(PREF_KEYS.lensMode, currentView.lensMode);
     void setPreferenceJson(PREF_KEYS.tutorialStep, currentView.tutorialStep);
-    void setPreferenceJson(PREF_KEYS.camera, {
-      panX: currentView.panX,
-      panY: currentView.panY,
-      zoom: currentView.zoom,
-    });
     const currentSettings = settingsState();
     void setPreferenceJson(PREF_KEYS.proceduralVolume, currentSettings.audio.proceduralVolume);
     void setPreferenceJson(PREF_KEYS.sampleVolume, currentSettings.audio.sampleVolume);
@@ -1000,6 +1007,27 @@ export function App() {
     void setPreferenceJson(PREF_KEYS.inputHints, currentSettings.ui.inputHints);
     void setPreferenceJson(PREF_KEYS.diagnosticsVisible, currentSettings.ui.diagnosticsVisible);
     void setPreferenceJson(PREF_KEYS.safeAreaMode, currentSettings.ui.safeAreaMode);
+  });
+
+  // High-frequency camera prefs — debounced 500ms. viewState changes every
+  // pan pixel / zoom wheel tick; without a debounce the effect dispatches
+  // a preference write per pointer move, which on native routes through a
+  // Capacitor bridge and on web floods the microtask queue.
+  let cameraPrefTimer: number | null = null;
+  createEffect(() => {
+    if (!preferencesReady()) return;
+    const currentView = viewState();
+    // Capture the dependencies before scheduling — we need the current
+    // snapshot, not whatever the timer reads at fire-time.
+    const { panX, panY, zoom } = currentView;
+    if (cameraPrefTimer !== null) window.clearTimeout(cameraPrefTimer);
+    cameraPrefTimer = window.setTimeout(() => {
+      cameraPrefTimer = null;
+      void setPreferenceJson(PREF_KEYS.camera, { panX, panY, zoom });
+    }, 500);
+  });
+  onCleanup(() => {
+    if (cameraPrefTimer !== null) window.clearTimeout(cameraPrefTimer);
   });
 
   createEffect(() => {
