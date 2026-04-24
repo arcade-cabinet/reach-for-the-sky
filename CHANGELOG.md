@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.8...v1.1.9) (2026-04-24)
+
+
+### Accessibility
+
+* keyboard focus ring + fix flaky flock soak ([#54](https://github.com/arcade-cabinet/reach-for-the-sky/issues/54)) ([05a3c30](https://github.com/arcade-cabinet/reach-for-the-sky/commit/05a3c3006c023ce22a3196ce58225c2ac2bd056b))
+
 ## [1.1.8](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.7...v1.1.8) (2026-04-24)
 
 
