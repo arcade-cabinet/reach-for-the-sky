@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.15...v1.2.0) (2026-04-24)
+
+
+### Features
+
+* **seo:** add robots.txt and sitemap.xml ([#70](https://github.com/arcade-cabinet/reach-for-the-sky/issues/70)) ([1be1c22](https://github.com/arcade-cabinet/reach-for-the-sky/commit/1be1c22fdcfa946e1a3083704f34cddf2d799f2f))
+
 ## [1.1.15](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.14...v1.1.15) (2026-04-24)
 
 
