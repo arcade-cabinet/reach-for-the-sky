@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.6](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.5...v1.3.6) (2026-04-24)
+
+
+### Accessibility
+
+* tutorial-card is a polite live region ([#103](https://github.com/arcade-cabinet/reach-for-the-sky/issues/103)) ([738ab00](https://github.com/arcade-cabinet/reach-for-the-sky/commit/738ab00e26bbbc4fb42b7bc39a4d1498ec14c9c8))
+
 ## [1.3.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.4...v1.3.5) (2026-04-24)
 
 
