@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.2...v1.3.3) (2026-04-24)
+
+
+### Refactoring
+
+* **style:** extract --text-muted token so HC lifts every secondary label ([#97](https://github.com/arcade-cabinet/reach-for-the-sky/issues/97)) ([a76d311](https://github.com/arcade-cabinet/reach-for-the-sky/commit/a76d31140d61fa2331b380af62024d4cc3bfaebf))
+
 ## [1.3.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.1...v1.3.2) (2026-04-24)
 
 
