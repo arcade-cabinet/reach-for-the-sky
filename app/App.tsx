@@ -1134,6 +1134,37 @@ export function App() {
             </button>
           </div>
         </div>
+        {/* Mobile-only speed row. The desktop .speed-row above is hidden on
+            narrow viewports because there's no horizontal room next to the
+            time stack — but the sim is unplayable without Play. Duplicating
+            the three buttons into a full-width row under the HUD gives mobile
+            players a first-class speed control without cramming the top bar. */}
+        <div class="mobile-speed-row">
+          <button
+            type="button"
+            classList={{ active: clockState().speed === 0 }}
+            onClick={() => setSpeed(0)}
+            title="Pause simulation"
+          >
+            Pause
+          </button>
+          <button
+            type="button"
+            classList={{ active: clockState().speed === 1 }}
+            onClick={() => setSpeed(1)}
+            title="Run simulation at normal speed"
+          >
+            Play
+          </button>
+          <button
+            type="button"
+            classList={{ active: clockState().speed === 4 }}
+            onClick={() => setSpeed(4)}
+            title="Run simulation at 4x speed"
+          >
+            Fast
+          </button>
+        </div>
         <div class="top-metrics">
           <article>
             <span>Funds</span>
