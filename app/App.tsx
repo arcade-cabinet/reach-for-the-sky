@@ -1605,17 +1605,58 @@ export function App() {
               {latestReport() && (
                 <article class="daily-report-card">
                   <strong>{latestReport()?.title}</strong>
-                  <span>
-                    Trust {latestReport()?.publicTrust}% · Fame {latestReport()?.fame}% · Rep{' '}
-                    {(latestReport()?.reputationDelta ?? 0) >= 0 ? '+' : ''}
-                    {latestReport()?.reputationDelta}
+                  <span class="report-headline">
+                    Trust{' '}
+                    <span class={metricTone(latestReport()?.publicTrust ?? 0, 'up')}>
+                      {latestReport()?.publicTrust}%
+                    </span>{' '}
+                    · Fame{' '}
+                    <span class={metricTone(latestReport()?.fame ?? 0, 'up')}>
+                      {latestReport()?.fame}%
+                    </span>{' '}
+                    · Rep{' '}
+                    <span
+                      class={
+                        (latestReport()?.reputationDelta ?? 0) > 0
+                          ? 'tone-good'
+                          : (latestReport()?.reputationDelta ?? 0) < 0
+                          ? 'tone-bad'
+                          : 'tone-mid'
+                      }
+                    >
+                      {(latestReport()?.reputationDelta ?? 0) >= 0 ? '+' : ''}
+                      {latestReport()?.reputationDelta}
+                    </span>
                   </span>
                   <div class="report-metrics">
                     <span>Revenue {formatMoney(latestReport()?.revenue ?? 0)}</span>
                     <span>Costs {formatMoney(latestReport()?.costs ?? 0)}</span>
-                    <span>Net {formatMoney(latestReport()?.netRevenue ?? 0)}</span>
-                    <span>Queues {latestReport()?.queuePressure}%</span>
-                    <span>Dirt {latestReport()?.dirtBurden}%</span>
+                    <span>
+                      Net{' '}
+                      <span
+                        class={
+                          (latestReport()?.netRevenue ?? 0) > 0
+                            ? 'tone-good'
+                            : (latestReport()?.netRevenue ?? 0) < 0
+                            ? 'tone-bad'
+                            : 'tone-mid'
+                        }
+                      >
+                        {formatMoney(latestReport()?.netRevenue ?? 0)}
+                      </span>
+                    </span>
+                    <span>
+                      Queues{' '}
+                      <span class={metricTone(latestReport()?.queuePressure ?? 0, 'down')}>
+                        {latestReport()?.queuePressure}%
+                      </span>
+                    </span>
+                    <span>
+                      Dirt{' '}
+                      <span class={metricTone(latestReport()?.dirtBurden ?? 0, 'down')}>
+                        {latestReport()?.dirtBurden}%
+                      </span>
+                    </span>
                   </div>
                   <ul>
                     {latestReport()?.notes.map((note) => (
