@@ -17,6 +17,7 @@
     { "type": "a11y", "section": "Accessibility" },
     { "type": "style", "section": "Styling" },
     { "type": "copy", "section": "Copy" },
+    { "type": "polish", "section": "Polish" },
     { "type": "docs", "section": "Documentation", "hidden": false },
     { "type": "test", "section": "Testing", "hidden": true },
     { "type": "build", "section": "Build", "hidden": true },
