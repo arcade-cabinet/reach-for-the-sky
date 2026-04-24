@@ -1231,6 +1231,7 @@ export function App() {
                     ? 'tone-mid'
                     : 'tone-good'
               }
+              title={formatMoney(economyState().funds)}
             >
               {formatMoneyCompact(economyState().funds)}
             </strong>
