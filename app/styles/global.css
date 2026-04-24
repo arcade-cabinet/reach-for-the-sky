@@ -303,17 +303,20 @@ button:disabled {
    number. tone-good pulls toward muted green, tone-bad toward muted
    red, tone-mid stays neutral gold. */
 .top-metrics strong.tone-good,
-.city-brief-grid strong.tone-good {
+.city-brief-grid strong.tone-good,
+.journey-grid strong.tone-good {
   color: #a3d6a9;
 }
 
 .top-metrics strong.tone-mid,
-.city-brief-grid strong.tone-mid {
+.city-brief-grid strong.tone-mid,
+.journey-grid strong.tone-mid {
   color: #e1c77e;
 }
 
 .top-metrics strong.tone-bad,
-.city-brief-grid strong.tone-bad {
+.city-brief-grid strong.tone-bad,
+.journey-grid strong.tone-bad {
   color: #e09b94;
 }
 

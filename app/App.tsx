@@ -1422,13 +1422,19 @@ export function App() {
                 <span>Mode</span>
                 <strong>{campaignState().mode === 'campaign' ? 'Campaign' : 'Sandbox'}</strong>
                 <span>Reputation</span>
-                <strong>{campaignState().reputation}%</strong>
+                <strong class={metricTone(campaignState().reputation, 'up')}>
+                  {campaignState().reputation}%
+                </strong>
                 <span>Influence</span>
-                <strong>{macroState().cityInfluence}%</strong>
+                <strong class={metricTone(macroState().cityInfluence, 'up')}>
+                  {macroState().cityInfluence}%
+                </strong>
                 <span>Visits won</span>
-                <strong>{campaignState().successfulVisits}</strong>
+                <strong class="tone-good">{campaignState().successfulVisits}</strong>
                 <span>Visits lost</span>
-                <strong>{campaignState().failedVisits}</strong>
+                <strong classList={{ 'tone-bad': campaignState().failedVisits > 0 }}>
+                  {campaignState().failedVisits}
+                </strong>
                 <span>Focus</span>
                 <strong>
                   {(() => {
