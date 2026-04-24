@@ -10,7 +10,7 @@ const STEPS = [
   },
   {
     title: 'Read the cutaway',
-    body: 'The 2D cutaway is the main surface. Use the lenses (bottom row) to switch between maintenance, transit, privacy, safety, and event views. Agents you see are real simulated people, not decoration.',
+    body: 'The 2D cutaway is the main surface. Switch lenses on the right (Maintenance, Transit, Privacy, Safety, Events, Sentiment) to expose different pressures. Agents you see are real simulated people — each one runs its own goals, not a script.',
   },
   {
     title: 'Declare who the tower is',

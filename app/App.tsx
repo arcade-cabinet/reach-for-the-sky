@@ -2061,7 +2061,11 @@ export function App() {
           </section>
           <section class="build-readout">
             <strong>{selectedBuilding()?.name ?? 'Select a tool'}</strong>
-            <span>{preview().error ?? `$${preview().cost.toLocaleString()}`}</span>
+            <span>
+              {selectedBuilding()
+                ? (preview().error ?? formatMoney(preview().cost))
+                : 'Pick from the palette to start placing'}
+            </span>
             <small>
               Transit {economyState().transitPressure}% · Service {economyState().servicePressure}%
               {' · '}
