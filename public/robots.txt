@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://arcade-cabinet.github.io/reach-for-the-sky/sitemap.xml
