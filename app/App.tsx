@@ -1145,6 +1145,7 @@ export function App() {
     link.download = diagnosticsFilename(bundle);
     link.click();
     URL.revokeObjectURL(href);
+    announceSaveAction(`Debug bundle saved: ${link.download}`);
     setSaveNotice(`Diagnostics exported for v${bundle.release.version}.`);
   };
 
