@@ -45,21 +45,24 @@ async function waitForRenderedScenario(devtools) {
   await waitFor(
     'rendered opening scenario',
     async () => {
-      const stats = await devtools.evaluate(`
+      const probe = await devtools.evaluate(`
 (() => {
   const stats = window.reachForTheSkyRenderer?.getStats?.() ?? null;
+  const hasRenderer = Boolean(window.reachForTheSkyRenderer);
   const hasCanvas = Boolean(document.querySelector('.game-canvas'));
-  return hasCanvas && stats?.frames >= 2 ? stats : null;
+  const canvasHost = Boolean(document.querySelector('.canvas-host'));
+  if (hasCanvas && stats?.frames >= 2) return { ok: true, stats };
+  return { ok: false, hasRenderer, hasCanvas, canvasHost, frames: stats?.frames ?? null };
 })()
 `);
-      return stats;
+      if (probe?.ok) return probe.stats;
+      return null;
     },
     // Cold render on GitHub Actions runner under the full release gate
-    // load routinely lands in the 45–75s range. Give it 90s so CD stops
-    // flaking on variance we can't control (the check itself is cheap;
-    // the cost is waiting a few extra seconds when it would have failed
-    // anyway).
-    90_000,
+    // load routinely lands in the 45–90s range (multiple release cycles
+    // hit 90s ceiling). Give it 150s ceiling — runner variance can stack
+    // Pixi init + Solid hydration + first createEffect unpredictably.
+    150_000,
   );
 }
 
@@ -343,10 +346,10 @@ async function main() {
 `),
       // Solid re-hydration after navigation, plus viewport-change re-render
       // on mobile emulation, sometimes takes 20–40s under CD load before
-      // the scenario row is even in the DOM. Mirror the 90s ceiling that
+      // the scenario row is even in the DOM. Mirror the 150s ceiling that
       // waitForRenderedScenario uses so this first wait stops being the
       // step that flakes CD.
-      90_000,
+      150_000,
     );
     await waitFor('rendered mobile start menu', async () =>
       devtools.evaluate(`
