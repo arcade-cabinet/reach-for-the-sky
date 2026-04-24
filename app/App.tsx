@@ -2215,10 +2215,23 @@ export function App() {
                 : 'Pick from the palette to start placing'}
             </span>
             <small>
-              Transit {economyState().transitPressure}% · Service {economyState().servicePressure}%
+              Transit{' '}
+              <span class={metricTone(economyState().transitPressure, 'down')}>
+                {economyState().transitPressure}%
+              </span>{' '}
+              · Service{' '}
+              <span class={metricTone(economyState().servicePressure, 'down')}>
+                {economyState().servicePressure}%
+              </span>
               {' · '}
-              Sentiment {economyState().tenantSatisfaction}% · Ops{' '}
-              {operationsState().operationalGrade}%
+              Sentiment{' '}
+              <span class={metricTone(economyState().tenantSatisfaction, 'up')}>
+                {economyState().tenantSatisfaction}%
+              </span>{' '}
+              · Ops{' '}
+              <span class={metricTone(operationsState().operationalGrade, 'up')}>
+                {operationsState().operationalGrade}%
+              </span>
             </small>
           </section>
         </>
