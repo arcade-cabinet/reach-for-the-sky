@@ -24,6 +24,18 @@ declare global {
       getStats: () => RenderStats;
       resetStats: () => void;
     };
+    reachForTheSky?: {
+      /** Current ViewTrait snapshot (pan + zoom + lens + tool). Used by e2e
+       * tests to translate grid coordinates into screen pixels for pointer
+       * drags, without having to hard-code scenario pan/zoom values. */
+      getView: () =>
+        | { panX: number; panY: number; zoom: number; lensMode: string; selectedTool: string | null }
+        | null;
+      /** Current ClockTrait snapshot — day/tick/speed. */
+      getClock: () => { day: number; tick: number; speed: number } | null;
+      /** Count of built tower items (rooms/floors/elevators). */
+      getItemCount: () => number;
+    };
   }
 }
 
@@ -72,10 +84,35 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
       getStats: () => renderer.getRenderStats(),
       resetStats: () => renderer.resetRenderStats(),
     };
+    window.reachForTheSky = {
+      getView: () => {
+        const v = view();
+        if (!v) return null;
+        return {
+          panX: v.panX,
+          panY: v.panY,
+          zoom: v.zoom,
+          lensMode: v.lensMode,
+          selectedTool: v.selectedTool,
+        };
+      },
+      getClock: () => {
+        const c = clock();
+        return c ? { day: c.day, tick: c.tick, speed: c.speed } : null;
+      },
+      getItemCount: () => {
+        const t = tower();
+        if (!t) return 0;
+        return (
+          t.rooms.length + t.shafts.length + t.elevators.length
+        );
+      },
+    };
     void renderer.init(host).then(requestRender);
     onCleanup(() => {
       if (renderFrame) window.cancelAnimationFrame(renderFrame);
       delete window.reachForTheSkyRenderer;
+      delete window.reachForTheSky;
       renderer.destroy();
     });
   });
