@@ -1336,7 +1336,7 @@ export function App() {
                 <div class="eyebrow">Latest public story</div>
                 <div class="public-story-head">
                   <div>
-                    <span>{latestPublicStory()?.tone}</span>
+                    <span>{humanizeEnum(latestPublicStory()?.tone ?? '')}</span>
                     <strong>{latestPublicStory()?.memory.label}</strong>
                   </div>
                   <small>Day {latestPublicStory()?.memory.resolvedDay}</small>
@@ -1344,9 +1344,11 @@ export function App() {
                 <p>{latestPublicStory()?.memory.impressions[0]}</p>
                 <div class="public-story-grid">
                   <span>Impact</span>
-                  <strong>{latestPublicStory()?.impact}</strong>
+                  <strong>{humanizeEnum(latestPublicStory()?.impact ?? '')}</strong>
                   <span>Sentiment</span>
-                  <strong>{latestPublicStory()?.memory.sentiment}%</strong>
+                  <strong class={metricTone(latestPublicStory()?.memory.sentiment ?? 0, 'up')}>
+                    {latestPublicStory()?.memory.sentiment}%
+                  </strong>
                   <span>Dominant pressure</span>
                   <strong>
                     {latestPublicStory()?.dominantReason
