@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.12](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.11...v1.1.12) (2026-04-24)
+
+
+### Accessibility
+
+* add og:image:alt + twitter:image:alt ([#61](https://github.com/arcade-cabinet/reach-for-the-sky/issues/61)) ([948392b](https://github.com/arcade-cabinet/reach-for-the-sky/commit/948392b19634e984d028e81c9423d0396d804078))
+
 ## [1.1.11](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.10...v1.1.11) (2026-04-24)
 
 
