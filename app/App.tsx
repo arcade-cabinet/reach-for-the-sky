@@ -1309,7 +1309,12 @@ export function App() {
           setContractsOpen(false);
         }}
       />
-      <aside class="contracts-drawer" classList={{ open: contractsOpen() }}>
+      <aside
+        class="contracts-drawer"
+        classList={{ open: contractsOpen() }}
+        aria-label="Contracts drawer"
+        aria-hidden={!contractsOpen()}
+      >
         <div class="drawer-head">
           <div>
             <div class="eyebrow">Briefing</div>
@@ -1917,7 +1922,12 @@ export function App() {
           </>
         )}
       </aside>
-      <aside class="settings-drawer" classList={{ open: settingsOpen() }}>
+      <aside
+        class="settings-drawer"
+        classList={{ open: settingsOpen() }}
+        aria-label="Settings drawer"
+        aria-hidden={!settingsOpen()}
+      >
         <div class="drawer-head">
           <div>
             <div class="eyebrow">Your tower</div>
