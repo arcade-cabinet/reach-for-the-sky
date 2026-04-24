@@ -5,7 +5,11 @@ import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-export const DEFAULT_TIMEOUT_MS = 15_000;
+// GitHub Actions runner variance under the full release gate can push
+// simple state-transition probes (click → Solid re-render → assert)
+// over the old 15s ceiling. Bump to 30s so the default stops being the
+// step that flakes CD on unrelated PRs.
+export const DEFAULT_TIMEOUT_MS = 30_000;
 const PROCESS_START_TIMEOUT_MS = 30_000;
 export const HOST = '127.0.0.1';
 
