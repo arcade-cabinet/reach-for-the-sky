@@ -211,7 +211,7 @@ describe('tower placement', () => {
       let tower = createInitialTower();
       let economy = createInitialEconomy();
       for (const [tool, start, end] of [
-        ['lobby', { gx: -1, gy: 0 }, { gx: 1, gy: 0 }],
+        ['lobby', { gx: -1, gy: 0 }, { gx: 2, gy: 0 }],
         ['floor', { gx: -1, gy: 1 }, { gx: 2, gy: 1 }],
         ['office', { gx: -1, gy: 1 }, { gx: 0, gy: 1 }],
         ['condo', { gx: 1, gy: 1 }, { gx: 2, gy: 1 }],
