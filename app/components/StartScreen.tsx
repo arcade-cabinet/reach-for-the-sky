@@ -62,6 +62,7 @@ export function StartScreen(props: StartScreenProps) {
                 <button
                   type="button"
                   classList={{ active: props.selectedSaveSlot === slot.slotId }}
+                  aria-pressed={props.selectedSaveSlot === slot.slotId}
                   onClick={() => props.onSelectSaveSlot(slot.slotId)}
                 >
                   <strong>{props.slotLabel(slot.slotId)}</strong>
