@@ -83,6 +83,24 @@ button:disabled {
   opacity: 0.42;
 }
 
+/* Keyboard focus ring. :focus-visible so mouse clicks don't leave a
+   lingering ring on the clicked button, but every tab/shift-tab stop
+   gets a clear cyan outline. Without this, keyboard users have no way
+   to tell where focus currently sits. */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Buttons already have a border — push the ring further out so it
+   reads cleanly against the glowing active state. */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
 .app-shell {
   --ui-scale: 1;
   position: relative;

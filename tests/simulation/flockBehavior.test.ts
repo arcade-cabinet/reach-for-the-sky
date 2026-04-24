@@ -147,7 +147,13 @@ describe('flock behavior (T03)', () => {
     }
   });
 
-  it('500-tick 3-cohort soak: no NaN, no runaway drift, stable centroid separation', () => {
+  // 500 ticks across 45 agents pushing through Yuka's nav graph is a real
+  // workout; the 5s Vitest default trips under full-suite load on CI even
+  // when the sim itself is cheap. Give this soak a generous ceiling so
+  // parallel transform work doesn't flake the whole release gate.
+  it('500-tick 3-cohort soak: no NaN, no runaway drift, stable centroid separation', {
+    timeout: 15_000,
+  }, () => {
     const cohorts = [
       cohortFixture('cohort-a'),
       cohortFixture('cohort-b', { noiseTolerance: 0.2 }), // tighter personal space
