@@ -326,8 +326,10 @@ async function main() {
     // On narrow mobile viewports the scenario row lives below the fold
     // and otherwise never triggers the IntersectionObserver before the
     // harness times out.
-    await waitFor('scenario cards mounted', async () =>
-      devtools.evaluate(`
+    await waitFor(
+      'scenario cards mounted',
+      async () =>
+        devtools.evaluate(`
 (() => {
   const images = Array.from(document.querySelectorAll('.start-scenario-card img'));
   if (images.length < 4) return null;
@@ -339,6 +341,12 @@ async function main() {
   return true;
 })()
 `),
+      // Solid re-hydration after navigation, plus viewport-change re-render
+      // on mobile emulation, sometimes takes 20–40s under CD load before
+      // the scenario row is even in the DOM. Mirror the 90s ceiling that
+      // waitForRenderedScenario uses so this first wait stops being the
+      // step that flakes CD.
+      90_000,
     );
     await waitFor('rendered mobile start menu', async () =>
       devtools.evaluate(`
