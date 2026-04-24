@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.5...v1.1.6) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** confirm before Reset wipes the tower ([#47](https://github.com/arcade-cabinet/reach-for-the-sky/issues/47)) ([8429f55](https://github.com/arcade-cabinet/reach-for-the-sky/commit/8429f552366c393aa2d6a262bc6648b2765b8d3f))
+
 ## [1.1.5](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.1.4...v1.1.5) (2026-04-24)
 
 
