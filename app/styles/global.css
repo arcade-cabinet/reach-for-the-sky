@@ -134,6 +134,21 @@ a:focus-visible {
   color: white;
 }
 
+/* Honor the OS preference even when the in-app toggle is off. Users
+   who set "more contrast" at the OS level get the higher-contrast
+   palette by default, and can still toggle the in-app setting off if
+   they want the standard palette inside this specific app. */
+@media (prefers-contrast: more) {
+  .app-shell:not(.high-contrast) {
+    --panel: rgba(1, 9, 15, 0.93);
+    --panel-hard: rgba(0, 5, 10, 0.98);
+    --line: rgba(224, 242, 254, 0.58);
+    --cyan: #a7f3ff;
+    --green: #b7f7bf;
+    color: white;
+  }
+}
+
 .app-shell.reduced-motion *,
 .app-shell.reduced-motion .canvas-host {
   animation: none !important;
