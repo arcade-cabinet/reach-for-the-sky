@@ -1468,12 +1468,12 @@ export function App() {
               </div>
               <div class="tag-stack">
                 {campaignState().permits.map((permit) => (
-                  <span>{permit}</span>
+                  <span>{humanizeEnum(permit)}</span>
                 ))}
               </div>
               <div class="tag-stack muted">
                 {campaignState().unlockedSystems.map((system) => (
-                  <span>{system}</span>
+                  <span>{humanizeEnum(system)}</span>
                 ))}
               </div>
             </section>
@@ -1696,7 +1696,7 @@ export function App() {
                         </strong>
                         <span>Risk</span>
                         <strong>
-                          {visit.frictionScore} · {visit.mood}
+                          {visit.frictionScore} · {humanizeEnum(visit.mood)}
                         </strong>
                       </div>
                       <div class="pressure-tags compact">
@@ -1782,14 +1782,14 @@ export function App() {
                       <div>
                         <strong>{visit.label}</strong>
                         <span>
-                          {visit.size} people · {visit.status} ·{' '}
-                          {visit.target ? BUILDINGS[visit.target.type].name : 'unassigned'}
+                          {visit.size} people · {humanizeEnum(visit.status)} ·{' '}
+                          {visit.target ? BUILDINGS[visit.target.type].name : 'Unassigned'}
                         </span>
                       </div>
                       <small>
-                        {visit.friction.mood} outlook · Pressure reasons
+                        {humanizeEnum(visit.friction.mood)} outlook · Pressure reasons
                         {visit.friction.reasons.length > 0
-                          ? `: ${visit.friction.reasons.join(', ')}`
+                          ? `: ${visit.friction.reasons.map(formatPressureReason).join(', ')}`
                           : ': no current friction'}
                       </small>
                       <div class="pressure-tags compact">
