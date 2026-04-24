@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.8](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.7...v1.3.8) (2026-04-24)
+
+
+### Bug Fixes
+
+* **ui:** auto-clear visit-notice after 6s ([#107](https://github.com/arcade-cabinet/reach-for-the-sky/issues/107)) ([c41eab6](https://github.com/arcade-cabinet/reach-for-the-sky/commit/c41eab681e3aa36809b06d3a138fadf4f22c8e78))
+
 ## [1.3.7](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.3.6...v1.3.7) (2026-04-24)
 
 
