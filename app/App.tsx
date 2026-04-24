@@ -651,11 +651,18 @@ export function App() {
   };
 
   const ContractObjectiveItem = (props: { contractId: string; objective: ContractObjective }) => {
+    const progressTone = () => {
+      if (props.objective.complete) return 'tone-good';
+      const pct =
+        props.objective.target > 0 ? (props.objective.value / props.objective.target) * 100 : 0;
+      if (pct >= 60) return 'tone-mid';
+      return undefined;
+    };
     return (
       <li classList={{ complete: props.objective.complete }}>
         <div class="contract-objective-line">
           <span>{props.objective.label}</span>
-          <small>
+          <small class={progressTone()}>
             {props.objective.value}/{props.objective.target}
           </small>
         </div>
@@ -1104,6 +1111,7 @@ export function App() {
             class="side-button"
             classList={{ active: contractsOpen() }}
             aria-expanded={contractsOpen()}
+            aria-label="Open contracts drawer"
             onClick={() => {
               const nextOpen = !contractsOpen();
               setContractsOpen(nextOpen);
@@ -1124,6 +1132,8 @@ export function App() {
               classList={{ active: clockState().speed === 0 }}
               onClick={() => setSpeed(0)}
               title="Pause simulation"
+              aria-label="Pause simulation"
+              aria-pressed={clockState().speed === 0}
             >
               Pause
             </button>
@@ -1132,6 +1142,8 @@ export function App() {
               classList={{ active: clockState().speed === 1 }}
               onClick={() => setSpeed(1)}
               title="Run simulation at normal speed"
+              aria-label="Play at normal speed"
+              aria-pressed={clockState().speed === 1}
             >
               Play
             </button>
@@ -1140,6 +1152,8 @@ export function App() {
               classList={{ active: clockState().speed === 4 }}
               onClick={() => setSpeed(4)}
               title="Run simulation at 4x speed"
+              aria-label="Fast forward at 4x speed"
+              aria-pressed={clockState().speed === 4}
             >
               Fast
             </button>
@@ -1148,7 +1162,17 @@ export function App() {
         <div class="top-metrics">
           <article>
             <span>Funds</span>
-            <strong>{formatMoneyCompact(economyState().funds)}</strong>
+            <strong
+              class={
+                economyState().funds < 0
+                  ? 'tone-bad'
+                  : economyState().netRevenue < 0
+                    ? 'tone-mid'
+                    : 'tone-good'
+              }
+            >
+              {formatMoneyCompact(economyState().funds)}
+            </strong>
           </article>
           <article>
             <span>Pop</span>
@@ -1217,6 +1241,8 @@ export function App() {
             classList={{ active: clockState().speed === 0 }}
             onClick={() => setSpeed(0)}
             title="Pause simulation"
+            aria-label="Pause simulation"
+            aria-pressed={clockState().speed === 0}
           >
             Pause
           </button>
@@ -1225,6 +1251,8 @@ export function App() {
             classList={{ active: clockState().speed === 1 }}
             onClick={() => setSpeed(1)}
             title="Run simulation at normal speed"
+            aria-label="Play at normal speed"
+            aria-pressed={clockState().speed === 1}
           >
             Play
           </button>
@@ -1233,6 +1261,8 @@ export function App() {
             classList={{ active: clockState().speed === 4 }}
             onClick={() => setSpeed(4)}
             title="Run simulation at 4x speed"
+            aria-label="Fast forward at 4x speed"
+            aria-pressed={clockState().speed === 4}
           >
             Fast
           </button>
@@ -1326,7 +1356,7 @@ export function App() {
                 <div class="eyebrow">Latest public story</div>
                 <div class="public-story-head">
                   <div>
-                    <span>{latestPublicStory()?.tone}</span>
+                    <span>{humanizeEnum(latestPublicStory()?.tone ?? '')}</span>
                     <strong>{latestPublicStory()?.memory.label}</strong>
                   </div>
                   <small>Day {latestPublicStory()?.memory.resolvedDay}</small>
@@ -1334,9 +1364,11 @@ export function App() {
                 <p>{latestPublicStory()?.memory.impressions[0]}</p>
                 <div class="public-story-grid">
                   <span>Impact</span>
-                  <strong>{latestPublicStory()?.impact}</strong>
+                  <strong>{humanizeEnum(latestPublicStory()?.impact ?? '')}</strong>
                   <span>Sentiment</span>
-                  <strong>{latestPublicStory()?.memory.sentiment}%</strong>
+                  <strong class={metricTone(latestPublicStory()?.memory.sentiment ?? 0, 'up')}>
+                    {latestPublicStory()?.memory.sentiment}%
+                  </strong>
                   <span>Dominant pressure</span>
                   <strong>
                     {latestPublicStory()?.dominantReason
@@ -1468,12 +1500,12 @@ export function App() {
               </div>
               <div class="tag-stack">
                 {campaignState().permits.map((permit) => (
-                  <span>{permit}</span>
+                  <span>{humanizeEnum(permit)}</span>
                 ))}
               </div>
               <div class="tag-stack muted">
                 {campaignState().unlockedSystems.map((system) => (
-                  <span>{system}</span>
+                  <span>{humanizeEnum(system)}</span>
                 ))}
               </div>
             </section>
@@ -1542,8 +1574,12 @@ export function App() {
             <section class="drawer-section contract-history">
               <div class="eyebrow">History</div>
               <div class="history-counts">
-                <span>{campaignState().completedContracts.length} completed</span>
-                <span>{campaignState().failedContracts.length} failed</span>
+                <span classList={{ 'tone-good': campaignState().completedContracts.length > 0 }}>
+                  {campaignState().completedContracts.length} completed
+                </span>
+                <span classList={{ 'tone-bad': campaignState().failedContracts.length > 0 }}>
+                  {campaignState().failedContracts.length} failed
+                </span>
               </div>
               {campaignState()
                 .completedContracts.slice(0, 4)
@@ -1605,17 +1641,58 @@ export function App() {
               {latestReport() && (
                 <article class="daily-report-card">
                   <strong>{latestReport()?.title}</strong>
-                  <span>
-                    Trust {latestReport()?.publicTrust}% · Fame {latestReport()?.fame}% · Rep{' '}
-                    {(latestReport()?.reputationDelta ?? 0) >= 0 ? '+' : ''}
-                    {latestReport()?.reputationDelta}
+                  <span class="report-headline">
+                    Trust{' '}
+                    <span class={metricTone(latestReport()?.publicTrust ?? 0, 'up')}>
+                      {latestReport()?.publicTrust}%
+                    </span>{' '}
+                    · Fame{' '}
+                    <span class={metricTone(latestReport()?.fame ?? 0, 'up')}>
+                      {latestReport()?.fame}%
+                    </span>{' '}
+                    · Rep{' '}
+                    <span
+                      class={
+                        (latestReport()?.reputationDelta ?? 0) > 0
+                          ? 'tone-good'
+                          : (latestReport()?.reputationDelta ?? 0) < 0
+                            ? 'tone-bad'
+                            : 'tone-mid'
+                      }
+                    >
+                      {(latestReport()?.reputationDelta ?? 0) >= 0 ? '+' : ''}
+                      {latestReport()?.reputationDelta}
+                    </span>
                   </span>
                   <div class="report-metrics">
                     <span>Revenue {formatMoney(latestReport()?.revenue ?? 0)}</span>
                     <span>Costs {formatMoney(latestReport()?.costs ?? 0)}</span>
-                    <span>Net {formatMoney(latestReport()?.netRevenue ?? 0)}</span>
-                    <span>Queues {latestReport()?.queuePressure}%</span>
-                    <span>Dirt {latestReport()?.dirtBurden}%</span>
+                    <span>
+                      Net{' '}
+                      <span
+                        class={
+                          (latestReport()?.netRevenue ?? 0) > 0
+                            ? 'tone-good'
+                            : (latestReport()?.netRevenue ?? 0) < 0
+                              ? 'tone-bad'
+                              : 'tone-mid'
+                        }
+                      >
+                        {formatMoney(latestReport()?.netRevenue ?? 0)}
+                      </span>
+                    </span>
+                    <span>
+                      Queues{' '}
+                      <span class={metricTone(latestReport()?.queuePressure ?? 0, 'down')}>
+                        {latestReport()?.queuePressure}%
+                      </span>
+                    </span>
+                    <span>
+                      Dirt{' '}
+                      <span class={metricTone(latestReport()?.dirtBurden ?? 0, 'down')}>
+                        {latestReport()?.dirtBurden}%
+                      </span>
+                    </span>
                   </div>
                   <ul>
                     {latestReport()?.notes.map((note) => (
@@ -1655,7 +1732,7 @@ export function App() {
                         </strong>
                         <span>Risk</span>
                         <strong>
-                          {visit.frictionScore} · {visit.mood}
+                          {visit.frictionScore} · {humanizeEnum(visit.mood)}
                         </strong>
                       </div>
                       <div class="pressure-tags compact">
@@ -1741,14 +1818,14 @@ export function App() {
                       <div>
                         <strong>{visit.label}</strong>
                         <span>
-                          {visit.size} people · {visit.status} ·{' '}
-                          {visit.target ? BUILDINGS[visit.target.type].name : 'unassigned'}
+                          {visit.size} people · {humanizeEnum(visit.status)} ·{' '}
+                          {visit.target ? BUILDINGS[visit.target.type].name : 'Unassigned'}
                         </span>
                       </div>
                       <small>
-                        {visit.friction.mood} outlook · Pressure reasons
+                        {humanizeEnum(visit.friction.mood)} outlook · Pressure reasons
                         {visit.friction.reasons.length > 0
-                          ? `: ${visit.friction.reasons.join(', ')}`
+                          ? `: ${visit.friction.reasons.map(formatPressureReason).join(', ')}`
                           : ': no current friction'}
                       </small>
                       <div class="pressure-tags compact">
@@ -1778,8 +1855,11 @@ export function App() {
                       <div>
                         <strong>{memory.label}</strong>
                         <span>
-                          {memory.outcome} · sentiment {memory.sentiment}% · day{' '}
-                          {memory.resolvedDay}
+                          {humanizeEnum(memory.outcome)} · sentiment{' '}
+                          <span class={metricTone(memory.sentiment, 'up')}>
+                            {memory.sentiment}%
+                          </span>{' '}
+                          · day {memory.resolvedDay}
                         </span>
                       </div>
                       <small>{memory.impressions[0]}</small>
@@ -2147,10 +2227,23 @@ export function App() {
                 : 'Pick from the palette to start placing'}
             </span>
             <small>
-              Transit {economyState().transitPressure}% · Service {economyState().servicePressure}%
+              Transit{' '}
+              <span class={metricTone(economyState().transitPressure, 'down')}>
+                {economyState().transitPressure}%
+              </span>{' '}
+              · Service{' '}
+              <span class={metricTone(economyState().servicePressure, 'down')}>
+                {economyState().servicePressure}%
+              </span>
               {' · '}
-              Sentiment {economyState().tenantSatisfaction}% · Ops{' '}
-              {operationsState().operationalGrade}%
+              Sentiment{' '}
+              <span class={metricTone(economyState().tenantSatisfaction, 'up')}>
+                {economyState().tenantSatisfaction}%
+              </span>{' '}
+              · Ops{' '}
+              <span class={metricTone(operationsState().operationalGrade, 'up')}>
+                {operationsState().operationalGrade}%
+              </span>
             </small>
           </section>
         </>

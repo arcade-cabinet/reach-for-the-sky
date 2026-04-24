@@ -1949,6 +1949,14 @@ button:disabled {
   border-left-color: #c47b7d;
 }
 
+.memory-card.mixed {
+  border-left-color: #d4b477;
+}
+
+.memory-card.pending {
+  border-left-color: #7a8aa0;
+}
+
 .memory-card strong,
 .memory-card span,
 .memory-card small {
