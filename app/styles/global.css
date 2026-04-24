@@ -698,7 +698,6 @@ button:disabled {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.78rem;
   text-align: right;
-  text-transform: uppercase;
 }
 
 .victory-card {

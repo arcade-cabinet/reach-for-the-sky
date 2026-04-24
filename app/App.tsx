@@ -321,6 +321,18 @@ function formatMoneyCompact(value: number): string {
   return `${sign}$${abs.toLocaleString()}`;
 }
 
+// Turn kebab-case / single-word enum values into title-case display labels
+// for player-facing surfaces. 'mixed-use' → 'Mixed Use', 'steady' → 'Steady'.
+// Journey / city-brief grids used to lean on text-transform: uppercase to
+// mask the lowercase enums; removing that transform meant every value needed
+// to travel through a humanizer at render time instead.
+function humanizeEnum(value: string): string {
+  return value
+    .split(/[-_\s]+/)
+    .map((word) => (word.length === 0 ? word : word[0].toUpperCase() + word.slice(1)))
+    .join(' ');
+}
+
 function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
   if (!summary) return 'Empty';
   const identity = summary.declaredIdentity ?? summary.identity;
@@ -329,10 +341,7 @@ function formatSlotSummary(summary: SaveSlotSummary | undefined): string {
 }
 
 function formatEventType(eventType: string): string {
-  return eventType
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+  return humanizeEnum(eventType);
 }
 
 function formatEventContext(data: unknown): string {
@@ -349,10 +358,7 @@ function formatEventContext(data: unknown): string {
 }
 
 function formatPressureReason(reason: string): string {
-  return reason
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+  return humanizeEnum(reason);
 }
 
 function summarizePressureReasons(reasons: readonly string[]): Array<[string, number]> {
@@ -1207,9 +1213,9 @@ export function App() {
               <div class="eyebrow">City brief</div>
               <div class="city-brief-grid">
                 <span>District</span>
-                <strong>{macroState().districtIdentity}</strong>
+                <strong>{humanizeEnum(macroState().districtIdentity)}</strong>
                 <span>Market</span>
-                <strong>{macroState().marketCycle}</strong>
+                <strong>{humanizeEnum(macroState().marketCycle)}</strong>
                 <span>Fame</span>
                 <strong>{macroState().fame}%</strong>
                 <span>Skyline</span>
@@ -1239,7 +1245,7 @@ export function App() {
                 <strong>{towerState().visitMemories.length}</strong>
                 <span>Current mandate</span>
                 <strong>
-                  {primaryContract()?.source === 'sandbox' ? 'city cycle' : 'campaign'}
+                  {primaryContract()?.source === 'sandbox' ? 'City cycle' : 'Campaign'}
                 </strong>
               </div>
               <div class="pressure-tags public-pressure-reasons">
