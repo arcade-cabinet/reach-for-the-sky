@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { createInitialEconomy, createInitialTower } from '@/simulation/initialState';
 import {
   calculateCommittedPopulation,
+  calculateDailyOperatingCosts,
   calculateDailyRevenue,
   calculateOperationalMetrics,
   calculateTransitPressure,
@@ -224,6 +225,52 @@ describe('tower placement', () => {
     };
 
     expect(buildSeeds()).toEqual(buildSeeds());
+  });
+
+  it('utility rooms reduce daily operating costs by amortizing height overhead', () => {
+    // Build a 6-floor tower: lobby on ground, 5 floors stacked, one office on each.
+    let tower = createInitialTower();
+    let economy = createInitialEconomy();
+    const steps: Array<
+      [
+        'lobby' | 'floor' | 'office' | 'utilities',
+        { gx: number; gy: number },
+        { gx: number; gy: number },
+      ]
+    > = [
+      ['lobby', { gx: 0, gy: 0 }, { gx: 4, gy: 0 }],
+      ['floor', { gx: 0, gy: 1 }, { gx: 4, gy: 5 }],
+      ['office', { gx: 0, gy: 1 }, { gx: 1, gy: 1 }],
+      ['office', { gx: 0, gy: 2 }, { gx: 1, gy: 2 }],
+      ['office', { gx: 0, gy: 3 }, { gx: 1, gy: 3 }],
+    ];
+    for (const [tool, start, end] of steps) {
+      const result = placeBuild(tower, economy, tool, { start, end }, 0);
+      tower = result.tower;
+      economy = result.economy;
+    }
+    const baseline = calculateDailyOperatingCosts(tower.rooms, {
+      population: economy.population,
+      transitPressure: 0,
+      servicePressure: 0,
+    });
+
+    // Add one utility room — should reduce operating costs by the height relief
+    // (height=6, cost=180, relief=120 up to cap).
+    const withUtility = placeBuild(
+      tower,
+      economy,
+      'utilities',
+      { start: { gx: 2, gy: 1 }, end: { gx: 3, gy: 1 } },
+      0,
+    );
+    const withCost = calculateDailyOperatingCosts(withUtility.tower.rooms, {
+      population: withUtility.economy.population,
+      transitPressure: 0,
+      servicePressure: 0,
+    });
+
+    expect(withCost).toBeLessThan(baseline);
   });
 
   it('builds the deterministic opening contract scenario', () => {
