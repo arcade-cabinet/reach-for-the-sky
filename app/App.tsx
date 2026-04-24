@@ -1863,7 +1863,11 @@ export function App() {
                   service, and mood through the live simulation.
                 </span>
               </div>
-              {visitNotice() && <p class="visit-notice">{visitNotice()}</p>}
+              {visitNotice() && (
+                <p class="visit-notice" role="status" aria-live="polite">
+                  {visitNotice()}
+                </p>
+              )}
               {visitDocket().length > 0 ? (
                 <div class="visit-list">
                   {visitDocket().map((visit) => (
