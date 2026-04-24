@@ -80,7 +80,7 @@ async function main() {
           value.bodyText.includes('Hosting forecast') &&
           value.bodyText.includes('Personality') &&
           value.bodyText.includes('Dealbreakers') &&
-          value.bodyText.includes('Yuka hosting plan') &&
+          value.bodyText.includes('Hosting plan') &&
           value.bodyText.includes('Fix first');
         return hasForecast ? value.forecast : null;
       },
@@ -108,7 +108,7 @@ async function main() {
           value.bodyText.includes('Active commitment') &&
           value.bodyText.includes('Personality') &&
           value.bodyText.includes('Dealbreakers') &&
-          value.bodyText.includes('Yuka hosting plan') &&
+          value.bodyText.includes('Hosting plan') &&
           value.bodyText.includes('Protect now') &&
           value.bodyText.includes('Next invite forecast');
         const persisted =
