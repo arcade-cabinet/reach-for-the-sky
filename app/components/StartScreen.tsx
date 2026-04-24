@@ -42,7 +42,11 @@ export function StartScreen(props: StartScreenProps) {
             Continue Tower
           </button>
         </div>
-        {props.startNotice && <p class="start-notice">{props.startNotice}</p>}
+        {props.startNotice && (
+          <p class="start-notice" role="status" aria-live="polite">
+            {props.startNotice}
+          </p>
+        )}
         <div class="start-platform-tag">
           <span>Now playing on</span>
           <strong>{props.platformLabel}</strong>

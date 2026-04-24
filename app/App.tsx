@@ -1954,7 +1954,11 @@ export function App() {
               Delete
             </button>
           </div>
-          {saveNotice() && <p class="save-notice">{saveNotice()}</p>}
+          {saveNotice() && (
+            <p class="save-notice" role="status" aria-live="polite">
+              {saveNotice()}
+            </p>
+          )}
         </section>
         <div class="drawer-metrics">
           <span>{economyState().activeAgents} active agents</span>
@@ -2309,7 +2313,7 @@ export function App() {
         </section>
       )}
 
-      <section class="notifications">
+      <section class="notifications" aria-live="polite" aria-atomic="false">
         {towerState().notifications.map((notice) => (
           <article class={`notice ${notice.type}`}>{notice.text}</article>
         ))}
