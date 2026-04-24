@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.1...v1.2.2) (2026-04-24)
+
+
+### Bug Fixes
+
+* **capture-screenshots:** raise scenario-cards mounted wait to 90s ([#74](https://github.com/arcade-cabinet/reach-for-the-sky/issues/74)) ([8f80419](https://github.com/arcade-cabinet/reach-for-the-sky/commit/8f804198885606ecc6b087880fc54d61c405ca4d))
+
 ## [1.2.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.2.0...v1.2.1) (2026-04-24)
 
 
