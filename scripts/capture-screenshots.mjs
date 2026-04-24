@@ -54,7 +54,12 @@ async function waitForRenderedScenario(devtools) {
 `);
       return stats;
     },
-    45_000,
+    // Cold render on GitHub Actions runner under the full release gate
+    // load routinely lands in the 45–75s range. Give it 90s so CD stops
+    // flaking on variance we can't control (the check itself is cheap;
+    // the cost is waiting a few extra seconds when it would have failed
+    // anyway).
+    90_000,
   );
 }
 
