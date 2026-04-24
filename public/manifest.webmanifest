@@ -10,6 +10,9 @@
   "scope": "/reach-for-the-sky/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
   "orientation": "any",
   "background_color": "#061018",
   "theme_color": "#061018",
