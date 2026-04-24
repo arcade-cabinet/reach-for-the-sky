@@ -125,26 +125,37 @@ a:focus-visible {
   min-height: 62px;
 }
 
+/* High-contrast palette tokens live on :root so both the in-app
+   toggle and the OS prefers-contrast preference reference the same
+   values. Future palette tweaks land in one spot. */
+:root {
+  --hc-panel: rgba(1, 9, 15, 0.93);
+  --hc-panel-hard: rgba(0, 5, 10, 0.98);
+  --hc-line: rgba(224, 242, 254, 0.58);
+  --hc-cyan: #a7f3ff;
+  --hc-green: #b7f7bf;
+}
+
 .app-shell.high-contrast {
-  --panel: rgba(1, 9, 15, 0.93);
-  --panel-hard: rgba(0, 5, 10, 0.98);
-  --line: rgba(224, 242, 254, 0.58);
-  --cyan: #a7f3ff;
-  --green: #b7f7bf;
+  --panel: var(--hc-panel);
+  --panel-hard: var(--hc-panel-hard);
+  --line: var(--hc-line);
+  --cyan: var(--hc-cyan);
+  --green: var(--hc-green);
   color: white;
 }
 
-/* Honor the OS preference even when the in-app toggle is off. Users
-   who set "more contrast" at the OS level get the higher-contrast
-   palette by default, and can still toggle the in-app setting off if
-   they want the standard palette inside this specific app. */
+/* Honor OS "more contrast" preference. Users can still force the
+   palette on with the in-app toggle (which does the same thing),
+   but they can't force it off when the OS pref is set — that's
+   what the OS accessibility control is for. */
 @media (prefers-contrast: more) {
-  .app-shell:not(.high-contrast) {
-    --panel: rgba(1, 9, 15, 0.93);
-    --panel-hard: rgba(0, 5, 10, 0.98);
-    --line: rgba(224, 242, 254, 0.58);
-    --cyan: #a7f3ff;
-    --green: #b7f7bf;
+  .app-shell {
+    --panel: var(--hc-panel);
+    --panel-hard: var(--hc-panel-hard);
+    --line: var(--hc-line);
+    --cyan: var(--hc-cyan);
+    --green: var(--hc-green);
     color: white;
   }
 }
