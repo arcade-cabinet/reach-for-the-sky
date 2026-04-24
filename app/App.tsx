@@ -1141,7 +1141,7 @@ export function App() {
             class="side-button"
             classList={{ active: contractsOpen() }}
             aria-expanded={contractsOpen()}
-            aria-label="Open contracts drawer"
+            aria-label={contractsOpen() ? 'Close contracts drawer' : 'Open contracts drawer'}
             onClick={() => {
               const nextOpen = !contractsOpen();
               setContractsOpen(nextOpen);
@@ -1243,7 +1243,7 @@ export function App() {
           <button
             type="button"
             class="side-button settings-button"
-            aria-label="Open settings"
+            aria-label={settingsOpen() ? 'Close settings' : 'Open settings'}
             aria-expanded={settingsOpen()}
             onClick={() => {
               const nextOpen = !settingsOpen();
