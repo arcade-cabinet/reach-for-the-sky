@@ -388,7 +388,7 @@ function BehaviorProfile(props: { behavior: VisitorBehaviorProfile | null; label
       {(behavior) => (
         <div class="visit-personality">
           <span>{props.label ?? 'Personality'}</span>
-          <strong>{behavior().temperament}</strong>
+          <strong>{humanizeEnum(behavior().temperament)}</strong>
           <p>{behavior().summary}</p>
           <div class="personality-chips">
             <span>Values: {behavior().values.join(', ')}</span>
@@ -405,7 +405,7 @@ function HostingPlan(props: { plan: VisitorHostingPlan | null }) {
     <Show when={props.plan}>
       {(plan) => (
         <div class="visit-hosting-plan">
-          <span>Yuka hosting plan</span>
+          <span>Hosting plan</span>
           <strong>{plan().primary.label}</strong>
           <p>{plan().summary}</p>
           <div class="hosting-priorities">
