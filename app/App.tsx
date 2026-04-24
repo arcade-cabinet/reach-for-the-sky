@@ -2265,6 +2265,7 @@ export function App() {
                   class="tool-button"
                   classList={{ active: viewState().selectedTool === toolId }}
                   aria-pressed={viewState().selectedTool === toolId}
+                  aria-label={`${tool.name}, $${tool.cost.toLocaleString()}`}
                   onClick={() => selectTool(toolId)}
                   title={`${tool.name}: $${tool.cost.toLocaleString()}`}
                 >
