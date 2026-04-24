@@ -65,6 +65,10 @@ export class SkyAudioEngine {
   // toggling two drawers in the same turn) can queue faster than the sample
   // duration, exhausting Howler's HTML5 audio pool.
   private lastPlayedAt = new Map<AudioCue, number>();
+  // Throttle ambient rampTo calls. At 30 ticks/sec the transport queue
+  // gets fresh schedules every 33ms; once every 500ms is still smooth for
+  // the player and avoids stacking cancelled ramps on the audio thread.
+  private lastAmbientUpdateAt = 0;
 
   constructor(settings: GameSettings['audio']) {
     this.settings = settings;
@@ -124,6 +128,13 @@ export class SkyAudioEngine {
    */
   updateAmbient(context: AmbientContext): void {
     if (!this.unlocked || !this.ambient || !this.ambientGain || this.settings.muted) return;
+    // Throttle rampTo dispatches. Called per-tick (30×/sec); the pressure
+    // and density signals themselves change on second timescales. Capping
+    // at 2 Hz keeps the transport's scheduled-event queue bounded without
+    // any audible difference.
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (now - this.lastAmbientUpdateAt < 500) return;
+    this.lastAmbientUpdateAt = now;
     const pressure = Math.max(0, Math.min(100, context.transitPressure)) / 100;
     const density = Math.min(1, context.agentCount / 40);
     const distressed = context.publicTrust < 40 ? (40 - context.publicTrust) / 40 : 0;
@@ -193,6 +204,36 @@ export class SkyAudioEngine {
       }
     }
     this.playProcedural(cue);
+  }
+
+  /**
+   * Release every Tone node + Howler sprite this engine owns. Must be called
+   * from the app's onCleanup so hot-reload / browser-test teardown don't
+   * leave undisposed AudioContext nodes running (the ambient drone otherwise
+   * sustains indefinitely, and Tone.js nodes leak into the global context).
+   */
+  destroy(): void {
+    try {
+      this.ambient?.triggerRelease();
+    } catch {
+      // Tone can throw if the release time is past the transport end; ignore.
+    }
+    this.ambient?.dispose();
+    this.ambient = null;
+    this.ambientGain?.dispose();
+    this.ambientGain = null;
+    this.synth?.dispose();
+    this.synth = null;
+    this.membrane?.dispose();
+    this.membrane = null;
+    this.sampleSprite?.unload();
+    this.sampleSprite = null;
+    this.sampleSpriteCues.clear();
+    for (const sample of this.samples.values()) sample.unload();
+    this.samples.clear();
+    this.lastPlayedAt.clear();
+    this.lastAmbientUpdateAt = 0;
+    this.unlocked = false;
   }
 
   private playProcedural(cue: AudioCue): void {

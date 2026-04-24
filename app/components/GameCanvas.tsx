@@ -18,6 +18,12 @@ function requireValue<T>(value: T | undefined, name: string): T {
   return value;
 }
 
+// The ReachForTheSkyDebug shape lives in `src/debug/debugHook.ts` so both
+// the app (here) and the e2e helpers share one authoritative declaration.
+// Importing the module ensures the declare-global augmentation is pulled
+// in alongside the ViewTrait / ClockTrait / TowerTrait reads below.
+import '@/debug/debugHook';
+
 declare global {
   interface Window {
     reachForTheSkyRenderer?: {
@@ -45,8 +51,13 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   let canInspect = false;
   let dragStart: { gx: number; gy: number } | null = null;
   let renderFrame = 0;
+  // Guards against the init→then→requestRender race: if the component
+  // unmounts before `renderer.init()`'s promise resolves, the deferred
+  // requestRender would fire on a destroyed renderer.
+  let disposed = false;
 
   const renderCurrent = () => {
+    if (disposed) return;
     renderer?.render({
       tower: requireValue(tower(), 'tower'),
       economy: requireValue(economy(), 'economy'),
@@ -59,7 +70,7 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   };
 
   const requestRender = () => {
-    if (renderFrame) return;
+    if (disposed || renderFrame) return;
     renderFrame = window.requestAnimationFrame(() => {
       renderFrame = 0;
       renderCurrent();
@@ -67,16 +78,57 @@ export function GameCanvas(props: { onBuildCommitted: () => void }) {
   };
 
   onMount(() => {
+    // Warn (don't crash) if a prior GameCanvas instance's onCleanup didn't
+    // run — this happens when a browser test remounts without `cleanup()`
+    // between cases and would otherwise leak a CutawayRenderer + WebGL
+    // context per remount.
+    if (window.reachForTheSkyRenderer || window.reachForTheSky) {
+      // biome-ignore lint/suspicious/noConsole: testability warning
+      console.warn(
+        '[reach-for-the-sky] GameCanvas mounted while prior debug hooks still present — previous instance may have leaked. Call cleanup() between mounts.',
+      );
+    }
     renderer = new CutawayRenderer();
     window.reachForTheSkyRenderer = {
       getStats: () => renderer.getRenderStats(),
       resetStats: () => renderer.resetRenderStats(),
     };
-    void renderer.init(host).then(requestRender);
+    window.reachForTheSky = {
+      getView: () => {
+        const v = view();
+        if (!v) return null;
+        return {
+          panX: v.panX,
+          panY: v.panY,
+          zoom: v.zoom,
+          lensMode: v.lensMode,
+          selectedTool: v.selectedTool,
+        };
+      },
+      getClock: () => {
+        const c = clock();
+        return c ? { day: c.day, tick: c.tick, speed: c.speed } : null;
+      },
+      getItemCount: () => {
+        const t = tower();
+        if (!t) return 0;
+        return t.rooms.length + t.shafts.length + t.elevators.length;
+      },
+    };
+    void renderer.init(host).then(() => {
+      // Init is async — if the component unmounted while we were waiting,
+      // don't schedule a render against a disposed renderer.
+      if (!disposed) requestRender();
+    });
     onCleanup(() => {
-      if (renderFrame) window.cancelAnimationFrame(renderFrame);
+      disposed = true;
+      if (renderFrame) {
+        window.cancelAnimationFrame(renderFrame);
+        renderFrame = 0;
+      }
       delete window.reachForTheSkyRenderer;
-      renderer.destroy();
+      delete window.reachForTheSky;
+      renderer?.destroy();
     });
   });
 

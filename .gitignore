@@ -10,3 +10,8 @@ test-screenshots/
 .DS_Store
 ios/
 .claude/
+
+# Playwright
+playwright-report/
+e2e-artifacts/
+test-results/

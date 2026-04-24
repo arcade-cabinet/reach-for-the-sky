@@ -503,6 +503,11 @@ export function App() {
   let persistenceQueue: Promise<unknown> = Promise.resolve();
   let nativeBackButtonHandle: PluginListenerHandle | null = null;
   let nativeBackButtonDisposed = false;
+  // Gate async callbacks (save-slot refreshes, preference loads, native
+  // back-button registration) so any promise that resolves AFTER the
+  // component unmounts doesn't write to disposed signals. Every `refresh*`
+  // helper below checks this flag before calling its setter.
+  let disposed = false;
 
   const phaseState = createMemo(() => requireValue(phase(), 'phase'));
   const towerState = createMemo(() => requireValue(tower(), 'tower'));
@@ -703,25 +708,28 @@ export function App() {
 
   const refreshSaveSlots = async () => {
     try {
-      setSaveSlots(await listSaveSlots());
+      const slots = await listSaveSlots();
+      if (!disposed) setSaveSlots(slots);
     } catch {
-      setSaveSlots([]);
+      if (!disposed) setSaveSlots([]);
     }
   };
 
   const refreshCorruptSaves = async () => {
     try {
-      setCorruptSaves(await listCorruptSaves());
+      const saves = await listCorruptSaves();
+      if (!disposed) setCorruptSaves(saves);
     } catch {
-      setCorruptSaves([]);
+      if (!disposed) setCorruptSaves([]);
     }
   };
 
   const refreshSimulationHistory = async () => {
     try {
-      setRecentEvents(await listSimulationEvents(8));
+      const events = await listSimulationEvents(8);
+      if (!disposed) setRecentEvents(events);
     } catch {
-      setRecentEvents([]);
+      if (!disposed) setRecentEvents([]);
     }
   };
 
@@ -817,7 +825,10 @@ export function App() {
   const queuePersistence = (work: () => Promise<void>) => {
     persistenceQueue = persistenceQueue
       .catch(() => undefined)
-      .then(work)
+      .then(async () => {
+        if (disposed) return;
+        await work();
+      })
       .catch(() => undefined);
   };
 
@@ -910,17 +921,20 @@ export function App() {
   onMount(() => {
     void (async () => {
       await installCapacitorPreferences().catch(() => undefined);
+      if (disposed) return;
       const scenario = new URLSearchParams(window.location.search).get('scenario');
       if (isScenarioId(scenario)) {
         const snapshot = createScenarioSnapshot(scenario);
         snapshot.view = { ...snapshot.view, ...scenarioCamera(scenario) };
         hydrateSnapshot(snapshot);
+        if (disposed) return;
         setPreferencesReady(true);
         void refreshSaveSlots();
         void refreshCorruptSaves();
         return;
       }
       await applyStoredPreferences();
+      if (disposed) return;
       setPreferencesReady(true);
       void refreshSaveSlots();
       void refreshCorruptSaves();
@@ -969,9 +983,20 @@ export function App() {
     };
     window.addEventListener('keydown', handleKeydown);
     onCleanup(() => {
+      disposed = true;
       nativeBackButtonDisposed = true;
       window.clearInterval(interval);
       window.removeEventListener('keydown', handleKeydown);
+      if (saveNoticeTimer !== null) {
+        window.clearTimeout(saveNoticeTimer);
+        saveNoticeTimer = null;
+      }
+      if (visitNoticeTimer !== null) {
+        window.clearTimeout(visitNoticeTimer);
+        visitNoticeTimer = null;
+      }
+      audio?.destroy();
+      audio = null;
       void nativeBackButtonHandle?.remove();
     });
   });
@@ -980,16 +1005,13 @@ export function App() {
     audio?.applySettings(settingsState().audio);
   });
 
+  // Low-frequency prefs (lens, tutorial, all settings) — write on every
+  // change, these only fire when the user actually toggles something.
   createEffect(() => {
     if (!preferencesReady()) return;
     const currentView = viewState();
     void setPreferenceJson(PREF_KEYS.lensMode, currentView.lensMode);
     void setPreferenceJson(PREF_KEYS.tutorialStep, currentView.tutorialStep);
-    void setPreferenceJson(PREF_KEYS.camera, {
-      panX: currentView.panX,
-      panY: currentView.panY,
-      zoom: currentView.zoom,
-    });
     const currentSettings = settingsState();
     void setPreferenceJson(PREF_KEYS.proceduralVolume, currentSettings.audio.proceduralVolume);
     void setPreferenceJson(PREF_KEYS.sampleVolume, currentSettings.audio.sampleVolume);
@@ -1000,6 +1022,27 @@ export function App() {
     void setPreferenceJson(PREF_KEYS.inputHints, currentSettings.ui.inputHints);
     void setPreferenceJson(PREF_KEYS.diagnosticsVisible, currentSettings.ui.diagnosticsVisible);
     void setPreferenceJson(PREF_KEYS.safeAreaMode, currentSettings.ui.safeAreaMode);
+  });
+
+  // High-frequency camera prefs — debounced 500ms. viewState changes every
+  // pan pixel / zoom wheel tick; without a debounce the effect dispatches
+  // a preference write per pointer move, which on native routes through a
+  // Capacitor bridge and on web floods the microtask queue.
+  let cameraPrefTimer: number | null = null;
+  createEffect(() => {
+    if (!preferencesReady()) return;
+    const currentView = viewState();
+    // Capture the dependencies before scheduling — we need the current
+    // snapshot, not whatever the timer reads at fire-time.
+    const { panX, panY, zoom } = currentView;
+    if (cameraPrefTimer !== null) window.clearTimeout(cameraPrefTimer);
+    cameraPrefTimer = window.setTimeout(() => {
+      cameraPrefTimer = null;
+      void setPreferenceJson(PREF_KEYS.camera, { panX, panY, zoom });
+    }, 500);
+  });
+  onCleanup(() => {
+    if (cameraPrefTimer !== null) window.clearTimeout(cameraPrefTimer);
   });
 
   createEffect(() => {

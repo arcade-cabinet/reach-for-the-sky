@@ -170,6 +170,19 @@ export const VECTOR_SOURCES: Record<VectorKey, string> = {
 
 let sharedLoad: Promise<Map<VectorKey, Texture>> | null = null;
 
+/**
+ * Drop the module-level texture-load cache. Call this when a Pixi
+ * `Application` is destroyed — the cached `Texture` objects reference the
+ * old `Application`'s GPU resources and cannot be safely reused against a
+ * fresh one. Without this, browser-mode tests that remount `<App />`
+ * between cases accumulate stale texture references in `sharedLoad`, and
+ * the first render of each later instance pushes dead textures onto the
+ * new stage (Pixi logs WebGL errors and the pooled buffers never release).
+ */
+export function resetVectorAssetCache(): void {
+  sharedLoad = null;
+}
+
 function withBase(path: string): string {
   return `${import.meta.env.BASE_URL}${path}`;
 }
