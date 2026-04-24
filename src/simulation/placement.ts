@@ -27,6 +27,35 @@ function hasRoom(tower: TowerState, x: number, y: number, type: BuildingId): boo
   return tower.rooms.some((room) => room.type === type && roomCovers(room, x, y));
 }
 
+/**
+ * Infra structural support check: a floor at height y > 0 must have a floor or
+ * lobby at (x, y-1) for every x in its span. Prevents placing floating slabs
+ * in midair — the cutaway now reads as a continuous structure from the ground
+ * line up, not as disconnected shelves.
+ *
+ * For multi-row area drags, sibling items in the same drag count as support
+ * so a rectangle spanning y=1..y=5 over a ground-line lobby validates as a
+ * single atomic placement (the bottom row is supported by the lobby; each
+ * higher row is supported by its sibling below).
+ */
+function hasInfraSupportBeneath(
+  tower: TowerState,
+  item: Pick<BuildPreviewItem, 'x' | 'y' | 'width'>,
+  siblings: readonly Pick<BuildPreviewItem, 'x' | 'y' | 'width'>[] = [],
+): boolean {
+  if (item.y <= 0) return true;
+  const below = item.y - 1;
+  for (let x = item.x; x < item.x + item.width; x += 1) {
+    const fromTower = hasRoom(tower, x, below, 'floor') || hasRoom(tower, x, below, 'lobby');
+    if (fromTower) continue;
+    const fromSibling = siblings.some(
+      (sibling) => sibling.y === below && x >= sibling.x && x < sibling.x + sibling.width,
+    );
+    if (!fromSibling) return false;
+  }
+  return true;
+}
+
 function overlapsCategory(
   tower: TowerState,
   item: Pick<BuildPreviewItem, 'x' | 'y' | 'width' | 'height'>,
@@ -72,6 +101,7 @@ function validateItem(
   tower: TowerState,
   toolId: BuildingId,
   item: BuildPreviewItem,
+  siblings: readonly BuildPreviewItem[] = [],
 ): BuildPreviewItem {
   const tool = BUILDINGS[toolId];
   const overlappingInfra = overlapsCategory(
@@ -92,6 +122,8 @@ function validateItem(
   else if (tool.cat === 'infra') {
     if (overlappingInfra) reason = 'Infrastructure already exists here';
     else if (toolId === 'lobby' && item.y !== 0) reason = 'Lobbies must touch the ground line';
+    else if (toolId === 'floor' && !hasInfraSupportBeneath(tower, item, siblings))
+      reason = 'Floors need a floor or lobby directly beneath';
     else valid = true;
   } else if (tool.cat === 'trans') {
     if (overlappingOccupant) reason = 'Transit shaft already occupies this bay';
@@ -123,9 +155,8 @@ export function createBuildPreview(
   if (!toolId || !drag) return { items: [], valid: false, error: null, cost: 0, saleProfit: 0 };
 
   const tool = BUILDINGS[toolId];
-  const items = createRawPreviewItems(toolId, drag).map((item) =>
-    validateItem(tower, toolId, item),
-  );
+  const rawItems = createRawPreviewItems(toolId, drag);
+  const items = rawItems.map((item) => validateItem(tower, toolId, item, rawItems));
   const invalid = items.find((item) => !item.valid);
   const cost = items.reduce(
     (total, item) => total + tool.cost * (toolId === 'lobby' ? item.height : 1),
