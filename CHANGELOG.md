@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.4.1...v1.4.2) (2026-04-24)
+
+
+### Documentation
+
+* add frontmatter to AGENTS.md + README.md ([#117](https://github.com/arcade-cabinet/reach-for-the-sky/issues/117)) ([53567b3](https://github.com/arcade-cabinet/reach-for-the-sky/commit/53567b32842b87c9392406dd963b598491730682))
+
 ## [1.4.1](https://github.com/arcade-cabinet/reach-for-the-sky/compare/v1.4.0...v1.4.1) (2026-04-24)
 
 
